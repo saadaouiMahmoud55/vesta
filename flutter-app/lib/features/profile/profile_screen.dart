@@ -4,17 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/config/app_config.dart';
+import '../../core/config/locale_provider.dart';
 import '../../core/router/app_router.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/widgets/app_avatar.dart';
+import '../../core/widgets/app_button.dart';
+import '../../core/widgets/app_states.dart';
+import '../../core/widgets/filter_tag.dart';
+import '../../core/widgets/price_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../auth/auth_controller.dart';
 import '../auth/require_sign_in.dart';
 import '../listings/listing.dart';
 import '../listings/listing_card.dart';
 import 'listing_status_sheet.dart';
-import 'profile_avatar.dart';
 import 'profile_controller.dart';
 import 'profile_messages.dart';
+
+/// Language names are always written in their own language.
+const _languages = {
+  'ar': 'العربية التونسية',
+  'fr': 'Français',
+  'en': 'English',
+};
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -23,6 +37,12 @@ class ProfileScreen extends ConsumerWidget {
   Future<void> _publish(BuildContext context, WidgetRef ref) async {
     if (!await requireSignIn(context, ref)) return;
     if (context.mounted) context.push(AppRoutes.publish);
+  }
+
+  void _signOut(BuildContext context, WidgetRef ref) {
+    ref.read(authControllerProvider.notifier).signOut();
+    // Back to the guest home: nothing of the previous user stays on screen.
+    context.go(AppRoutes.explore);
   }
 
   Future<void> _confirmDelete(
@@ -43,6 +63,7 @@ class ProfileScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: Text(l10n.profileDeleteConfirm),
           ),
         ],
@@ -108,49 +129,93 @@ class ProfileScreen extends ConsumerWidget {
     final signedIn = user != null;
 
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         if (signedIn) ...[
           _ProfileHeader(email: user.email),
-          const SizedBox(height: 16),
-          OutlinedButton.icon(
+          const SizedBox(height: AppSpacing.lg),
+          SecondaryButton(
+            label: l10n.profileEditTitle,
+            icon: Icons.edit_outlined,
             onPressed: () => context.push(AppRoutes.editProfile),
-            icon: const Icon(Icons.edit_outlined),
-            label: Text(l10n.profileEditTitle),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.md),
         ],
-        FilledButton.icon(
+        PrimaryButton(
+          label: l10n.publishButton,
+          icon: Icons.add_home_work_outlined,
           onPressed: () => _publish(context, ref),
-          icon: const Icon(Icons.add_home_work_outlined),
-          label: Text(l10n.publishButton),
         ),
+        const SizedBox(height: AppSpacing.xl),
+        const _LanguageSwitch(),
         if (signedIn) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           Text(
             l10n.profileMyListings,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: AppTextStyles.subtitle.copyWith(color: AppColors.navy),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           _MyListings(
             onDelete: (listing) => _confirmDelete(context, ref, listing),
             onChangeStatus: (listing) => _changeStatus(context, ref, listing),
             onPublish: () => _publish(context, ref),
           ),
         ],
-        const SizedBox(height: 24),
-        FilledButton.tonalIcon(
+        const SizedBox(height: AppSpacing.xl),
+        SecondaryButton(
+          label: l10n.settingsTitle,
+          icon: Icons.settings_outlined,
           onPressed: () => context.push(AppRoutes.settings),
-          icon: const Icon(Icons.settings_outlined),
-          label: Text(l10n.settingsTitle),
         ),
-        if (!signedIn) ...[
-          const SizedBox(height: 12),
-          FilledButton.tonal(
+        const SizedBox(height: AppSpacing.md),
+        if (signedIn)
+          TextButton.icon(
+            onPressed: () => _signOut(context, ref),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
+            icon: const Icon(Icons.logout),
+            label: Text(l10n.authLogoutButton),
+          )
+        else
+          PrimaryButton(
+            label: l10n.authLoginButton,
             onPressed: () => requireSignIn(context, ref),
-            child: Text(l10n.authLoginButton),
           ),
-        ],
+      ],
+    );
+  }
+}
+
+/// Three pills: Arabic, French, English. Same provider as the settings.
+class _LanguageSwitch extends ConsumerWidget {
+  const _LanguageSwitch();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final current = Localizations.localeOf(context).languageCode;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.languageLabel,
+          style: AppTextStyles.caption.copyWith(color: AppColors.grey),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
+          children: [
+            for (final entry in _languages.entries)
+              FilterTag(
+                label: entry.value,
+                selected: current == entry.key,
+                onTap: () => ref
+                    .read(localeProvider.notifier)
+                    .setLocale(Locale(entry.key)),
+              ),
+          ],
+        ),
       ],
     );
   }
@@ -166,16 +231,20 @@ class _ProfileHeader extends ConsumerWidget {
     final profile = ref.watch(myProfileProvider).value;
     return Column(
       children: [
-        ProfileAvatar(photoBase64: profile?.photoBase64),
-        const SizedBox(height: 12),
+        AppAvatar(
+          photoBase64: profile?.photoBase64,
+          name: profile?.displayName,
+          radius: 48,
+        ),
+        const SizedBox(height: AppSpacing.md),
         Text(
           profile?.displayName ?? '',
-          style: Theme.of(context).textTheme.titleLarge,
+          style: AppTextStyles.title.copyWith(color: AppColors.navy),
         ),
         if (email != null && email!.isNotEmpty)
           Text(
             email!,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
             textDirection: TextDirection.ltr,
           ),
       ],
@@ -201,38 +270,31 @@ class _MyListings extends ConsumerWidget {
     final busy = ref.watch(profileControllerProvider).isLoading;
 
     return listings.when(
-      loading: () => const Padding(
-        padding: EdgeInsets.all(16),
-        child: Center(child: CircularProgressIndicator()),
-      ),
-      error: (e, s) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(l10n.profileListingsLoadError),
+      loading: () => const LoadingView(),
+      error: (e, s) => ErrorState(
+        message: l10n.profileListingsLoadError,
+        onRetry: () => ref.invalidate(myListingsProvider),
       ),
       data: (items) {
         if (items.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Text(l10n.profileNoListings, textAlign: TextAlign.center),
-                const SizedBox(height: 12),
-                FilledButton.tonal(
-                  onPressed: onPublish,
-                  child: Text(l10n.profilePublishFirst),
-                ),
-              ],
-            ),
+          return EmptyState(
+            icon: Icons.home_work_outlined,
+            title: l10n.profileNoListings,
+            actionLabel: l10n.profilePublishFirst,
+            onAction: onPublish,
           );
         }
         return Column(
           children: [
             for (final listing in items)
-              _MyListingCard(
-                listing: listing,
-                busy: busy,
-                onDelete: () => onDelete(listing),
-                onChangeStatus: () => onChangeStatus(listing),
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                child: _MyListingCard(
+                  listing: listing,
+                  busy: busy,
+                  onDelete: () => onDelete(listing),
+                  onChangeStatus: () => onChangeStatus(listing),
+                ),
               ),
           ],
         );
@@ -254,37 +316,23 @@ class _MyListingCard extends ConsumerWidget {
   final VoidCallback onDelete;
   final VoidCallback onChangeStatus;
 
-  String _priceText(AppLocalizations l10n) {
-    final price = formatPrice(listing.price, currency: listing.currency);
-    switch (offerTypeOf(listing)) {
-      case OfferType.sale:
-        return price;
-      case OfferType.stay:
-        return '$price ${l10n.listingDetailPerNight}';
-      case OfferType.rent:
-        return listing.rentPeriod == 'year'
-            ? '$price ${l10n.listingDetailPerYear}'
-            : '$price ${l10n.listingDetailPerMonth}';
-    }
-  }
-
-  Color _chipColor(ColorScheme scheme) {
+  Color _chipColor() {
     switch (listing.status) {
       case 'available':
-        return scheme.primaryContainer;
+        return AppColors.primary.withValues(alpha: 0.15);
       case 'reserved':
-        return scheme.tertiaryContainer;
+        return AppColors.sand;
       case 'hidden':
-        return scheme.surfaceContainerHighest;
+        return AppColors.border;
       default:
-        return scheme.errorContainer;
+        return AppColors.error.withValues(alpha: 0.15);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
+    final type = offerTypeOf(listing);
     final cover = ref.watch(listingCoverPhotoProvider(listing.id)).value;
 
     ImageProvider? image;
@@ -298,31 +346,37 @@ class _MyListingCard extends ConsumerWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.zero,
+      elevation: 0,
+      color: AppColors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+      ),
       child: InkWell(
         // Opens the details, like any listing of the Explore tab.
         onTap: () => context.push(AppRoutes.listingDetailPath(listing.id)),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppRadius.thumb),
                 child: SizedBox(
                   width: 88,
                   height: 88,
                   child: image != null
                       ? Image(image: image, fit: BoxFit.cover)
                       : ColoredBox(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          child: Icon(
+                          color: AppColors.primary.withValues(alpha: 0.12),
+                          child: const Icon(
                             Icons.home_work_outlined,
-                            color: theme.colorScheme.onSurfaceVariant,
+                            color: AppColors.primary,
                           ),
                         ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,28 +385,38 @@ class _MyListingCard extends ConsumerWidget {
                       listing.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleMedium,
+                      style: AppTextStyles.subtitle.copyWith(
+                        color: AppColors.navy,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     Text(
                       listing.city,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.grey,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _priceText(l10n),
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    const SizedBox(height: AppSpacing.xs),
+                    PriceText(
+                      price: listing.price,
+                      currency: listing.currency,
+                      period: type == OfferType.sale
+                          ? null
+                          : listing.rentPeriod,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     ActionChip(
-                      backgroundColor: _chipColor(theme.colorScheme),
-                      label: Text(statusLabel(l10n, listing.status)),
+                      backgroundColor: _chipColor(),
+                      side: BorderSide.none,
+                      shape: const StadiumBorder(),
+                      label: Text(
+                        statusLabel(l10n, listing.status),
+                        style: AppTextStyles.small.copyWith(
+                          color: AppColors.navy,
+                        ),
+                      ),
                       onPressed: busy ? null : onChangeStatus,
                     ),
                   ],
@@ -360,7 +424,7 @@ class _MyListingCard extends ConsumerWidget {
               ),
               IconButton(
                 tooltip: l10n.profileDeleteListing,
-                icon: const Icon(Icons.delete_outline),
+                icon: const Icon(Icons.delete_outline, color: AppColors.grey),
                 onPressed: busy ? null : onDelete,
               ),
             ],
