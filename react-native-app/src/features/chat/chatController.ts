@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { chatRepository } from '../../data/repositories/chatRepository';
 import { listingsRepository } from '../../data/repositories/listingsRepository';
+import { Listing } from '../../data/models/listing';
 import { ChatError, ChatFailure } from '../../data/repositories/chatErrors';
 import {
   ChatMessage,
@@ -180,4 +181,37 @@ export function useListingTitle(listingId: string): string | null | undefined {
   }, [listingId]);
 
   return title;
+}
+
+/**
+ * The listing a conversation is about. `undefined` while loading (or if the
+ * read failed), `null` if the listing was deleted.
+ */
+export function useConversationListing(
+  listingId: string,
+): Listing | null | undefined {
+  const [listing, setListing] = useState<Listing | null | undefined>(undefined);
+
+  useEffect(() => {
+    let active = true;
+    setListing(undefined);
+    listingsRepository
+      .getListingsByIds([listingId])
+      .then(results => {
+        if (active) {
+          setListing(results[0] ?? null);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [listingId]);
+
+  return listing;
+}
+
+/** Sets the unread counter of the signed-in user to 0 (errors are ignored). */
+export function markConversationRead(conversationId: string): void {
+  chatRepository.markRead(conversationId).catch(() => {});
 }
