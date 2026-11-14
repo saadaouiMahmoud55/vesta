@@ -579,7 +579,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mapViewDetails => 'عرض التفاصيل';
 
   @override
-  String get mapNoListings => 'لا توجد إعلانات بموقع حتى الآن';
+  String get mapNoListings => 'لا توجد إعلانات للعرض على الخريطة حتى الآن';
 
   @override
   String get mapPickerTitle => 'اختار الموقع';

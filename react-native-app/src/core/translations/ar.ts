@@ -189,7 +189,7 @@ export default {
   mapLocationError: 'تعذّر تحديد موقعك. حاول مرة أخرى.',
   mapOpenSettings: 'الإعدادات',
   mapViewDetails: 'عرض التفاصيل',
-  mapNoListings: 'لا توجد إعلانات بموقع حتى الآن',
+  mapNoListings: 'لا توجد إعلانات للعرض على الخريطة حتى الآن',
   mapPickerTitle: 'اختار الموقع',
   mapPickerHint: 'اضغط على الخريطة باش تحط الدبوس',
   mapPickerConfirm: 'استعمل هذا الموقع',

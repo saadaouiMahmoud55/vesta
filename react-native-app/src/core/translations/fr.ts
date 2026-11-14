@@ -197,7 +197,7 @@ export default {
   mapLocationError: 'Impossible de trouver votre position. Réessayez.',
   mapOpenSettings: 'Paramètres',
   mapViewDetails: 'Voir les détails',
-  mapNoListings: 'Aucune annonce avec une position pour le moment',
+  mapNoListings: 'Aucune annonce à afficher sur la carte pour le moment',
   mapPickerTitle: 'Choisir l’emplacement',
   mapPickerHint: 'Touchez la carte pour placer l’épingle',
   mapPickerConfirm: 'Utiliser cet emplacement',
