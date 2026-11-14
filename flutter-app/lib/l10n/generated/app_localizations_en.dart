@@ -118,6 +118,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get publishSuccess => 'Your listing has been published';
 
   @override
+  String get publishEditTitle => 'Edit listing';
+
+  @override
+  String get publishEditSubmit => 'Save changes';
+
+  @override
+  String get publishEditSuccess => 'Listing updated';
+
+  @override
+  String get publishEditLoadFailed => 'Could not load the listing';
+
+  @override
+  String get publishEditOfferLocked => 'The offer type cannot be changed';
+
+  @override
   String get publishFieldTitle => 'Title';
 
   @override

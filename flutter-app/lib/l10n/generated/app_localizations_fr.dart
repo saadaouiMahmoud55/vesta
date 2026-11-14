@@ -118,6 +118,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get publishSuccess => 'Votre annonce a été publiée';
 
   @override
+  String get publishEditTitle => 'Modifier l\'annonce';
+
+  @override
+  String get publishEditSubmit => 'Enregistrer';
+
+  @override
+  String get publishEditSuccess => 'Annonce mise à jour';
+
+  @override
+  String get publishEditLoadFailed => 'Impossible de charger l\'annonce';
+
+  @override
+  String get publishEditOfferLocked =>
+      'Le type d\'offre ne peut pas être modifié';
+
+  @override
   String get publishFieldTitle => 'Titre';
 
   @override
