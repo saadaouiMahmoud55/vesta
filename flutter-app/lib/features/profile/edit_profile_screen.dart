@@ -8,6 +8,7 @@ import '../../core/widgets/app_avatar.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_top_bar.dart';
+import '../../core/widgets/photo_viewer.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'profile_controller.dart';
 import 'profile_messages.dart';
@@ -133,7 +134,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           children: [
             Center(
               child: GestureDetector(
-                onTap: state.isLoading ? null : _choosePhoto,
+                // With a photo, a tap shows it full size; "Change photo" below
+                // picks another one. Without a photo, a tap picks one.
+                onTap: state.isLoading
+                    ? null
+                    : (_shownPhoto ?? '').isNotEmpty
+                    ? () => showPhotoViewer(context, _shownPhoto)
+                    : _choosePhoto,
                 child: AppAvatar(
                   photoBase64: _shownPhoto,
                   name: _nameController.text,
