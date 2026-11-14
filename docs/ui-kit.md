@@ -8,7 +8,7 @@ Shared building blocks of the Flutter app. A screen uses these widgets and token
 - Spacing, radius and text sizes only from `app_dimens.dart` and `app_text_styles.dart` (both measured on the mockups VST-66 and VST-67).
 - Every text comes from a translation key (`lib/l10n/*.arb`: English, French, Tunisian Arabic).
 - A price is always shown with `PriceText` (it calls `formatPrice`).
-- To see every widget: run a debug build, open **Profile > Settings > UI kit (debug only)**. The screen is not available in a release build.
+- To see every widget: the screen is the route `/ui-kit` (`AppRoutes.uiKit`). It has no menu entry any more (testers did not understand it in Settings). To open it, temporarily add `context.push(AppRoutes.uiKit)` to a button in a debug build.
 
 ## Tokens (`lib/core/theme`)
 

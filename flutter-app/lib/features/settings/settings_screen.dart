@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -148,12 +147,6 @@ class SettingsScreen extends ConsumerWidget {
                 Uri(scheme: 'mailto', path: AppLinks.contactEmail),
               ),
             ),
-            if (kDebugMode)
-              _SettingsRow(
-                title: 'UI kit (debug only)',
-                chevron: true,
-                onTap: () => context.push(AppRoutes.uiKit),
-              ),
           ],
         ),
         if (signedIn) ...[
