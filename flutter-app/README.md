@@ -107,3 +107,12 @@ Limits:
 - If the project and the Pub cache are on different drives (for example project on `F:`, cache on `C:`), the Android build can fail with the Kotlin error "this and base files have different roots". Fix: add `kotlin.incremental=false` to `%USERPROFILE%\.gradle\gradle.properties` (your PC only, do not commit it), then run `flutter clean`.
 - The first build downloads about 180 MB of Android engine files. On a slow connection it can take a long time. If it fails with a network error, run `flutter run` again: files already downloaded are kept.
 - If every `flutter` command hangs with no output (even `flutter --version`), an old `flutter.bat` process is probably still holding Flutter's startup lock. List them with `Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match "flutter" }`, stop the leftover `cmd.exe` ones with `Stop-Process -Id <id> -Force`, and close VS Code (its Flutter extension keeps starting `flutter devices`). Do not press Ctrl+C repeatedly during a build.
+## Message alerts (VST-50)
+
+Vesta alerts the user about new chat messages only while the app is running. There is no server push.
+
+- The notification center lists the unread conversations, and the bell and chat icons show an unread badge (VST-99).
+
+Limit: sending a real push notification when the app is closed needs a small Cloud Function that calls Firebase Cloud Messaging, and Cloud Functions need the Blaze plan (a bank card). The team decided on 8 Oct not to use a card, so a user whose app is closed sees the unread badge and the notification center the next time the app is opened.
+
+Upgrade path (if a card becomes possible): a Cloud Function sends an FCM push to the receiver's device token when a message is created.
