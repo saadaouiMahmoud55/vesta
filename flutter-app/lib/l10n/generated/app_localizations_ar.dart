@@ -31,6 +31,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsTitle => 'الإشعارات';
 
   @override
+  String get notificationsEmptyTitle => 'ما فما حتى إشعار جديد';
+
+  @override
+  String get notificationsEmptyBody => 'الرسائل الجداد تظهر هوني حتى تقراهم.';
+
+  @override
   String get chatTitle => 'الرسائل';
 
   @override
@@ -47,6 +53,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authPasswordLabel => 'كلمة السر';
+
+  @override
+  String get authShowPassword => 'أظهر كلمة السر';
+
+  @override
+  String get authHidePassword => 'أخفي كلمة السر';
 
   @override
   String get authDisplayNameLabel => 'الاسم الكامل';
@@ -173,7 +185,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get propertyGuestHouse => 'دار ضيافة';
 
   @override
-  String get publishPhotosTitle => 'الصور (حتى 5)';
+  String get publishPhotosTitle => 'الصور (حتى 10)';
 
   @override
   String get publishAddFromGallery => 'المعرض';
@@ -209,7 +221,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingErrorNoPhotos => 'زيد صورة على الأقل';
 
   @override
-  String get listingErrorTooManyPhotos => 'تنجم تزيد 5 صور كحد أقصى';
+  String get listingErrorTooManyPhotos => 'تنجم تزيد 10 صور كحد أقصى';
+
+  @override
+  String get publishPhotosDuplicates => 'الصور المكررة ما تزادتش';
 
   @override
   String get listingErrorNoNetwork => 'ما فماش اتصال بالإنترنت';
@@ -567,6 +582,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mapNoListings => 'لا توجد إعلانات بموقع حتى الآن';
 
   @override
+  String get mapPickerTitle => 'اختار الموقع';
+
+  @override
+  String get mapPickerHint => 'اضغط على الخريطة باش تحط الدبوس';
+
+  @override
+  String get mapPickerConfirm => 'استعمل هذا الموقع';
+
+  @override
   String get chatEmptyTitle => 'ما عندكش محادثات توا';
 
   @override
@@ -761,6 +785,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get publishWhatsapp => 'متاح على واتساب';
+
+  @override
+  String get publishCityHelper => 'ابدا اكتب: تونس، سوسة، توزر…';
+
+  @override
+  String get publishLocationSet => 'حدّد الموقع بالضبط على الخريطة';
+
+  @override
+  String get publishLocationChange => 'بدّل الموقع على الخريطة';
+
+  @override
+  String get publishLocationHint =>
+      'من غير هذا، إعلانك باش يظهر قريب من وسط المدينة على الخريطة.';
+
+  @override
+  String get publishLocationSaved => 'الموقع بالضبط تسجّل';
+
+  @override
+  String get publishLocationRemove => 'امسح';
 
   @override
   String get listingErrorPhoneInvalid => 'أدخل رقم هاتف تونسي صحيح';

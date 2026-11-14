@@ -62,7 +62,7 @@ class ChatListScreen extends ConsumerWidget {
                       for (var i = 0; i < list.length; i++) ...[
                         if (i > 0)
                           const Divider(height: 1, color: AppColors.border),
-                        _ConversationTile(conversation: list[i], myUid: me.uid),
+                        ConversationTile(conversation: list[i], myUid: me.uid),
                       ],
                     ],
                   ),
@@ -73,8 +73,13 @@ class ChatListScreen extends ConsumerWidget {
   }
 }
 
-class _ConversationTile extends ConsumerWidget {
-  const _ConversationTile({required this.conversation, required this.myUid});
+/// One row of the conversation list. Also used by the notification center.
+class ConversationTile extends ConsumerWidget {
+  const ConversationTile({
+    super.key,
+    required this.conversation,
+    required this.myUid,
+  });
 
   final Conversation conversation;
   final String myUid;

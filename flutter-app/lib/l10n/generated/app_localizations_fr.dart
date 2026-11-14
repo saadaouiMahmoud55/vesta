@@ -31,6 +31,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get notificationsTitle => 'Notifications';
 
   @override
+  String get notificationsEmptyTitle => 'Aucune nouvelle notification';
+
+  @override
+  String get notificationsEmptyBody =>
+      'Les nouveaux messages apparaissent ici tant que vous ne les avez pas lus.';
+
+  @override
   String get chatTitle => 'Messages';
 
   @override
@@ -47,6 +54,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get authPasswordLabel => 'Mot de passe';
+
+  @override
+  String get authShowPassword => 'Afficher le mot de passe';
+
+  @override
+  String get authHidePassword => 'Masquer le mot de passe';
 
   @override
   String get authDisplayNameLabel => 'Nom complet';
@@ -174,7 +187,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get propertyGuestHouse => 'Maison d\'hôtes';
 
   @override
-  String get publishPhotosTitle => 'Photos (jusqu\'à 5)';
+  String get publishPhotosTitle => 'Photos (jusqu\'à 10)';
 
   @override
   String get publishAddFromGallery => 'Galerie';
@@ -212,7 +225,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get listingErrorTooManyPhotos =>
-      'Vous pouvez ajouter 5 photos au maximum';
+      'Vous pouvez ajouter 10 photos au maximum';
+
+  @override
+  String get publishPhotosDuplicates =>
+      'Les photos en double n\'ont pas été ajoutées';
 
   @override
   String get listingErrorNoNetwork => 'Pas de connexion internet';
@@ -580,6 +597,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mapNoListings => 'Aucune annonce avec une position pour le moment';
 
   @override
+  String get mapPickerTitle => 'Choisir l’emplacement';
+
+  @override
+  String get mapPickerHint => 'Touchez la carte pour placer l’épingle';
+
+  @override
+  String get mapPickerConfirm => 'Utiliser cet emplacement';
+
+  @override
   String get chatEmptyTitle => 'Aucune conversation';
 
   @override
@@ -779,6 +805,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get publishWhatsapp => 'Disponible sur WhatsApp';
+
+  @override
+  String get publishCityHelper => 'Commencez à taper : Tunis, Sousse, Tozeur…';
+
+  @override
+  String get publishLocationSet => 'Placer l’emplacement exact sur la carte';
+
+  @override
+  String get publishLocationChange => 'Modifier l’emplacement sur la carte';
+
+  @override
+  String get publishLocationHint =>
+      'Sans cela, votre annonce apparaît près du centre de la ville sur la carte.';
+
+  @override
+  String get publishLocationSaved => 'Emplacement exact enregistré';
+
+  @override
+  String get publishLocationRemove => 'Retirer';
 
   @override
   String get listingErrorPhoneInvalid => 'Entrez un numéro tunisien valide';

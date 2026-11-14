@@ -8,6 +8,7 @@ import '../../core/theme/app_dimens.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
+import '../../core/widgets/password_text_field.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'auth_controller.dart';
 import 'auth_messages.dart';
@@ -113,13 +114,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 },
               ),
               const SizedBox(height: AppSpacing.md),
-              AppTextField(
+              PasswordTextField(
                 label: l10n.authPasswordLabel,
                 controller: _password,
                 errorText: _passwordError,
-                obscureText: true,
                 textInputAction: TextInputAction.done,
-                ltr: true,
                 onChanged: (_) {
                   if (_passwordError != null) {
                     setState(() => _passwordError = null);
