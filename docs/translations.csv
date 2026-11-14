@@ -14,6 +14,8 @@ coming.soon,Coming soon,Bientôt disponible,قريبا,Common,
 language.label,Language,Langue,اللغة,Settings,
 auth.email.label,Email,Email,البريد الإلكتروني,Auth,same in en and fr
 auth.password.label,Password,Mot de passe,كلمة السر,Auth,
+auth.show.password,Show password,Afficher le mot de passe,أظهر كلمة السر,Auth,
+auth.hide.password,Hide password,Masquer le mot de passe,أخفي كلمة السر,Auth,
 auth.display.name.label,Full name,Nom complet,الاسم الكامل,Auth,
 auth.login.button,Log in,Se connecter,دخول,Auth,
 auth.sign.up.title,Create account,Créer un compte,إنشاء حساب,Auth,

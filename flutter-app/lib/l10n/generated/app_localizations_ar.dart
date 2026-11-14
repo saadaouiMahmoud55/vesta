@@ -55,6 +55,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authPasswordLabel => 'كلمة السر';
 
   @override
+  String get authShowPassword => 'أظهر كلمة السر';
+
+  @override
+  String get authHidePassword => 'أخفي كلمة السر';
+
+  @override
   String get authDisplayNameLabel => 'الاسم الكامل';
 
   @override

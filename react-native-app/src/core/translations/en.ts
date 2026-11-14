@@ -14,6 +14,8 @@ export default {
   languageLabel: 'Language',
   authEmailLabel: 'Email',
   authPasswordLabel: 'Password',
+  authShowPassword: 'Show password',
+  authHidePassword: 'Hide password',
   authDisplayNameLabel: 'Full name',
   authLoginButton: 'Log in',
   authSignUpTitle: 'Create account',
