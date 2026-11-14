@@ -105,6 +105,10 @@ function ConversationRow({
   );
 }
 
+function Separator(): React.JSX.Element {
+  return <View style={styles.separator} />;
+}
+
 /** All the conversations of the signed-in user, newest first (VST-45). */
 export function ChatListScreen({
   onOpen,
@@ -152,7 +156,7 @@ export function ChatListScreen({
         data={chats.conversations}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.list}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ItemSeparatorComponent={Separator}
         renderItem={({ item }) => (
           <ConversationRow conversation={item} myUid={uid} onOpen={onOpen} />
         )}
