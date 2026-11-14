@@ -52,7 +52,7 @@ class UserRepository {
   }
 
   /// Updates name and, if given, photo. The photo is a compressed base64
-  /// string (about 200 px, under 100 KB), no Firebase Storage.
+  /// string (about 480 px, under 120 KB), no Firebase Storage.
   /// [removePhoto] deletes the photo field (the rules accept a profile
   /// without it); it wins over [photoBase64].
   Future<void> updateProfile({
