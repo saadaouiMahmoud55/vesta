@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { chatRepository } from '../../data/repositories/chatRepository';
+import { listingsRepository } from '../../data/repositories/listingsRepository';
 import { ChatError, ChatFailure } from '../../data/repositories/chatErrors';
 import {
   ChatMessage,
@@ -152,4 +153,31 @@ export async function sendChatMessage(input: {
   } catch (failure) {
     return failure instanceof ChatFailure ? failure.error : 'unknown';
   }
+}
+
+/**
+ * Title of the listing a conversation is about. `undefined` while loading
+ * (or if the read failed), `null` if the listing was deleted.
+ */
+export function useListingTitle(listingId: string): string | null | undefined {
+  const [title, setTitle] = useState<string | null | undefined>(undefined);
+
+  useEffect(() => {
+    let active = true;
+    setTitle(undefined);
+    listingsRepository
+      .getListingsByIds([listingId])
+      .then(results => {
+        if (active) {
+          const listing = results[0] ?? null;
+          setTitle(listing === null ? null : listing.title);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [listingId]);
+
+  return title;
 }
