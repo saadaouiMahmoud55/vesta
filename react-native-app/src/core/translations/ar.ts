@@ -117,7 +117,7 @@ export default {
   favoritesFilterRent: 'كراء',
   favoritesFilterStay: 'إقامة',
   favoritesFilterEmpty: 'لا توجد مفضلة في هذه الفئة',
-  favoritesEmptyAction: 'استكشف الإعلانات',
+  favoritesEmptyAction: 'اكتشف الإعلانات',
   settingsTitle: 'الإعدادات',
   settingsAbout: 'على Vesta',
   settingsVersion: 'الإصدار',

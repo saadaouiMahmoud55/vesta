@@ -116,7 +116,7 @@ favorites.filter.buy,Buy,Acheter,شراء,Favorites,
 favorites.filter.rent,Rent,Louer,كراء,Favorites,
 favorites.filter.stay,Stay,Séjourner,إقامة,Favorites,
 favorites.filter.empty,No favorites in this category,Aucun favori dans cette catégorie,لا توجد مفضلة في هذه الفئة,Favorites,
-favorites.empty.action,Explore listings,Explorer les annonces,استكشف الإعلانات,Favorites,
+favorites.empty.action,Explore listings,Explorer les annonces,اكتشف الإعلانات,Favorites,
 settings.title,Settings,Paramètres,الإعدادات,Settings,
 settings.about,About Vesta,À propos de Vesta,على Vesta,Settings,
 settings.version,Version,Version,الإصدار,Settings,same in en and fr

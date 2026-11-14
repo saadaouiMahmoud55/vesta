@@ -364,7 +364,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesFilterEmpty => 'لا توجد مفضلة في هذه الفئة';
 
   @override
-  String get favoritesEmptyAction => 'استكشف الإعلانات';
+  String get favoritesEmptyAction => 'اكتشف الإعلانات';
 
   @override
   String get settingsTitle => 'الإعدادات';
