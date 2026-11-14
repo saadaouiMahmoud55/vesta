@@ -221,6 +221,8 @@ export default {
   chatToday: "Aujourd'hui",
   chatYesterday: 'Hier',
   listingDetailAtAGlance: "En un coup d'œil",
+  listingDetailLocation: 'Emplacement',
+  listingDetailOpenMaps: 'Ouvrir dans Maps',
   listingDetailGuests: 'Invités',
   listingDetailReadMore: 'Lire la suite',
   listingDetailReadLess: 'Réduire',

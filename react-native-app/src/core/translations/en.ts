@@ -216,6 +216,8 @@ export default {
   chatToday: 'Today',
   chatYesterday: 'Yesterday',
   listingDetailAtAGlance: 'At a glance',
+  listingDetailLocation: 'Location',
+  listingDetailOpenMaps: 'Open in Maps',
   listingDetailGuests: 'Guests',
   listingDetailReadMore: 'Read more',
   listingDetailReadLess: 'Read less',
