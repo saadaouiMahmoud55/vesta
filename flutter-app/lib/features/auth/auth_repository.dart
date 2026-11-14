@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
+import '../listings/listing_repository.dart';
+
 /// Errors the UI can show. Screens turn them into translated messages.
 enum AuthError {
   invalidEmail,
@@ -54,9 +56,7 @@ class AuthRepository {
         'displayName': displayName,
         'createdAt': FieldValue.serverTimestamp(),
       });
-      batch.set(userRef.collection('private').doc('contact'), {
-        'email': email,
-      });
+      batch.set(userRef.collection('private').doc('contact'), {'email': email});
       await batch.commit();
 
       // First verification mail. If it fails the account is still fine: the
@@ -94,7 +94,8 @@ class AuthRepository {
   }
 
   Future<void> signOut() => _auth.signOut();
-    /// Deletes the account of the signed-in user and its data (VST-84).
+
+  /// Deletes the account of the signed-in user and its data (VST-84).
   ///
   /// Order: ask the password again (Firebase needs a recent sign-in), then
   /// the listings (photos + contact + listing in one batch each), the
@@ -109,6 +110,7 @@ class AuthRepository {
     if (user == null || email == null) {
       throw const AuthFailure(AuthError.unknown);
     }
+
     try {
       await user.reauthenticateWithCredential(
         EmailAuthProvider.credential(email: email, password: password),
@@ -119,11 +121,15 @@ class AuthRepository {
           .collection('listings')
           .where('ownerId', isEqualTo: uid)
           .get();
+
       for (final listing in listings.docs) {
         final batch = _db.batch();
-        for (var i = 0; i < 5; i++) {
+
+        // Delete every possible listing photo (p0 through p9).
+        for (var i = 0; i < maxListingPhotos; i++) {
           batch.delete(listing.reference.collection('photos').doc('p$i'));
         }
+
         batch.delete(listing.reference.collection('contact').doc('info'));
         batch.delete(listing.reference);
         await batch.commit();
@@ -133,6 +139,7 @@ class AuthRepository {
           .collection('favorites')
           .where('userId', isEqualTo: uid)
           .get();
+
       for (final favorite in favorites.docs) {
         await favorite.reference.delete();
       }
@@ -143,6 +150,7 @@ class AuthRepository {
       profileBatch.delete(userRef);
       await profileBatch.commit();
 
+      // Delete the Firebase Auth account last.
       await user.delete();
     } on FirebaseAuthException catch (e) {
       throw AuthFailure(_mapAuthCode(e.code));
