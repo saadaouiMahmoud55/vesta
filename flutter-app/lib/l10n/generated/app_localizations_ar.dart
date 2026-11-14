@@ -645,6 +645,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingDetailAtAGlance => 'نظرة سريعة';
 
   @override
+  String get listingDetailLocation => 'الموقع';
+
+  @override
+  String get listingDetailOpenMaps => 'فتح في الخرائط';
+
+  @override
   String get listingDetailGuests => 'الضيوف';
 
   @override

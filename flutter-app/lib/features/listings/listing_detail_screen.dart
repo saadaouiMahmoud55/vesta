@@ -14,6 +14,7 @@ import '../chat/chat_repository.dart';
 import 'listing.dart';
 import 'listing_controller.dart';
 import 'listing_labels.dart';
+import 'listing_location_card.dart';
 
 /// Details of one listing (VST-73 and VST-81): photos, price, city, "At a
 /// glance" facts, description, amenities, check-in/out and house rules.
@@ -195,6 +196,11 @@ class _DetailBody extends ConsumerWidget {
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
+              if (listing.hasLocation)
+                _Section(
+                  title: l10n.listingDetailLocation,
+                  child: ListingLocationCard(listing: listing),
+                ),
               if (facts.isNotEmpty)
                 _Section(
                   title: l10n.listingDetailAtAGlance,
