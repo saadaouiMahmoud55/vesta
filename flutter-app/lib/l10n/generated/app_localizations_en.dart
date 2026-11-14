@@ -647,6 +647,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listingDetailAtAGlance => 'At a glance';
 
   @override
+  String get listingDetailLocation => 'Location';
+
+  @override
+  String get listingDetailOpenMaps => 'Open in Maps';
+
+  @override
   String get listingDetailGuests => 'Guests';
 
   @override

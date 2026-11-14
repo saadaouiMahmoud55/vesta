@@ -209,6 +209,8 @@ export default {
   chatToday: 'اليوم',
   chatYesterday: 'البارح',
   listingDetailAtAGlance: 'نظرة سريعة',
+  listingDetailLocation: 'الموقع',
+  listingDetailOpenMaps: 'فتح في الخرائط',
   listingDetailGuests: 'الضيوف',
   listingDetailReadMore: 'اقرأ المزيد',
   listingDetailReadLess: 'عرض أقل',

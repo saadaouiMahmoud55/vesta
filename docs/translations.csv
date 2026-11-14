@@ -205,6 +205,8 @@ chat.send.failed,"Message not sent, try again","Message non envoyé, réessayez"
 chat.today,Today,Aujourd'hui,اليوم,Chat,
 chat.yesterday,Yesterday,Hier,البارح,Chat,
 listing.detail.at.a.glance,At a glance,En un coup d'œil,نظرة سريعة,Listing details,
+listing.detail.location,Location,Emplacement,الموقع,Listing details,
+listing.detail.open.maps,Open in Maps,Ouvrir dans Maps,فتح في الخرائط,Listing details,
 listing.detail.guests,Guests,Invités,الضيوف,Listing details,
 listing.detail.read.more,Read more,Lire la suite,اقرأ المزيد,Listing details,
 listing.detail.read.less,Read less,Réduire,عرض أقل,Listing details,

@@ -1336,6 +1336,18 @@ abstract class AppLocalizations {
   /// **'At a glance'**
   String get listingDetailAtAGlance;
 
+  /// No description provided for @listingDetailLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get listingDetailLocation;
+
+  /// No description provided for @listingDetailOpenMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get listingDetailOpenMaps;
+
   /// No description provided for @listingDetailGuests.
   ///
   /// In en, this message translates to:

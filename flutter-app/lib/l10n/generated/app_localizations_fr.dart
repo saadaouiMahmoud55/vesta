@@ -657,6 +657,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get listingDetailAtAGlance => 'En un coup d\'œil';
 
   @override
+  String get listingDetailLocation => 'Emplacement';
+
+  @override
+  String get listingDetailOpenMaps => 'Ouvrir dans Maps';
+
+  @override
   String get listingDetailGuests => 'Invités';
 
   @override
