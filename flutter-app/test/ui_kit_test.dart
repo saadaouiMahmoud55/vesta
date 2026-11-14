@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutterapp/core/theme/app_colors.dart';
+import 'package:flutterapp/core/widgets/app_text_field.dart';
 import 'package:flutterapp/core/widgets/offer_type_badge.dart';
 import 'package:flutterapp/core/widgets/price_text.dart';
+import 'package:flutterapp/core/widgets/rtl_helpers.dart';
 import 'package:flutterapp/features/favorites/favorite_button.dart';
 import 'package:flutterapp/features/listings/listing.dart';
 import 'package:flutterapp/features/listings/listing_card.dart';
@@ -336,6 +338,53 @@ void main() {
       );
       expect(find.text('إقامة'), findsOneWidget);
       expect(find.text('TND 120 / ليلة', findRichText: true), findsOneWidget);
+    });
+  });
+  group('AppTextField with ltr', () {
+    Future<void> pumpField(WidgetTester tester, {required bool ltr}) {
+      return tester.pumpWidget(
+        MaterialApp(
+          home: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Scaffold(
+              body: AppTextField(
+                label: '+216',
+                hintText: '+216 20 123 456',
+                ltr: ltr,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('keeps the label and the hint left-to-right in RTL', (
+      tester,
+    ) async {
+      await pumpField(tester, ltr: true);
+
+      final field = tester.widget<TextField>(find.byType(TextField));
+      expect(field.decoration?.hintTextDirection, TextDirection.ltr);
+
+      final labelDirection = tester.widget<Directionality>(
+        find
+            .ancestor(
+              of: find.text('+216'),
+              matching: find.byType(Directionality),
+            )
+            .first,
+      );
+      expect(labelDirection.textDirection, TextDirection.ltr);
+    });
+
+    testWidgets('does not change the hint and the label without ltr', (
+      tester,
+    ) async {
+      await pumpField(tester, ltr: false);
+
+      final field = tester.widget<TextField>(find.byType(TextField));
+      expect(field.decoration?.hintTextDirection, isNull);
+      expect(find.byType(LtrText), findsNothing);
     });
   });
 }

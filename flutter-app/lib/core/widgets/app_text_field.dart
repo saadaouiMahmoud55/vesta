@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_dimens.dart';
 import '../theme/app_text_styles.dart';
+import 'rtl_helpers.dart';
 
 /// Text field with its label above and an error text below (the error is
 /// shown when [errorText] is not null). Use [ltr] for phone numbers and
@@ -48,13 +49,13 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final labelStyle = AppTextStyles.caption.copyWith(color: AppColors.grey);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.caption.copyWith(color: AppColors.grey),
-        ),
+        ltr
+            ? LtrText(label, style: labelStyle)
+            : Text(label, style: labelStyle),
         const SizedBox(height: AppSpacing.xs),
         TextField(
           controller: controller,
@@ -69,6 +70,7 @@ class AppTextField extends StatelessWidget {
           style: AppTextStyles.body.copyWith(color: AppColors.navy),
           decoration: InputDecoration(
             hintText: hintText,
+            hintTextDirection: ltr ? TextDirection.ltr : null,
             errorText: errorText,
             errorStyle: AppTextStyles.caption.copyWith(color: AppColors.error),
             suffixIcon: suffixIcon,

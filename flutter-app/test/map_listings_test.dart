@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutterapp/features/listings/listing.dart';
 import 'package:flutterapp/features/map/map_controller.dart';
 import 'package:flutterapp/features/map/map_listing_preview.dart';
+import 'package:flutterapp/features/map/tunisia_places.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:flutterapp/l10n/generated/app_localizations.dart';
 
 Listing _listing({
@@ -46,16 +48,64 @@ void main() {
     });
   });
 
-  test('the map keeps listings with a position that are still available', () {
-    final shown = listingsOnMap([
-      _listing(id: 'ok'),
-      _listing(id: 'no-position', latitude: null),
-      _listing(id: 'sold', status: 'sold'),
-      _listing(id: 'rented', status: 'rented'),
-      _listing(id: 'hidden', status: 'hidden'),
-      _listing(id: 'reserved', status: 'reserved'),
-    ]);
-    expect(shown.map((l) => l.id), ['ok', 'reserved']);
+  group('pinsFor', () {
+    test('an exact position is used as it is', () {
+      final pins = pinsFor([_listing(id: 'a', latitude: 33.9, longitude: 8.1)]);
+      expect(pins, hasLength(1));
+      expect(pins.single.exact, isTrue);
+      expect(pins.single.point, const LatLng(33.9, 8.1));
+    });
+
+    test('no exact position: the listing is placed at the center of its city',
+        () {
+      final pins = pinsFor([_listing(latitude: null, longitude: null)]);
+      expect(pins, hasLength(1));
+      expect(pins.single.exact, isFalse);
+      expect(pins.single.point, placeByName('Tozeur')!.point);
+    });
+
+    test('unknown city and no position: no pin', () {
+      final listing = Listing(
+        id: 'x',
+        ownerId: 'o',
+        title: 't',
+        description: '',
+        price: 1,
+        currency: 'TND',
+        listingType: 'sale',
+        propertyType: 'house',
+        city: 'Atlantis',
+        status: 'available',
+        photoCount: 0,
+      );
+      expect(pinsFor([listing]), isEmpty);
+    });
+
+    test('sold, rented and hidden listings are not drawn', () {
+      final pins = pinsFor([
+        _listing(id: 'ok'),
+        _listing(id: 'sold', status: 'sold'),
+        _listing(id: 'rented', status: 'rented'),
+        _listing(id: 'hidden', status: 'hidden'),
+        _listing(id: 'reserved', status: 'reserved'),
+      ]);
+      expect(pins.map((p) => p.listing.id), ['ok', 'reserved']);
+    });
+
+    test('several listings of one city do not hide each other', () {
+      final pins = pinsFor([
+        for (var i = 0; i < 4; i++)
+          _listing(id: 'l$i', latitude: null, longitude: null),
+      ]);
+      final points = pins.map((p) => p.point).toSet();
+      expect(points, hasLength(4));
+      // The first one is on the city center, the others stay close (< 2 km).
+      expect(pins.first.point, placeByName('Tozeur')!.point);
+      for (final pin in pins) {
+        expect((pin.point.latitude - 33.9197).abs(), lessThan(0.02));
+        expect((pin.point.longitude - 8.1335).abs(), lessThan(0.02));
+      }
+    });
   });
 
   group('preview card', () {

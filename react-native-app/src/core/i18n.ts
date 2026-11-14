@@ -5,6 +5,7 @@ import { I18nManager } from 'react-native';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { appConfig } from './config';
+import { pickLanguage } from './language';
 import en from './translations/en';
 import fr from './translations/fr';
 import ar from './translations/ar';
@@ -20,11 +21,7 @@ const phoneLanguage = Localization.getLocales()[0]?.languageCode ?? 'en';
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: appConfig.supportedLanguages.includes(
-    phoneLanguage as (typeof appConfig.supportedLanguages)[number],
-  )
-    ? phoneLanguage
-    : 'en',
+  lng: pickLanguage(null, phoneLanguage),
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
   compatibilityJSON: 'v4',
@@ -32,17 +29,7 @@ i18n.use(initReactI18next).init({
 
 export async function initializeLanguage(): Promise<void> {
   const savedLanguage = await AsyncStorage.getItem(savedLanguageKey);
-  const language =
-    savedLanguage &&
-    appConfig.supportedLanguages.includes(
-      savedLanguage as (typeof appConfig.supportedLanguages)[number],
-    )
-      ? savedLanguage
-      : appConfig.supportedLanguages.includes(
-          phoneLanguage as (typeof appConfig.supportedLanguages)[number],
-        )
-      ? phoneLanguage
-      : 'en';
+  const language = pickLanguage(savedLanguage, phoneLanguage);
   await i18n.changeLanguage(language);
   const shouldUseRTL = language === 'ar';
   if (I18nManager.isRTL !== shouldUseRTL) {

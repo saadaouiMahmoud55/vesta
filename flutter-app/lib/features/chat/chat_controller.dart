@@ -27,7 +27,8 @@ final conversationsProvider =
   return ref.watch(chatRepositoryProvider).watchConversations();
 });
 
-/// Number of unread messages, for the badge on the chat icon. 0 for a guest
+/// Number of unread messages, for the badge on the chat icon and on the bell
+/// (the bell opens the conversations that hold these messages, VST-99). 0 for a guest
 /// or while the list is loading. It reuses [conversationsProvider], so no
 /// second Firestore listener is opened.
 final unreadTotalProvider = Provider<int>((ref) {

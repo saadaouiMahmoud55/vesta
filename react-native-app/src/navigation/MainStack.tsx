@@ -1,14 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from '../features/listings/HomeScreen';
+import { MainTabs } from './MainTabs';
 
-export type MainStackParamList = { Home: undefined };
+export type MainStackParamList = { Tabs: undefined };
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 export function MainStack(): React.JSX.Element {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Tabs" component={MainTabs} />
     </Stack.Navigator>
   );
 }

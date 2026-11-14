@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart' show User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutterapp/features/listings/listing.dart';
 import 'package:flutterapp/features/search/search_filters.dart';
 import 'package:flutterapp/features/search/search_filters_notifier.dart';
+import 'package:flutterapp/features/auth/auth_controller.dart';
 
 Listing _listing({
   required String id,
@@ -54,7 +58,16 @@ void main() {
   List<String> ids(SearchFilters f) => f.apply(all).map((l) => l.id).toList();
 
   test('no filter keeps the available listings, in the same order', () {
-    expect(ids(const SearchFilters()), ['a', 'b', 'c', 'd', 'e', 'g', 'h', 'i']);
+    expect(ids(const SearchFilters()), [
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+      'g',
+      'h',
+      'i',
+    ]);
   });
 
   test('price range', () {
@@ -65,6 +78,8 @@ void main() {
 
   test('city: contains, case-insensitive', () {
     expect(ids(const SearchFilters(city: 'sou')), ['a', 'c']);
+    // The text also matches the title ('td' is the title of listing d).
+    expect(ids(const SearchFilters(city: 'td')), ['d']);
     expect(ids(const SearchFilters(city: '  TUN ')), ['b']);
   });
 
@@ -80,12 +95,18 @@ void main() {
   });
 
   test('offer type: a stay is not a rent', () {
-    expect(ids(const SearchFilters(offerType: OfferType.rent)), ['a', 'c', 'h']);
+    expect(ids(const SearchFilters(offerType: OfferType.rent)), [
+      'a',
+      'c',
+      'h',
+    ]);
     expect(ids(const SearchFilters(offerType: OfferType.stay)), ['e']);
-    expect(
-      ids(const SearchFilters(offerType: OfferType.sale)),
-      ['b', 'd', 'g', 'i'],
-    );
+    expect(ids(const SearchFilters(offerType: OfferType.sale)), [
+      'b',
+      'd',
+      'g',
+      'i',
+    ]);
   });
 
   test('property type', () {
@@ -141,4 +162,29 @@ void main() {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     expect(container.read(searchFiltersProvider).city, 'sou');
   });
+
+  test('filters reset when the signed-in user changes', () async {
+    final auth = StreamController<User?>();
+    addTearDown(auth.close);
+    final container = ProviderContainer(
+      overrides: [authStateProvider.overrideWith((ref) => auth.stream)],
+    );
+    addTearDown(container.dispose);
+
+    container.listen(searchFiltersProvider, (_, _) {});
+    auth.add(_FakeUser('a'));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+    container.read(searchFiltersProvider.notifier).setOfferType(OfferType.rent);
+    expect(container.read(searchFiltersProvider).offerType, OfferType.rent);
+
+    auth.add(_FakeUser('b'));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+    expect(container.read(searchFiltersProvider).offerType, isNull);
+  });
+}
+
+class _FakeUser extends Fake implements User {
+  _FakeUser(this.uid);
+  @override
+  final String uid;
 }

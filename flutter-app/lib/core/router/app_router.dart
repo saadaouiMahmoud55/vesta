@@ -241,7 +241,12 @@ class _MainShell extends ConsumerWidget {
             onPressed: () => _openAccountPage(context, ref, AppRoutes.chat),
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_none),
+            // Same red number as the chat icon: messages to read.
+            icon: Badge(
+              isLabelVisible: unread > 0,
+              label: Text(unread > 99 ? '99+' : '$unread'),
+              child: const Icon(Icons.notifications_none),
+            ),
             tooltip: l10n.notificationsTitle,
             onPressed: () =>
                 _openAccountPage(context, ref, AppRoutes.notifications),

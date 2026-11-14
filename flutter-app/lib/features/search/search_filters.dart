@@ -83,8 +83,10 @@ class SearchFilters {
       return false;
     }
     final query = normalizeSearchText(city);
+    // The text matches the city or the title of the listing.
     if (query.isNotEmpty &&
-        !normalizeSearchText(listing.city).contains(query)) {
+        !normalizeSearchText(listing.city).contains(query) &&
+        !normalizeSearchText(listing.title).contains(query)) {
       return false;
     }
     return true;

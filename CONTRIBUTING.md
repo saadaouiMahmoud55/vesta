@@ -45,3 +45,6 @@ It fails and prints the file and the line if it finds `Color(0x`, `Color.fromRGB
 
 If a color is missing, add a token to the theme in both apps (small PR) and tell the team. In a very rare case a line can be skipped with the comment `color-check-ignore`; explain why in the PR.
 
+## Translations (texts)
+Every text of the app is in `docs/translations.csv` (English, French, Arabic). Never edit `app_en.arb`, `app_fr.arb`, `app_ar.arb` or the files in `react-native-app/src/core/translations/` by hand: edit the master file, run `node scripts/translations.js build` (then `flutter gen-l10n` in `flutter-app`) and commit the generated files with it. `node scripts/translations.js check` runs on GitHub for every PR into `develop`. A screen never writes a text directly. All the steps are in `docs/translations.md`.
+

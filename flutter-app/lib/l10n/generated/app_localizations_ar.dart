@@ -22,32 +22,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tabMap => 'الخريطة';
 
   @override
-  String get mapMyLocation => 'موقعي';
-
-  @override
-  String get mapLocationDenied => 'تم رفض إذن الموقع. الخريطة تعمل مع ذلك.';
-
-  @override
-  String get mapLocationDeniedForever =>
-      'الموقع محظور لتطبيق Vesta. يمكنك تفعيله من إعدادات التطبيق.';
-
-  @override
-  String get mapLocationServiceOff =>
-      'فعّل الموقع (GPS) على هاتفك لمعرفة مكانك.';
-
-  @override
-  String get mapLocationError => 'تعذّر تحديد موقعك. حاول مرة أخرى.';
-
-  @override
-  String get mapOpenSettings => 'الإعدادات';
-
-  @override
-  String get mapViewDetails => 'عرض التفاصيل';
-
-  @override
-  String get mapNoListings => 'لا توجد إعلانات بموقع حتى الآن';
-
-  @override
   String get tabFavorites => 'المفضلة';
 
   @override
@@ -57,52 +31,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsTitle => 'الإشعارات';
 
   @override
+  String get notificationsEmptyTitle => 'ما فما حتى إشعار جديد';
+
+  @override
+  String get notificationsEmptyBody => 'الرسائل الجداد تظهر هوني حتى تقراهم.';
+
+  @override
   String get chatTitle => 'الرسائل';
-
-  @override
-  String get chatEmptyTitle => 'ما عندكش محادثات توا';
-
-  @override
-  String get chatEmptyBody => 'حلّ إعلان واضغط على «تواصل مع المالك» باش تبدا.';
-
-  @override
-  String get chatContactOwner => 'تواصل مع المالك';
-
-  @override
-  String get chatOwnListing => 'هذا إعلانك';
-
-  @override
-  String get chatContactError => 'ما نجمناش نحلّو المحادثة، عاود جرّب';
-
-  @override
-  String get chatUnknownUser => 'مستخدم Vesta';
-
-  @override
-  String get chatLoadError => 'ما نجمناش نحمّلو رسائلك';
-
-  @override
-  String get chatRetry => 'عاود جرّب';
-
-  @override
-  String get chatListingRemoved => 'الإعلان ما عادش موجود';
-
-  @override
-  String get chatMessageHint => 'اكتب رسالتك...';
-
-  @override
-  String get chatSend => 'ابعث';
-
-  @override
-  String get chatSending => 'يتبعث...';
-
-  @override
-  String get chatNoMessages => 'ما فما حتى رسالة توا. ابدا المحادثة!';
-
-  @override
-  String get chatSendError => 'ما تبعثتش توا. باش تتبعث كي يرجع الإنترنت.';
-
-  @override
-  String get chatSendFailed => 'الرسالة ما تبعثتش، عاود جرّب';
 
   @override
   String get loginTitle => 'تسجيل الدخول';
@@ -118,6 +53,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authPasswordLabel => 'كلمة السر';
+
+  @override
+  String get authShowPassword => 'أظهر كلمة السر';
+
+  @override
+  String get authHidePassword => 'أخفي كلمة السر';
 
   @override
   String get authDisplayNameLabel => 'الاسم الكامل';
@@ -187,16 +128,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get publishFieldDescription => 'الوصف';
 
   @override
-  String get publishFieldPrice => 'السوم (دينار)';
+  String get publishFieldPrice => 'السوم (TND)';
 
   @override
   String get publishFieldCity => 'المدينة';
-
-  @override
-  String get publishFieldPhone => 'رقم الهاتف';
-
-  @override
-  String get publishWhatsapp => 'متاح على واتساب';
 
   @override
   String get publishFieldBedrooms => 'عدد البيوت (اختياري)';
@@ -250,7 +185,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get propertyGuestHouse => 'دار ضيافة';
 
   @override
-  String get publishPhotosTitle => 'الصور (حتى 5)';
+  String get publishPhotosTitle => 'الصور (حتى 10)';
 
   @override
   String get publishAddFromGallery => 'المعرض';
@@ -274,9 +209,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingErrorCityRequired => 'أدخل المدينة';
 
   @override
-  String get listingErrorPhoneInvalid => 'أدخل رقم هاتف تونسي صحيح';
-
-  @override
   String get listingErrorRentPeriodRequired => 'اختار مدة الكراء';
 
   @override
@@ -289,7 +221,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingErrorNoPhotos => 'زيد صورة على الأقل';
 
   @override
-  String get listingErrorTooManyPhotos => 'تنجم تزيد 5 صور كحد أقصى';
+  String get listingErrorTooManyPhotos => 'تنجم تزيد 10 صور كحد أقصى';
+
+  @override
+  String get publishPhotosDuplicates => 'الصور المكررة ما تزادتش';
 
   @override
   String get listingErrorNoNetwork => 'ما فماش اتصال بالإنترنت';
@@ -305,48 +240,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get photoErrorReadFailed => 'ما نجمناش نقراو الصورة';
-
-  @override
-  String get listingDetailNotFound => 'الإعلان غير موجود';
-
-  @override
-  String get listingDetailLoadError => 'تعذّر تحميل الإعلان.';
-
-  @override
-  String get listingDetailRetry => 'إعادة المحاولة';
-
-  @override
-  String get listingDetailNoPhoto => 'لا توجد صور';
-
-  @override
-  String get listingDetailBedrooms => 'غرف النوم';
-
-  @override
-  String get listingDetailBathrooms => 'الحمّامات';
-
-  @override
-  String get listingDetailArea => 'المساحة (م²)';
-
-  @override
-  String get listingDetailPerNight => '/ ليلة';
-
-  @override
-  String get listingDetailAtAGlance => 'نظرة سريعة';
-
-  @override
-  String get listingDetailGuests => 'الضيوف';
-
-  @override
-  String get listingDetailReadMore => 'اقرأ المزيد';
-
-  @override
-  String get listingDetailReadLess => 'عرض أقل';
-
-  @override
-  String get listingDetailPerMonth => '/ شهر';
-
-  @override
-  String get listingDetailPerYear => '/ سنة';
 
   @override
   String get profileEditTitle => 'عدّل حسابي';
@@ -402,33 +295,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileListingDeleted => 'تم حذف الإعلان';
-
-  @override
-  String get profileStatusAvailable => 'متوفر';
-
-  @override
-  String get profileStatusReserved => 'محجوز';
-
-  @override
-  String get profileStatusSold => 'مباع';
-
-  @override
-  String get profileStatusRented => 'مكرّي';
-
-  @override
-  String get profileStatusUnavailable => 'موش متوفر';
-
-  @override
-  String get profileStatusHidden => 'مخفي';
-
-  @override
-  String get profileStatusSheetTitle => 'بدّل حالة الإعلان';
-
-  @override
-  String get profileStatusUpdated => 'تبدّلت حالة الإعلان';
-
-  @override
-  String get profilePublishFirst => 'انشر أول إعلان ليك';
 
   @override
   String get profileErrorNameRequired => 'أدخل اسمك';
@@ -498,6 +364,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesFilterEmpty => 'لا توجد مفضلة في هذه الفئة';
 
   @override
+  String get favoritesEmptyAction => 'استكشف الإعلانات';
+
+  @override
   String get settingsTitle => 'الإعدادات';
 
   @override
@@ -514,22 +383,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsDeleteAccount => 'فسخ حسابي';
-
-  @override
-  String get deleteAccountTitle => 'تمسح حسابك؟';
-
-  @override
-  String get deleteAccountBody =>
-      'هذا يمسح نهائيا حسابك وملفك الشخصي وإعلاناتك وصورها والمفضلة. الرسائل اللي بعثتها تبقى في محادثة الطرف الآخر. ما ينجمش يتراجع عليه.';
-
-  @override
-  String get deleteAccountPassword => 'اكتب كلمة السر باش تأكد';
-
-  @override
-  String get deleteAccountConfirm => 'امسح';
-
-  @override
-  String get deleteAccountDone => 'تم مسح حسابك.';
 
   @override
   String get settingsLinkError => 'ما نجمناش نحلو الرابط';
@@ -567,61 +420,238 @@ class AppLocalizationsAr extends AppLocalizations {
       'برشا محاولات، عاود جرّب بعد شوية دقايق';
 
   @override
-  String get offerSale => 'للبيع';
+  String get authWelcomeTitle => 'مرحبا بيك في Vesta';
 
   @override
-  String get offerRent => 'للكراء';
+  String get authWelcomeSubtitle =>
+      'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.';
 
   @override
-  String get offerStay => 'إقامة';
+  String get authContinueAsGuest => 'كمّل كضيف';
 
   @override
-  String get unitNight => '/ ليلة';
+  String get loading => 'جارٍ التحميل…';
 
   @override
-  String get unitMonth => '/ شهر';
-
-  @override
-  String get unitYear => '/ سنة';
-
-  @override
-  String get commonRetry => 'عاود جرّب';
-
-  @override
-  String get commonOffline => 'ما عندكش إنترنت. ممكن شوية محتوى ما يظهرش.';
-
-  @override
-  String get contactCall => 'اتصل';
-
-  @override
-  String get contactWhatsapp => 'واتساب';
-
-  @override
-  String get contactSignInToSee => 'سجّل الدخول باش تشوف رقم التواصل';
-
-  @override
-  String get contactNoWhatsapp => 'واتساب موش مثبّت على التليفون هذا';
-
-  @override
-  String get contactCallError => 'ما نجمناش نحلّو تطبيق الهاتف';
-
-  @override
-  String contactMessageSale(String title) {
-    return 'عسلامة، مهتم بشراء $title على Vesta';
+  String homePriceExample(String price) {
+    return 'مثال على السعر: $price';
   }
 
   @override
-  String contactMessageRent(String title) {
-    return 'عسلامة، مهتم بكراء $title على Vesta';
-  }
+  String get languageEn => 'English';
 
   @override
-  String contactMessageStay(String title) {
-    return 'عسلامة، مهتم بالإقامة في $title على Vesta';
-  }
+  String get languageFr => 'Français';
+
+  @override
+  String get languageAr => 'العربية';
+
+  @override
+  String get settingsAccount => 'الحساب';
+
+  @override
+  String get settingsChangePassword => 'بدّل كلمة السر';
+
+  @override
+  String get listingDetailNotFound => 'الإعلان غير موجود';
+
+  @override
+  String get listingDetailLoadError => 'تعذّر تحميل الإعلان.';
+
+  @override
+  String get listingDetailRetry => 'إعادة المحاولة';
+
+  @override
+  String get listingDetailNoPhoto => 'لا توجد صور';
+
+  @override
+  String get listingDetailBedrooms => 'غرف النوم';
+
+  @override
+  String get listingDetailBathrooms => 'الحمّامات';
+
+  @override
+  String get listingDetailArea => 'المساحة (م²)';
+
+  @override
+  String get listingDetailPerNight => '/ ليلة';
+
+  @override
+  String get listingDetailPerMonth => '/ شهر';
+
+  @override
+  String get listingDetailPerYear => '/ سنة';
+
+  @override
+  String get deleteAccountTitle => 'تمسح حسابك؟';
+
+  @override
+  String get deleteAccountBody =>
+      'هذا يمسح نهائيا حسابك وملفك الشخصي وإعلاناتك وصورها والمفضلة. الرسائل اللي بعثتها تبقى في محادثة الطرف الآخر. ما ينجمش يتراجع عليه.';
+
+  @override
+  String get deleteAccountPassword => 'اكتب كلمة السر باش تأكد';
+
+  @override
+  String get deleteAccountConfirm => 'امسح';
+
+  @override
+  String get deleteAccountDone => 'تم مسح حسابك.';
 
   @override
   String get searchHint => 'ابحث حسب المدينة';
+
+  @override
+  String get searchNoResults => 'لا توجد إعلانات مطابقة لبحثك';
+
+  @override
+  String get searchFilters => 'تصفية';
+
+  @override
+  String get searchPriceMin => 'السعر الأدنى';
+
+  @override
+  String get searchPriceMax => 'السعر الأقصى';
+
+  @override
+  String get searchOfferType => 'نوع العرض';
+
+  @override
+  String get searchPropertyType => 'نوع العقار';
+
+  @override
+  String get searchAll => 'الكل';
+
+  @override
+  String get searchTypeSale => 'بيع';
+
+  @override
+  String get searchTypeRent => 'كراء';
+
+  @override
+  String get searchTypeStay => 'إقامة';
+
+  @override
+  String get searchApply => 'تطبيق';
+
+  @override
+  String get searchReset => 'إعادة تعيين';
+
+  @override
+  String get searchPropApartment => 'شقة';
+
+  @override
+  String get searchPropHouse => 'منزل';
+
+  @override
+  String get searchPropVilla => 'فيلا';
+
+  @override
+  String get searchPropStudio => 'ستوديو';
+
+  @override
+  String get searchPropRiad => 'رياض';
+
+  @override
+  String get searchPropGuestHouse => 'نزل';
+
+  @override
+  String get mapMyLocation => 'موقعي';
+
+  @override
+  String get mapLocationDenied => 'تم رفض إذن الموقع. الخريطة تعمل مع ذلك.';
+
+  @override
+  String get mapLocationDeniedForever =>
+      'الموقع محظور لتطبيق Vesta. يمكنك تفعيله من إعدادات التطبيق.';
+
+  @override
+  String get mapLocationServiceOff =>
+      'فعّل الموقع (GPS) على هاتفك لمعرفة مكانك.';
+
+  @override
+  String get mapLocationError => 'تعذّر تحديد موقعك. حاول مرة أخرى.';
+
+  @override
+  String get mapOpenSettings => 'الإعدادات';
+
+  @override
+  String get mapViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get mapNoListings => 'لا توجد إعلانات بموقع حتى الآن';
+
+  @override
+  String get mapPickerTitle => 'اختار الموقع';
+
+  @override
+  String get mapPickerHint => 'اضغط على الخريطة باش تحط الدبوس';
+
+  @override
+  String get mapPickerConfirm => 'استعمل هذا الموقع';
+
+  @override
+  String get chatEmptyTitle => 'ما عندكش محادثات توا';
+
+  @override
+  String get chatEmptyBody => 'حلّ إعلان واضغط على «تواصل مع المالك» باش تبدا.';
+
+  @override
+  String get chatContactOwner => 'تواصل مع المالك';
+
+  @override
+  String get chatOwnListing => 'هذا إعلانك';
+
+  @override
+  String get chatContactError => 'ما نجمناش نحلّو المحادثة، عاود جرّب';
+
+  @override
+  String get chatUnknownUser => 'مستخدم Vesta';
+
+  @override
+  String get chatLoadError => 'ما نجمناش نحمّلو رسائلك';
+
+  @override
+  String get chatRetry => 'عاود جرّب';
+
+  @override
+  String get chatListingRemoved => 'الإعلان ما عادش موجود';
+
+  @override
+  String get chatMessageHint => 'اكتب رسالتك...';
+
+  @override
+  String get chatSend => 'ابعث';
+
+  @override
+  String get chatSending => 'يتبعث...';
+
+  @override
+  String get chatNoMessages => 'ما فما حتى رسالة توا. ابدا المحادثة!';
+
+  @override
+  String get chatSendError => 'ما تبعثتش توا. باش تتبعث كي يرجع الإنترنت.';
+
+  @override
+  String get chatSendFailed => 'الرسالة ما تبعثتش، عاود جرّب';
+
+  @override
+  String get chatToday => 'اليوم';
+
+  @override
+  String get chatYesterday => 'البارح';
+
+  @override
+  String get listingDetailAtAGlance => 'نظرة سريعة';
+
+  @override
+  String get listingDetailGuests => 'الضيوف';
+
+  @override
+  String get listingDetailReadMore => 'اقرأ المزيد';
+
+  @override
+  String get listingDetailReadLess => 'عرض أقل';
 
   @override
   String get listingErrorGuestsInvalid => 'أدخل عدد الضيوف بين 1 و30';
@@ -695,60 +725,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ruleQuietHours => 'ساعات الهدوء';
 
   @override
-  String get searchNoResults => 'لا توجد إعلانات مطابقة لبحثك';
-
-  @override
-  String get searchFilters => 'تصفية';
-
-  @override
-  String get searchPriceMin => 'السعر الأدنى';
-
-  @override
-  String get searchPriceMax => 'السعر الأقصى';
-
-  @override
-  String get searchOfferType => 'نوع العرض';
-
-  @override
-  String get searchPropertyType => 'نوع العقار';
-
-  @override
-  String get searchAll => 'الكل';
-
-  @override
-  String get searchTypeSale => 'بيع';
-
-  @override
-  String get searchTypeRent => 'كراء';
-
-  @override
-  String get searchTypeStay => 'إقامة';
-
-  @override
-  String get searchApply => 'تطبيق';
-
-  @override
-  String get searchReset => 'إعادة تعيين';
-
-  @override
-  String get searchPropApartment => 'شقة';
-
-  @override
-  String get searchPropHouse => 'منزل';
-
-  @override
-  String get searchPropVilla => 'فيلا';
-
-  @override
-  String get searchPropStudio => 'ستوديو';
-
-  @override
-  String get searchPropRiad => 'رياض';
-
-  @override
-  String get searchPropGuestHouse => 'نزل';
-
-  @override
   String get onboardingSkip => 'عدّي';
 
   @override
@@ -776,4 +752,113 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingBody3 => 'زيد إعلانك مع الصور في دقايق قليلة.';
+
+  @override
+  String get profileStatusAvailable => 'متوفر';
+
+  @override
+  String get profileStatusReserved => 'محجوز';
+
+  @override
+  String get profileStatusSold => 'مباع';
+
+  @override
+  String get profileStatusRented => 'مكرّي';
+
+  @override
+  String get profileStatusUnavailable => 'موش متوفر';
+
+  @override
+  String get profileStatusHidden => 'مخفي';
+
+  @override
+  String get profileStatusSheetTitle => 'بدّل حالة الإعلان';
+
+  @override
+  String get profileStatusUpdated => 'تبدّلت حالة الإعلان';
+
+  @override
+  String get profilePublishFirst => 'انشر أول إعلان ليك';
+
+  @override
+  String get publishFieldPhone => 'رقم الهاتف';
+
+  @override
+  String get publishWhatsapp => 'متاح على واتساب';
+
+  @override
+  String get publishCityHelper => 'ابدا اكتب: تونس، سوسة، توزر…';
+
+  @override
+  String get publishLocationSet => 'حدّد الموقع بالضبط على الخريطة';
+
+  @override
+  String get publishLocationChange => 'بدّل الموقع على الخريطة';
+
+  @override
+  String get publishLocationHint =>
+      'من غير هذا، إعلانك باش يظهر قريب من وسط المدينة على الخريطة.';
+
+  @override
+  String get publishLocationSaved => 'الموقع بالضبط تسجّل';
+
+  @override
+  String get publishLocationRemove => 'امسح';
+
+  @override
+  String get listingErrorPhoneInvalid => 'أدخل رقم هاتف تونسي صحيح';
+
+  @override
+  String get offerSale => 'للبيع';
+
+  @override
+  String get offerRent => 'للكراء';
+
+  @override
+  String get offerStay => 'إقامة';
+
+  @override
+  String get unitNight => '/ ليلة';
+
+  @override
+  String get unitMonth => '/ شهر';
+
+  @override
+  String get unitYear => '/ سنة';
+
+  @override
+  String get commonRetry => 'عاود جرّب';
+
+  @override
+  String get commonOffline => 'ما عندكش إنترنت. ممكن شوية محتوى ما يظهرش.';
+
+  @override
+  String get contactCall => 'اتصل';
+
+  @override
+  String get contactWhatsapp => 'واتساب';
+
+  @override
+  String get contactSignInToSee => 'سجّل الدخول باش تشوف رقم التواصل';
+
+  @override
+  String get contactNoWhatsapp => 'واتساب موش مثبّت على التليفون هذا';
+
+  @override
+  String get contactCallError => 'ما نجمناش نحلّو تطبيق الهاتف';
+
+  @override
+  String contactMessageSale(String title) {
+    return 'عسلامة، مهتم بشراء $title على Vesta';
+  }
+
+  @override
+  String contactMessageRent(String title) {
+    return 'عسلامة، مهتم بكراء $title على Vesta';
+  }
+
+  @override
+  String contactMessageStay(String title) {
+    return 'عسلامة، مهتم بالإقامة في $title على Vesta';
+  }
 }

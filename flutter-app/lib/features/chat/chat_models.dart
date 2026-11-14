@@ -153,3 +153,13 @@ class ChatMessage {
     );
   }
 }
+
+/// The conversations that have messages the user has not read yet: the
+/// content of the notification center (VST-99). Same order as the input.
+List<Conversation> unreadConversations(
+  Iterable<Conversation> conversations,
+  String uid,
+) => [
+  for (final c in conversations)
+    if (c.unreadFor(uid) > 0) c,
+];

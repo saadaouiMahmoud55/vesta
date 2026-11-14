@@ -38,7 +38,7 @@ R = required, O = optional, - = not used. Existing fields are in **bold**.
 | **latitude, longitude** | O | O | O | map shows only listings with coordinates |
 | **areaSqm** | R | R | O | |
 | **bedrooms, bathrooms** | R* | R* | O | *Required for apartment, house, villa, studio, riad and guest house. Not asked for `land`, optional for `commercial`. The publish form enforces it; the Firestore rules accept them as optional. |
-| 1 to 5 photos | R | R | R | at least 1 |
+| 1 to 10 photos | R | R | R | at least 1 |
 | `contactPhone` (`+216XXXXXXXX`) | R | R | R | **stored in `listings/{id}/contact/info`**, readable by signed-in users only |
 | `whatsappEnabled` (bool) | O | O | O | default false, same contact document |
 | `status` | `available`, `reserved`, `sold`, `hidden` | `available`, `reserved`, `rented`, `hidden` | `available`, `unavailable`, `hidden` | default `available`: **the apps always write `status: 'available'` on create** (the rules accept a missing status, but search queries on `status == 'available'` do not return listings without the field) |

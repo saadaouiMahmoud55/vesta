@@ -71,8 +71,8 @@ test('location avec rentPeriod month : OK', async () => {
 test('propertyType hors liste : refuse', async () => {
   await assertFails(setDoc(doc(as('alice'), 'listings/l2'), makeListing('alice', { propertyType: 'castle' })));
 });
-test('photoCount a 6 : refuse', async () => {
-  await assertFails(setDoc(doc(as('alice'), 'listings/l2'), makeListing('alice', { photoCount: 6 })));
+test('photoCount a 11 : refuse', async () => {
+  await assertFails(setDoc(doc(as('alice'), 'listings/l2'), makeListing('alice', { photoCount: 11 })));
 });
 test('annonce creee au nom d un autre : refuse', async () => {
   await assertFails(setDoc(doc(as('alice'), 'listings/l2'), makeListing('bob')));
@@ -95,8 +95,8 @@ test('photo p3 sans p1 ni p2 (id libre quelconque) : OK', async () => {
   b.update(doc(db, 'listings/l1'), { photoCount: 2 });
   await assertSucceeds(b.commit());
 });
-test('photo p5 : refuse', async () => {
-  await assertFails(setDoc(doc(as('alice'), 'listings/l1/photos/p5'),
+test('photo p9 : OK (limite de 10 photos)', async () => {
+  await assertSucceeds(setDoc(doc(as('alice'), 'listings/l1/photos/p9'),
     { base64: 'abc', createdAt: new Date() }));
 });
 test('photo ajoutee par un autre que le proprietaire : refuse', async () => {
@@ -344,13 +344,13 @@ test('proprietaire ajoute la photo p1 : OK', async () => {
   await assertSucceeds(setDoc(doc(as('alice'), 'listings/l1/photos/p1'),
     { base64: 'abc', createdAt: new Date() }));
 });
-test('les cinq photos p0 a p4 avec photoCount 5 dans un lot : OK', async () => {
+test('les dix photos p0 a p9 avec photoCount 10 dans un lot : OK', async () => {
   const db = as('alice');
   const b = writeBatch(db);
-  for (const id of ['p1', 'p2', 'p3', 'p4']) {
+  for (const id of ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9']) {
     b.set(doc(db, `listings/l1/photos/${id}`), { base64: 'abc', createdAt: new Date() });
   }
-  b.update(doc(db, 'listings/l1'), { photoCount: 5 });
+  b.update(doc(db, 'listings/l1'), { photoCount: 10 });
   await assertSucceeds(b.commit());
 });
 test('photo p10 : refuse', async () => {

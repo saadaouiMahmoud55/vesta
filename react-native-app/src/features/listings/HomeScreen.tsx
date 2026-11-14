@@ -8,6 +8,12 @@ import { changeAppLanguage } from '../../core/i18n';
 import { useAuth } from '../auth/authController';
 import { theme } from '../../core/theme';
 
+const languageKeys = {
+  en: 'languageEn',
+  fr: 'languageFr',
+  ar: 'languageAr',
+} as const;
+
 export function HomeScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const { signOut } = useAuth();
@@ -18,14 +24,14 @@ export function HomeScreen(): React.JSX.Element {
         translationKey="homePriceExample"
         values={{ price: formatPrice(450000) }}
       />
-      <AppText translationKey="language" style={styles.languageLabel} />
+      <AppText translationKey="languageLabel" style={styles.languageLabel} />
       <View style={styles.languages}>
         {appConfig.supportedLanguages.map(language => (
           <PrimaryButton
             key={language}
-            labelKey={`language${language.toUpperCase()}`}
+            labelKey={languageKeys[language]}
             onPress={() => changeAppLanguage(language)}
-            accessibilityLabel={t('language')}
+            accessibilityLabel={t('languageLabel')}
           />
         ))}
       </View>

@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/phone_utils.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../map/location_picker_screen.dart';
+import '../map/tunisia_places.dart';
 import 'listing_controller.dart';
 import 'listing_labels.dart';
 import 'listing_repository.dart';
@@ -27,6 +30,9 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
   final _description = TextEditingController();
   final _price = TextEditingController();
   final _city = TextEditingController();
+  final _cityFocus = FocusNode();
+  // Exact position chosen on the map (optional, VST-42).
+  LatLng? _location;
   final _bedrooms = TextEditingController();
   final _bathrooms = TextEditingController();
   final _area = TextEditingController();
@@ -61,6 +67,7 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
     ]) {
       c.dispose();
     }
+    _cityFocus.dispose();
     super.dispose();
   }
 
@@ -165,18 +172,38 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
   }
 
   // ---- photos ----
+  /// Gallery: several photos at once. Camera: one photo.
+  /// A photo already in the list is not added twice.
   Future<void> _addPhoto(ImageSource source) async {
     final l = AppLocalizations.of(context);
     try {
-      final encoded = await _photoService.pickPhoto(
-        source: source,
-        currentCount: _photos.length,
-        maxPhotos: maxListingPhotos,
+      final remaining = maxListingPhotos - _photos.length;
+      final List<String> picked;
+      if (source == ImageSource.gallery) {
+        picked = await _photoService.pickPhotos(remaining: remaining);
+      } else {
+        final one = await _photoService.pickPhoto(
+          source: source,
+          currentCount: _photos.length,
+          maxPhotos: maxListingPhotos,
+        );
+        picked = [?one];
+      }
+      if (picked.isEmpty || !mounted) return;
+      final added = addUniquePhotos(
+        _photos,
+        picked,
+        max: maxListingPhotos,
       );
-      if (encoded == null || !mounted) return;
       setState(() {
-        _photos.add(encoded);
-        _photoMessage = null;
+        _photos
+          ..clear()
+          ..addAll(added.photos);
+        _photoMessage = added.duplicates
+            ? l.publishPhotosDuplicates
+            : added.overLimit
+                ? l.listingErrorTooManyPhotos
+                : null;
       });
     } on PhotoFailure catch (e) {
       if (!mounted) return;
@@ -230,6 +257,8 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
         for (final k in houseRuleKeys)
           if (_houseRules.contains(k)) k,
       ],
+      latitude: _location == null ? null : _round6(_location!.latitude),
+      longitude: _location == null ? null : _round6(_location!.longitude),
     );
 
     final ok = await ref
@@ -242,6 +271,115 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
       ref.read(listingControllerProvider.notifier).reset();
       context.pop();
     }
+  }
+
+  /// Rounds to 6 decimals (about 10 cm): enough, and a clean number.
+  double _round6(double v) => (v * 1e6).roundToDouble() / 1e6;
+
+  /// City with suggestions: the owner types and picks a Tunisian city or town
+  /// (Latin or Arabic spelling). Typing something else is still allowed.
+  Widget _cityField(AppLocalizations l) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    return RawAutocomplete<TunisiaPlace>(
+      textEditingController: _city,
+      focusNode: _cityFocus,
+      displayStringForOption: (place) => place.name,
+      optionsBuilder: (value) => searchPlaces(value.text),
+      onSelected: (_) => setState(() {}),
+      fieldViewBuilder: (context, controller, focusNode, onSubmitted) {
+        return TextFormField(
+          controller: controller,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: l.publishFieldCity,
+            helperText: l.publishCityHelper,
+            suffixIcon: const Icon(Icons.search),
+          ),
+          onChanged: (_) => setState(() {}),
+          validator: (v) {
+            final e = validateCity(v);
+            return e == null ? null : _fieldError(l, e);
+          },
+        );
+      },
+      optionsViewBuilder: (context, onSelected, options) {
+        return Align(
+          alignment: AlignmentDirectional.topStart,
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(8),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 240,
+                maxWidth: MediaQuery.sizeOf(context).width - 32,
+              ),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  for (final place in options)
+                    ListTile(
+                      dense: true,
+                      leading: const Icon(Icons.place_outlined),
+                      title: Text(isArabic ? place.nameAr : place.name),
+                      subtitle: Text(isArabic ? place.name : place.nameAr),
+                      onTap: () => onSelected(place),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickLocation() async {
+    final picked = await Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        builder: (_) => LocationPickerScreen(
+          initialPoint: _location,
+          cityCenter: placeByName(_city.text)?.point,
+        ),
+      ),
+    );
+    if (picked != null && mounted) setState(() => _location = picked);
+  }
+
+  /// Button to place the exact position on the map, and its state.
+  Widget _locationTile(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final location = _location;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        OutlinedButton.icon(
+          onPressed: _pickLocation,
+          icon: const Icon(Icons.pin_drop_outlined),
+          label: Text(
+            location == null ? l.publishLocationSet : l.publishLocationChange,
+          ),
+        ),
+        const SizedBox(height: 4),
+        if (location == null)
+          Text(l.publishLocationHint, style: theme.textTheme.bodySmall)
+        else
+          Row(
+            children: [
+              const Icon(Icons.check_circle, size: 18, color: AppColors.primary),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(l.publishLocationSaved,
+                    style: theme.textTheme.bodySmall),
+              ),
+              TextButton(
+                onPressed: () => setState(() => _location = null),
+                child: Text(l.publishLocationRemove),
+              ),
+            ],
+          ),
+      ],
+    );
   }
 
   Widget _timeTile({
@@ -361,11 +499,9 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                     setState(() => _propertyType = v ?? _propertyType),
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _city,
-                decoration: InputDecoration(labelText: l.publishFieldCity),
-                validator: (v) => fieldValidator(v, validateCity),
-              ),
+              _cityField(l),
+              const SizedBox(height: 12),
+              _locationTile(l),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _phone,

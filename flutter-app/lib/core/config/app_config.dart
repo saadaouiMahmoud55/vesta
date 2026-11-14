@@ -14,6 +14,11 @@ class AppConfig {
   static const double mapCenterLatitude = 36.8065;
   static const double mapCenterLongitude = 10.1815;
   static const double mapDefaultZoom = 11;
+
+  /// Whole country, for the location picker when no city is known yet.
+  static const double mapCountryLatitude = 33.9;
+  static const double mapCountryLongitude = 9.6;
+  static const double mapCountryZoom = 6;
 }
 
 /// Formats a price the same way in every screen, e.g. "TND 450,000".

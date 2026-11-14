@@ -55,7 +55,7 @@ Read it like the Auth and Profile diagram (types between brackets, legend at the
 | `FavoritesController` | Riverpod controller | Adds, removes and loads the favorites. |
 | `ListingRepository` | Repository | Reads and writes the `listings` collection and the `listings/{id}/photos` subcollection (one batch write). |
 | `FavoritesRepository` | Repository | Reads and writes the `favorites` collection. |
-| `PhotoService` | Phone-side helper | Picks a photo, resizes to about 800 px wide, JPEG, under 200 KB, max 5 photos. |
+| `PhotoService` | Phone-side helper | Picks a photo, resizes to about 800 px wide, JPEG, under 200 KB, max 10 photos. |
 | `formatPrice` and translation layer | Shared helper | Same price format and texts in every screen. |
 
 ## Level 3: Search, Map and Chat
