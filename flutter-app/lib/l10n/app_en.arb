@@ -193,7 +193,7 @@
   "mapLocationError": "Could not find your position. Try again.",
   "mapOpenSettings": "Settings",
   "mapViewDetails": "View details",
-  "mapNoListings": "No listing with a location yet",
+  "mapNoListings": "No listing to show on the map yet",
   "mapPickerTitle": "Choose the location",
   "mapPickerHint": "Tap the map to place the pin",
   "mapPickerConfirm": "Use this location",

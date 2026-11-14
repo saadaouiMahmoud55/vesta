@@ -185,7 +185,7 @@ map.location.service.off,Turn on location (GPS) on your phone to see where you a
 map.location.error,Could not find your position. Try again.,Impossible de trouver votre position. Réessayez.,تعذّر تحديد موقعك. حاول مرة أخرى.,Map,
 map.open.settings,Settings,Paramètres,الإعدادات,Map,
 map.view.details,View details,Voir les détails,عرض التفاصيل,Map,
-map.no.listings,No listing with a location yet,Aucune annonce avec une position pour le moment,لا توجد إعلانات بموقع حتى الآن,Map,
+map.no.listings,No listing to show on the map yet,Aucune annonce à afficher sur la carte pour le moment,لا توجد إعلانات للعرض على الخريطة حتى الآن,Map,
 map.picker.title,Choose the location,Choisir l’emplacement,اختار الموقع,Map,
 map.picker.hint,Tap the map to place the pin,Touchez la carte pour placer l’épingle,اضغط على الخريطة باش تحط الدبوس,Map,
 map.picker.confirm,Use this location,Utiliser cet emplacement,استعمل هذا الموقع,Map,

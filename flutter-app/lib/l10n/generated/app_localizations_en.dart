@@ -586,7 +586,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapViewDetails => 'View details';
 
   @override
-  String get mapNoListings => 'No listing with a location yet';
+  String get mapNoListings => 'No listing to show on the map yet';
 
   @override
   String get mapPickerTitle => 'Choose the location';
