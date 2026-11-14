@@ -38,3 +38,22 @@ Photos of a listing live in `listings/{listingId}/photos/{photoId}`.
 - Adding or deleting a photo and updating `photoCount` on the listing must be done in the same batch.
 - Deleting a listing: delete its photos in the same batch, otherwise they stay orphaned and nobody can delete them afterwards.
 - Only the owner of the listing writes photos. Any signed-in user can read them.
+## Android API key restriction (VST-101)
+
+The Android key created by Firebase ("Android key (auto created by Firebase)", project `vesta-d1048`, Google Cloud Console > APIs & Services > Credentials) is restricted to our apps. A build whose package name and signing SHA-1 are not in the list is blocked at sign-in ("Requests from this Android client application are blocked").
+
+Application restrictions > Android apps, 4 rows:
+
+| Package | Certificate | Used by |
+|---|---|---|
+| `com.vesta.flutterapp.debug` | developer debug key | `flutter run` (the debug build has the `.debug` suffix) |
+| `com.vesta.flutterapp` | developer debug key | `flutter run --release` |
+| `com.vesta.flutterapp` | upload key | release builds signed by the developer |
+| `com.vesta.flutterapp` | Play App Signing key (Play Console > App integrity) | the app installed from Google Play |
+
+The SHA-1 values are public fingerprints, not secrets, and are kept in the Cloud Console. Never commit a keystore, its password or `key.properties`.
+
+- Get the debug SHA-1 of a machine: `cd flutter-app/android` then `.\gradlew signingReport` (Windows) or `./gradlew signingReport`, line `SHA1` of the `debug` variant. Each developer who runs the app needs their own row with the `.debug` package.
+- A change takes about 5 minutes to apply.
+- Test after any change: sign in on the debug build and on the Play install.
+- If sign-in fails and the demo is close: set Application restrictions to None (instant), then fix the rows.
