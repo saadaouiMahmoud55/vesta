@@ -594,7 +594,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mapViewDetails => 'Voir les détails';
 
   @override
-  String get mapNoListings => 'Aucune annonce à afficher sur la carte pour le moment';
+  String get mapNoListings =>
+      'Aucune annonce à afficher sur la carte pour le moment';
 
   @override
   String get mapPickerTitle => 'Choisir l’emplacement';

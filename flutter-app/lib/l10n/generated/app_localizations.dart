@@ -1219,7 +1219,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapNoListings.
   ///
   /// In en, this message translates to:
-  /// **'No listing with a location yet'**
+  /// **'No listing to show on the map yet'**
   String get mapNoListings;
 
   /// No description provided for @mapPickerTitle.
