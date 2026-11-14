@@ -25,6 +25,7 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final TextEditingController _nameController;
   String? _newPhotoBase64; // set only when the user picked a new photo
+  bool _removePhoto = false; // the user asked to remove the current photo
   String? _nameError; // shown under the field
 
   @override
@@ -69,7 +70,25 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
     final photo =
         await ref.read(profileControllerProvider.notifier).pickPhoto(source);
-    if (photo != null && mounted) setState(() => _newPhotoBase64 = photo);
+    if (photo != null && mounted) {
+      setState(() {
+        _newPhotoBase64 = photo;
+        _removePhoto = false;
+      });
+    }
+  }
+
+  /// The photo shown now: a new one, else the saved one, else none.
+  String? get _shownPhoto {
+    if (_newPhotoBase64 != null) return _newPhotoBase64;
+    return _removePhoto ? null : widget.profile.photoBase64;
+  }
+
+  void _clearPhoto() {
+    setState(() {
+      _newPhotoBase64 = null;
+      _removePhoto = true;
+    });
   }
 
   Future<void> _save() async {
@@ -83,6 +102,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final saved = await ref.read(profileControllerProvider.notifier).save(
           displayName: _nameController.text,
           photoBase64: _newPhotoBase64,
+          removePhoto: _removePhoto,
         );
     if (!saved || !mounted) return;
 
@@ -115,7 +135,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               child: GestureDetector(
                 onTap: state.isLoading ? null : _choosePhoto,
                 child: AppAvatar(
-                  photoBase64: _newPhotoBase64 ?? widget.profile.photoBase64,
+                  photoBase64: _shownPhoto,
                   name: _nameController.text,
                   radius: 56,
                 ),
@@ -129,6 +149,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 label: Text(l10n.profileChangePhoto),
               ),
             ),
+            if (_shownPhoto != null && _shownPhoto!.isNotEmpty)
+              Center(
+                child: TextButton.icon(
+                  onPressed: state.isLoading ? null : _clearPhoto,
+                  style: TextButton.styleFrom(foregroundColor: AppColors.error),
+                  icon: const Icon(Icons.delete_outline),
+                  label: Text(l10n.profileRemovePhoto),
+                ),
+              ),
             const SizedBox(height: AppSpacing.xl),
             AppTextField(
               label: l10n.profileNameLabel,

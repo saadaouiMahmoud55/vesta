@@ -320,6 +320,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profilePhotoErrorRead => 'Impossible de lire cette photo';
 
   @override
+  String get profileRemovePhoto => 'Supprimer la photo';
+
+  @override
   String get favoritesEmptyTitle => 'Aucun favori pour le moment';
 
   @override

@@ -62,7 +62,11 @@ class ProfileController extends Notifier<ProfileFormState> {
   }
 
   /// Returns true when the profile was saved.
-  Future<bool> save({required String displayName, String? photoBase64}) async {
+  Future<bool> save({
+    required String displayName,
+    String? photoBase64,
+    bool removePhoto = false,
+  }) async {
     final invalid = validateDisplayName(displayName);
     if (invalid != null) {
       state = ProfileFormState(error: invalid);
@@ -72,6 +76,7 @@ class ProfileController extends Notifier<ProfileFormState> {
       () => _users.updateProfile(
         displayName: displayName,
         photoBase64: photoBase64,
+        removePhoto: removePhoto,
       ),
     );
   }
