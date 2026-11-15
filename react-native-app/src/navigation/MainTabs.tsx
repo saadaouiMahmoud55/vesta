@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { HomeScreen } from '../features/listings/HomeScreen';
 import { PlaceholderScreen } from './PlaceholderScreen';
 import { theme } from '../core/theme';
+import { useUnreadAlerts } from '../features/notifications/useUnreadAlerts';
 
 export type MainTabsParamList = {
   Explore: undefined;
@@ -22,6 +23,7 @@ const ProfileTab = () => <PlaceholderScreen titleKey="tabProfile" />;
 
 export function MainTabs(): React.JSX.Element {
   const { t } = useTranslation();
+  const unread = useUnreadAlerts();
   return (
     <Tab.Navigator
       initialRouteName="Explore"
@@ -54,7 +56,10 @@ export function MainTabs(): React.JSX.Element {
       <Tab.Screen
         name="Profile"
         component={ProfileTab}
-        options={{ title: t('tabProfile') }}
+        options={{
+          title: t('tabProfile'),
+          tabBarBadge: unread > 0 ? unread : undefined,
+        }}
       />
     </Tab.Navigator>
   );
