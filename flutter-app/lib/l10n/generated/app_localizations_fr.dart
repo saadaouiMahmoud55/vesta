@@ -468,7 +468,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.';
 
   @override
-  String get authSignUpProverb => '« Le voisin avant la maison. »';
+  String get authSignUpProverb => '« Ici, vous êtes chez vous. »';
 
   @override
   String get authContinueAsGuest => 'Continuer en tant qu\'invité';

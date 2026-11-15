@@ -456,7 +456,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.';
 
   @override
-  String get authSignUpProverb => '«الجار قبل الدار»';
+  String get authSignUpProverb => '«الدار دارك»';
 
   @override
   String get authContinueAsGuest => 'كمّل كضيف';

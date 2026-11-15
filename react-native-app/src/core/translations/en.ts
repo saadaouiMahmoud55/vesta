@@ -151,7 +151,7 @@ export default {
     'Sign in to contact owners, save favorites and publish your own place.',
   authSignUpSubtitle:
     'Create your account to save favorites, publish your own place and send messages to owners.',
-  authSignUpProverb: '“The neighbor before the house.”',
+  authSignUpProverb: '“Make yourself at home.”',
   authContinueAsGuest: 'Continue as guest',
   loading: 'Loading…',
   homePriceExample: 'Example price: {{price}}',

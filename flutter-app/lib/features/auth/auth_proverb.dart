@@ -5,7 +5,7 @@ import '../../core/theme/app_dimens.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../l10n/generated/app_localizations.dart';
 
-/// A short Tunisian proverb under the title of the sign-up screen: a warm
+/// A short Tunisian welcome saying under the title of the sign-up screen: a warm
 /// sand card with a quote mark, to make the page feel welcoming.
 class AuthProverb extends StatelessWidget {
   const AuthProverb({super.key});

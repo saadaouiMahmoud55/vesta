@@ -973,7 +973,7 @@ abstract class AppLocalizations {
   /// No description provided for @authSignUpProverb.
   ///
   /// In en, this message translates to:
-  /// **'“The neighbor before the house.”'**
+  /// **'“Make yourself at home.”'**
   String get authSignUpProverb;
 
   /// No description provided for @authContinueAsGuest.

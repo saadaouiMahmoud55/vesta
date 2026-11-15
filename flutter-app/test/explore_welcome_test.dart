@@ -48,6 +48,6 @@ void main() {
 
   testWidgets('the proverb is shown in Arabic', (tester) async {
     await tester.pumpWidget(_app(const AuthProverb(), locale: const Locale('ar')));
-    expect(find.text('«الجار قبل الدار»'), findsOneWidget);
+    expect(find.text('«الدار دارك»'), findsOneWidget);
   });
 }

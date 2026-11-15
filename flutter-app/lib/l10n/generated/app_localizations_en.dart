@@ -462,7 +462,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Create your account to save favorites, publish your own place and send messages to owners.';
 
   @override
-  String get authSignUpProverb => '“The neighbor before the house.”';
+  String get authSignUpProverb => '“Make yourself at home.”';
 
   @override
   String get authContinueAsGuest => 'Continue as guest';

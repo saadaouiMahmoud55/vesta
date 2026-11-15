@@ -147,7 +147,7 @@ export default {
   authWelcomeSubtitle: 'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.',
   authSignUpSubtitle:
     'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.',
-  authSignUpProverb: '«الجار قبل الدار»',
+  authSignUpProverb: '«الدار دارك»',
   authContinueAsGuest: 'كمّل كضيف',
   loading: 'جارٍ التحميل…',
   homePriceExample: 'مثال على السعر: {{price}}',

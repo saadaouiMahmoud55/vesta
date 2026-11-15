@@ -153,7 +153,7 @@ export default {
     'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.',
   authSignUpSubtitle:
     'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.',
-  authSignUpProverb: '« Le voisin avant la maison. »',
+  authSignUpProverb: '« Ici, vous êtes chez vous. »',
   authContinueAsGuest: "Continuer en tant qu'invité",
   loading: 'Chargement…',
   homePriceExample: 'Exemple de prix : {{price}}',
