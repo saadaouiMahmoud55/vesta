@@ -4,6 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../core/router/app_router.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/widgets/app_avatar.dart';
+import '../../core/widgets/app_states.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../auth/auth_controller.dart';
 import '../auth/require_sign_in.dart';
@@ -31,76 +36,50 @@ class ChatListScreen extends ConsumerWidget {
 
     final conversations = ref.watch(conversationsProvider);
     return conversations.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(l10n.chatLoadError, textAlign: TextAlign.center),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => ref.invalidate(conversationsProvider),
-                child: Text(l10n.chatRetry),
-              ),
-            ],
-          ),
-        ),
+      loading: () => const LoadingView(),
+      error: (error, stackTrace) => ErrorState(
+        message: l10n.chatLoadError,
+        onRetry: () => ref.invalidate(conversationsProvider),
       ),
       data: (list) => list.isEmpty
-          ? _EmptyChats(title: l10n.chatEmptyTitle, body: l10n.chatEmptyBody)
-          : ListView.separated(
-              itemCount: list.length,
-              separatorBuilder: (_, _) => const Divider(height: 1),
-              itemBuilder: (context, index) =>
-                  _ConversationTile(conversation: list[index], myUid: me.uid),
+          ? EmptyState(
+              icon: Icons.chat_bubble_outline,
+              title: l10n.chatEmptyTitle,
+              message: l10n.chatEmptyBody,
+            )
+          : ListView(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              children: [
+                // One white card, rows separated by thin dividers.
+                Material(
+                  color: AppColors.white,
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                  ),
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < list.length; i++) ...[
+                        if (i > 0)
+                          const Divider(height: 1, color: AppColors.border),
+                        ConversationTile(conversation: list[i], myUid: me.uid),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
     );
   }
 }
 
-class _EmptyChats extends StatelessWidget {
-  const _EmptyChats({required this.title, required this.body});
-
-  final String title;
-  final String body;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.chat_bubble_outline,
-              size: 56,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: theme.textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              body,
-              style: theme.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ConversationTile extends ConsumerWidget {
-  const _ConversationTile({required this.conversation, required this.myUid});
+/// One row of the conversation list. Also used by the notification center.
+class ConversationTile extends ConsumerWidget {
+  const ConversationTile({
+    super.key,
+    required this.conversation,
+    required this.myUid,
+  });
 
   final Conversation conversation;
   final String myUid;
@@ -108,14 +87,14 @@ class _ConversationTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
 
     final otherId = conversation.otherUserId(myUid);
     final name = ref.watch(userNameProvider(otherId)).value;
     final displayName = name ?? l10n.chatUnknownUser;
 
-    final listingAsync =
-        ref.watch(conversationListingProvider(conversation.listingId));
+    final listingAsync = ref.watch(
+      conversationListingProvider(conversation.listingId),
+    );
     final listingTitle = listingAsync.when(
       data: (listing) => listing?.title ?? l10n.chatListingRemoved,
       loading: () => '',
@@ -126,10 +105,20 @@ class _ConversationTile extends ConsumerWidget {
     final lastMessage = conversation.lastMessage;
 
     return ListTile(
-      leading: CircleAvatar(
-        child: Text(displayName.characters.first.toUpperCase()),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.xs,
       ),
-      title: Text(displayName, maxLines: 1, overflow: TextOverflow.ellipsis),
+      leading: AppAvatar(name: displayName),
+      title: Text(
+        displayName,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: AppTextStyles.subtitle.copyWith(
+          color: AppColors.navy,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -138,8 +127,7 @@ class _ConversationTile extends ConsumerWidget {
               listingTitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelMedium
-                  ?.copyWith(color: theme.colorScheme.primary),
+              style: AppTextStyles.caption.copyWith(color: AppColors.primary),
             ),
           if (lastMessage.isNotEmpty)
             // The direction follows the message, not the app language.
@@ -150,6 +138,10 @@ class _ConversationTile extends ConsumerWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textDirection: textDirectionFor(lastMessage),
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: unread > 0 ? AppColors.navy : AppColors.grey,
+                  fontWeight: unread > 0 ? FontWeight.w700 : FontWeight.w400,
+                ),
               ),
             ),
         ],
@@ -160,11 +152,17 @@ class _ConversationTile extends ConsumerWidget {
         children: [
           Text(
             _timeText(context, conversation.lastMessageAt),
-            style: theme.textTheme.labelSmall,
+            style: AppTextStyles.small.copyWith(
+              color: unread > 0 ? AppColors.primary : AppColors.grey,
+            ),
           ),
           if (unread > 0) ...[
-            const SizedBox(height: 4),
-            Badge(label: Text('$unread')),
+            const SizedBox(height: AppSpacing.xs),
+            Badge(
+              backgroundColor: AppColors.primary,
+              textColor: AppColors.white,
+              label: Text('$unread'),
+            ),
           ],
         ],
       ),
@@ -179,7 +177,8 @@ String _timeText(BuildContext context, DateTime? time) {
   final locale = Localizations.localeOf(context).toString();
   final now = DateTime.now();
   final local = time.toLocal();
-  final today = local.year == now.year &&
+  final today =
+      local.year == now.year &&
       local.month == now.month &&
       local.day == now.day;
   return today

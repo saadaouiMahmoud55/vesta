@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/widgets/app_button.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'onboarding_controller.dart';
 
@@ -107,15 +109,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(24),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: isLast ? _finish : _next,
-                  child: Text(
-                    isLast ? l10n.onboardingStart : l10n.onboardingNext,
-                  ),
-                ),
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: PrimaryButton(
+                label: isLast ? l10n.onboardingStart : l10n.onboardingNext,
+                onPressed: isLast ? _finish : _next,
               ),
             ),
           ],
@@ -138,14 +135,24 @@ class _PageContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Two soft circles: sand ring around a light-primary disc.
           Container(
-            width: 144,
-            height: 144,
+            width: 208,
+            height: 208,
             decoration: const BoxDecoration(
               color: AppColors.sand,
               shape: BoxShape.circle,
             ),
-            child: Icon(page.icon, size: 72, color: AppColors.primary),
+            alignment: Alignment.center,
+            child: Container(
+              width: 128,
+              height: 128,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(page.icon, size: 60, color: AppColors.primary),
+            ),
           ),
           const SizedBox(height: 40),
           Text(

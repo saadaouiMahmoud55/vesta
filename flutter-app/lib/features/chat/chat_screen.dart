@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/widgets/app_avatar.dart';
+import '../../core/widgets/app_states.dart';
+import '../../core/widgets/rtl_helpers.dart';
+import '../../core/widgets/price_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../auth/require_sign_in.dart';
+import '../listings/listing.dart';
 import 'chat_controller.dart';
 import 'chat_models.dart';
 import 'chat_repository.dart';
@@ -109,59 +118,94 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // Opening or receiving messages clears the unread badge.
     ref.listen(conversationsProvider, (_, _) => _markReadIfNeeded(myUid));
-    ref.listen(messagesProvider(widget.conversationId), (_, next) {
-      final count = next.value?.length ?? 0;
-      _markReadIfNeeded(myUid);
-      if (count > _lastCount && _scroll.hasClients) {
-        // The list is reversed: 0 is the bottom, where the newest message is.
-        _scroll.animateTo(
-          0,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-        );
-      }
-      _lastCount = count;
-    });
 
-    final messages = ref.watch(messagesProvider(widget.conversationId));
+    // The conversation document is created with the FIRST message. Before
+    // that, the rules refuse to read its messages (there is nobody in the
+    // conversation yet), and the provider would retry forever: the screen
+    // stayed on a spinner. So we only listen to the messages once the
+    // conversation exists. null = still checking.
+    final conversations = ref.watch(conversationsProvider);
+    final bool? exists = conversations.hasError
+        ? false
+        : conversations.value?.any((c) => c.id == widget.conversationId);
+
+    if (exists == true) {
+      ref.listen(messagesProvider(widget.conversationId), (_, next) {
+        final count = next.value?.length ?? 0;
+        _markReadIfNeeded(myUid);
+        if (count > _lastCount && _scroll.hasClients) {
+          // The list is reversed: 0 is the bottom, where the newest message is.
+          _scroll.animateTo(
+            0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+        _lastCount = count;
+      });
+    }
+
+    final messages = exists == true
+        ? ref.watch(messagesProvider(widget.conversationId))
+        : null;
 
     return Column(
       children: [
-        _Header(
-          name: otherName ?? l10n.chatUnknownUser,
-          listingTitle: listingAsync.isLoading
-              ? ''
-              : (listing?.title ?? l10n.chatListingRemoved),
-        ),
-        const Divider(height: 1),
+        _Header(name: otherName ?? l10n.chatUnknownUser),
+        if (listing != null)
+          _ListingStrip(listing: listing)
+        else if (!listingAsync.isLoading)
+          _ListingRemovedStrip(text: l10n.chatListingRemoved),
         Expanded(
-          child: messages.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(l10n.chatLoadError, textAlign: TextAlign.center),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () => ref
-                        .invalidate(messagesProvider(widget.conversationId)),
-                    child: Text(l10n.chatRetry),
+          child: exists == false
+              ? Center(
+                  child: Text(
+                    l10n.chatNoMessages,
+                    style: AppTextStyles.body.copyWith(color: AppColors.grey),
                   ),
-                ],
-              ),
+                )
+              : messages == null
+              ? const LoadingView()
+              : messages.when(
+            loading: () => const LoadingView(),
+            error: (error, stackTrace) => ErrorState(
+              message: l10n.chatLoadError,
+              onRetry: () =>
+                  ref.invalidate(messagesProvider(widget.conversationId)),
             ),
             data: (list) => list.isEmpty
-                ? Center(child: Text(l10n.chatNoMessages))
+                ? Center(
+                    child: Text(
+                      l10n.chatNoMessages,
+                      style: AppTextStyles.body.copyWith(color: AppColors.grey),
+                    ),
+                  )
                 : ListView.builder(
                     controller: _scroll,
                     reverse: true,
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppSpacing.lg),
                     itemCount: list.length,
-                    itemBuilder: (context, index) => _Bubble(
-                      message: list[index],
-                      mine: list[index].senderId == myUid,
-                    ),
+                    itemBuilder: (context, index) {
+                      final message = list[index];
+                      // The list is newest-first: the next index is older.
+                      final older = index + 1 < list.length
+                          ? list[index + 1]
+                          : null;
+                      final showDay =
+                          message.createdAt != null &&
+                          (older?.createdAt == null ||
+                              !_sameDay(message.createdAt!, older!.createdAt!));
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (showDay) _DaySeparator(date: message.createdAt!),
+                          _Bubble(
+                            message: message,
+                            mine: message.senderId == myUid,
+                          ),
+                        ],
+                      );
+                    },
                   ),
           ),
         ),
@@ -176,33 +220,168 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({required this.name, required this.listingTitle});
+bool _sameDay(DateTime a, DateTime b) {
+  final x = a.toLocal();
+  final y = b.toLocal();
+  return x.year == y.year && x.month == y.month && x.day == y.day;
+}
 
-  final String name;
-  final String listingTitle;
+class _DaySeparator extends StatelessWidget {
+  const _DaySeparator({required this.date});
+
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).toString();
+    final day = date.toLocal();
+    final now = DateTime.now();
+    final String label;
+    if (_sameDay(day, now)) {
+      label = l10n.chatToday;
+    } else if (_sameDay(day, now.subtract(const Duration(days: 1)))) {
+      label = l10n.chatYesterday;
+    } else {
+      label = DateFormat.yMMMd(locale).format(day);
+    }
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(name, style: theme.textTheme.titleMedium),
-            if (listingTitle.isNotEmpty)
-              Text(
-                listingTitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelMedium
-                    ?.copyWith(color: theme.colorScheme.primary),
-              ),
-          ],
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: 4,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.sand,
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+          ),
+          child: Text(
+            label,
+            style: AppTextStyles.small.copyWith(color: AppColors.grey),
+          ),
         ),
+      ),
+    );
+  }
+}
+
+/// The listing this conversation is about: title and price, opens the listing.
+class _ListingStrip extends StatelessWidget {
+  const _ListingStrip({required this.listing});
+
+  final Listing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.sand,
+      child: InkWell(
+        onTap: () => context.push(AppRoutes.listingDetailPath(listing.id)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.sm,
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.sensor_door_outlined,
+                size: 20,
+                color: AppColors.primary,
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  listing.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.navy,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              PriceText(
+                price: listing.price,
+                currency: listing.currency,
+                period: listing.rentPeriod,
+                priceStyle: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+                unitStyle: AppTextStyles.small.copyWith(color: AppColors.grey),
+              ),
+              const DirectionalIcon(
+                Icons.chevron_right,
+                color: AppColors.grey,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ListingRemovedStrip extends StatelessWidget {
+  const _ListingRemovedStrip({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.sand,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      child: Text(
+        text,
+        style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    // White bar under the app bar: avatar, name, and the listing in primary.
+    return Container(
+      color: AppColors.white,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      child: Row(
+        children: [
+          AppAvatar(name: name, radius: 20),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.subtitle.copyWith(
+                    color: AppColors.navy,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -217,43 +396,44 @@ class _Bubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final background = mine ? AppColors.primary : AppColors.sand;
+    final background = mine ? AppColors.primary : AppColors.white;
     final foreground = mine ? AppColors.white : AppColors.navy;
     final time = message.createdAt;
     final locale = Localizations.localeOf(context).toString();
 
     return Align(
       // My messages on the end side, the other person's on the start side.
-      alignment:
-          mine ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+      alignment: mine
+          ? AlignmentDirectional.centerEnd
+          : AlignmentDirectional.centerStart,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 3),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.sizeOf(context).width * 0.78,
         ),
         decoration: BoxDecoration(
           color: background,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(AppRadius.card),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
             // The direction follows the message, not the app language.
             Text(
               message.text,
               textDirection: textDirectionFor(message.text),
-              style: theme.textTheme.bodyMedium?.copyWith(color: foreground),
+              style: AppTextStyles.body.copyWith(color: foreground),
             ),
             const SizedBox(height: 2),
             Text(
               time == null
                   ? l10n.chatSending
                   : DateFormat.Hm(locale).format(time.toLocal()),
-              style: theme.textTheme.labelSmall
-                  ?.copyWith(color: foreground.withValues(alpha: 0.75)),
+              style: AppTextStyles.small.copyWith(
+                color: foreground.withValues(alpha: 0.75),
+              ),
             ),
           ],
         ),
@@ -281,7 +461,12 @@ class _Composer extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.md,
+          AppSpacing.sm,
+          AppSpacing.sm,
+          AppSpacing.sm,
+        ),
         child: Row(
           children: [
             Expanded(
@@ -302,8 +487,28 @@ class _Composer extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: l10n.chatMessageHint,
                     counterText: '',
-                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: AppColors.sand,
                     isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.md,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      borderSide: const BorderSide(color: AppColors.border),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      borderSide: const BorderSide(color: AppColors.border),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.5,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -312,6 +517,10 @@ class _Composer extends StatelessWidget {
             ValueListenableBuilder<TextEditingValue>(
               valueListenable: controller,
               builder: (context, value, _) => IconButton.filled(
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
+                ),
                 tooltip: l10n.chatSend,
                 onPressed: enabled && !sending && value.text.trim().isNotEmpty
                     ? onSend

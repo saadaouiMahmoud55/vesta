@@ -3,6 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/router/app_router.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/widgets/app_button.dart';
+import '../../core/widgets/app_text_field.dart';
+import '../../core/widgets/password_text_field.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'auth_controller.dart';
 import 'auth_messages.dart';
@@ -16,10 +22,12 @@ class SignUpScreen extends ConsumerStatefulWidget {
 }
 
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  String? _nameError;
+  String? _emailError;
+  String? _passwordError;
 
   @override
   void dispose() {
@@ -31,8 +39,25 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   Future<void> _submit() async {
     if (ref.read(authControllerProvider).isLoading) return;
-    if (!_formKey.currentState!.validate()) return;
-    final ok = await ref.read(authControllerProvider.notifier).signUp(
+    final l10n = AppLocalizations.of(context);
+    final nameError = authErrorOrNull(l10n, validateName(_name.text));
+    final emailError = authErrorOrNull(l10n, validateEmail(_email.text));
+    final passwordError = authErrorOrNull(
+      l10n,
+      validatePassword(_password.text),
+    );
+    setState(() {
+      _nameError = nameError;
+      _emailError = emailError;
+      _passwordError = passwordError;
+    });
+    if (nameError != null || emailError != null || passwordError != null) {
+      return;
+    }
+
+    final ok = await ref
+        .read(authControllerProvider.notifier)
+        .signUp(
           email: _email.text,
           password: _password.text,
           displayName: _name.text,
@@ -50,80 +75,78 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final auth = ref.watch(authControllerProvider);
-    final theme = Theme.of(context);
 
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                l10n.authSignUpTitle,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.title.copyWith(
+                  color: AppColors.navy,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              AppTextField(
+                label: l10n.authDisplayNameLabel,
+                controller: _name,
+                errorText: _nameError,
+                textInputAction: TextInputAction.next,
+                onChanged: (_) {
+                  if (_nameError != null) setState(() => _nameError = null);
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
+              AppTextField(
+                label: l10n.authEmailLabel,
+                controller: _email,
+                errorText: _emailError,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                ltr: true,
+                onChanged: (_) {
+                  if (_emailError != null) setState(() => _emailError = null);
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
+              PasswordTextField(
+                label: l10n.authPasswordLabel,
+                controller: _password,
+                errorText: _passwordError,
+                textInputAction: TextInputAction.done,
+                onChanged: (_) {
+                  if (_passwordError != null) {
+                    setState(() => _passwordError = null);
+                  }
+                },
+              ),
+              if (auth.error != null) ...[
+                const SizedBox(height: AppSpacing.md),
                 Text(
-                  l10n.authSignUpTitle,
-                  style: theme.textTheme.headlineMedium,
+                  authErrorMessage(l10n, auth.error!),
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _name,
-                  textInputAction: TextInputAction.next,
-                  autofillHints: const [AutofillHints.name],
-                  decoration:
-                      InputDecoration(labelText: l10n.authDisplayNameLabel),
-                  validator: (value) =>
-                      authErrorOrNull(l10n, validateName(value)),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  autofillHints: const [AutofillHints.email],
-                  decoration: InputDecoration(labelText: l10n.authEmailLabel),
-                  validator: (value) =>
-                      authErrorOrNull(l10n, validateEmail(value)),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _password,
-                  obscureText: true,
-                  textInputAction: TextInputAction.done,
-                  autofillHints: const [AutofillHints.newPassword],
-                  decoration:
-                      InputDecoration(labelText: l10n.authPasswordLabel),
-                  validator: (value) =>
-                      authErrorOrNull(l10n, validatePassword(value)),
-                  onFieldSubmitted: (_) => _submit(),
-                ),
-                if (auth.error != null) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    authErrorMessage(l10n, auth.error!),
-                    style: TextStyle(color: theme.colorScheme.error),
-                    textAlign: TextAlign.center,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.error,
                   ),
-                ],
-                const SizedBox(height: 24),
-                FilledButton(
-                  onPressed: auth.isLoading ? null : _submit,
-                  child: auth.isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.authSignUpButton),
-                ),
-                const SizedBox(height: 8),
-                TextButton(
-                  onPressed: auth.isLoading ? null : _goToLogin,
-                  child: Text(l10n.authGoToLogin),
                 ),
               ],
-            ),
+              const SizedBox(height: AppSpacing.xl),
+              PrimaryButton(
+                label: l10n.authSignUpButton,
+                loading: auth.isLoading,
+                onPressed: _submit,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              TextButton(
+                onPressed: auth.isLoading ? null : _goToLogin,
+                child: Text(l10n.authGoToLogin),
+              ),
+            ],
           ),
         ),
       ),

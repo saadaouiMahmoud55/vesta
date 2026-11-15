@@ -60,7 +60,7 @@ service cloud.firestore {
                               'land', 'commercial']
         && validPropertyForOffer(d)
         && d.city is string
-        && d.photoCount is int && d.photoCount >= 0 && d.photoCount <= 5
+        && d.photoCount is int && d.photoCount >= 0 && d.photoCount <= 10
         && optNum(d, 'latitude') && optNum(d, 'longitude')
         && optNum(d, 'bedrooms') && optNum(d, 'bathrooms')
         && optNum(d, 'areaSqm')
@@ -148,10 +148,10 @@ service cloud.firestore {
         }
 
         allow read: if true;
-        allow create, update: if photoId.matches('p[0-4]')
+        allow create, update: if photoId.matches('p[0-9]')
           && isUser(getAfter(listingPath(listingId)).data.ownerId)
           && validPhoto(request.resource.data);
-        allow delete: if photoId.matches('p[0-4]')
+        allow delete: if photoId.matches('p[0-9]')
           && isUser(get(listingPath(listingId)).data.ownerId);
       }
 

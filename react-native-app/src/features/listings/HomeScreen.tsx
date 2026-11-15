@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { appConfig, formatPrice } from '../../core/config';
 import { AppText } from '../../core/components/AppText';
@@ -7,10 +8,18 @@ import { PrimaryButton } from '../../core/components/PrimaryButton';
 import { changeAppLanguage } from '../../core/i18n';
 import { useAuth } from '../auth/authController';
 import { theme } from '../../core/theme';
+import { MainStackParamList } from '../../navigation/MainStack';
+
+const languageKeys = {
+  en: 'languageEn',
+  fr: 'languageFr',
+  ar: 'languageAr',
+} as const;
 
 export function HomeScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const { signOut } = useAuth();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <AppText translationKey="appName" style={styles.title} />
@@ -18,17 +27,21 @@ export function HomeScreen(): React.JSX.Element {
         translationKey="homePriceExample"
         values={{ price: formatPrice(450000) }}
       />
-      <AppText translationKey="language" style={styles.languageLabel} />
+      <AppText translationKey="languageLabel" style={styles.languageLabel} />
       <View style={styles.languages}>
         {appConfig.supportedLanguages.map(language => (
           <PrimaryButton
             key={language}
-            labelKey={`language${language.toUpperCase()}`}
+            labelKey={languageKeys[language]}
             onPress={() => changeAppLanguage(language)}
-            accessibilityLabel={t('language')}
+            accessibilityLabel={t('languageLabel')}
           />
         ))}
       </View>
+      <PrimaryButton
+        labelKey="publishButton"
+        onPress={() => navigation.navigate('PublishListing')}
+      />
       {/* Temporary: the profile and settings screens will own Log out. */}
       <PrimaryButton labelKey="authLogoutButton" onPress={() => signOut()} />
     </ScrollView>

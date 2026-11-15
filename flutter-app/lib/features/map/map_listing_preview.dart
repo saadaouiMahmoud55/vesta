@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/config/app_config.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../listings/listing.dart';
 
@@ -20,19 +22,36 @@ class MapListingPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
 
     return Card(
       color: AppColors.white,
-      elevation: 3,
-      margin: const EdgeInsets.all(12),
+      elevation: 2,
+      margin: const EdgeInsets.all(AppSpacing.md),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppRadius.card),
         onTap: onOpen,
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
             children: [
+              // Photo placeholder: light primary tint with the door icon.
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppRadius.thumb),
+                ),
+                child: const Icon(
+                  Icons.sensor_door_outlined,
+                  size: 30,
+                  color: AppColors.primary,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,15 +61,19 @@ class MapListingPreview extends StatelessWidget {
                       listing.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleMedium,
+                      style: AppTextStyles.subtitle.copyWith(
+                        color: AppColors.navy,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       listing.city,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: AppColors.grey),
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.grey,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     // The price always reads left to right, also in Arabic.
@@ -58,7 +81,7 @@ class MapListingPreview extends StatelessWidget {
                       textDirection: TextDirection.ltr,
                       child: Text(
                         previewPriceText(l10n, listing),
-                        style: theme.textTheme.titleSmall?.copyWith(
+                        style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
                         ),

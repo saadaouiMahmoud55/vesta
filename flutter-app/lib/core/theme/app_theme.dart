@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'app_text_styles.dart';
 
 class AppTheme {
   AppTheme._();
@@ -36,6 +37,18 @@ class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.white,
+          minimumSize: const Size(64, 52),
+          shape: const StadiumBorder(),
+          textStyle: AppTextStyles.subtitle,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          minimumSize: const Size(64, 52),
+          shape: const StadiumBorder(),
+          side: const BorderSide(color: AppColors.primary),
+          textStyle: AppTextStyles.subtitle,
         ),
       ),
     );

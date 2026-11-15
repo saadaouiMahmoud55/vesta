@@ -20,8 +20,17 @@ class ListingFailure implements Exception {
   final ListingError error;
 }
 
-/// Maximum photos per listing (ids p0 to p4, see docs/data-model.md).
-const int maxListingPhotos = 5;
+/// Maximum photos per listing (ids p0 to p9, see docs/data-model.md).
+/// Keep it at 10 or less: photos are read sorted by id, and `p10` would
+/// sort before `p2`.
+const int maxListingPhotos = 10;
+
+/// Photo ids to delete after an edit: every id from p{newCount} to p9.
+/// Deleting a document that does not exist is harmless, so this also
+/// cleans old listings whose ids have gaps.
+List<String> stalePhotoIds(int newCount) => [
+  for (var i = newCount; i < maxListingPhotos; i++) 'p$i',
+];
 
 /// Values allowed by the rules and the data model.
 const List<String> listingTypes = ['sale', 'rent'];
@@ -72,11 +81,15 @@ class NewListing {
     this.bedrooms,
     this.bathrooms,
     this.areaSqm,
+    this.contactPhone,
+    this.whatsappEnabled = false,
     this.maxGuests,
     this.amenities = const [],
     this.checkIn,
     this.checkOut,
     this.houseRules = const [],
+    this.latitude,
+    this.longitude,
   });
 
   final String title;
@@ -89,11 +102,15 @@ class NewListing {
   final num? bedrooms;
   final num? bathrooms;
   final num? areaSqm;
+  final String? contactPhone;
+  final bool whatsappEnabled;
   final num? maxGuests;
   final List<String> amenities; // keys of amenityKeys
   final String? checkIn; // 'HH:mm'
   final String? checkOut; // 'HH:mm'
   final List<String> houseRules; // keys of houseRuleKeys
+  final double? latitude; // exact position chosen on the map (optional)
+  final double? longitude;
 }
 
 /// Only place that talks to the `listings` collection and its photos.
@@ -102,7 +119,7 @@ class ListingRepository {
   FirebaseAuth get _auth => FirebaseAuth.instance;
 
   /// Creates the listing and its photos in ONE batch write.
-  /// [photosBase64] holds 1 to 5 already compressed base64 strings.
+  /// [photosBase64] holds 1 to 10 already compressed base64 strings.
   /// Returns the id of the new listing.
   Future<String> createListing({
     required NewListing listing,
@@ -143,6 +160,10 @@ class ListingRepository {
         if (listing.checkIn != null) 'checkIn': listing.checkIn,
         if (listing.checkOut != null) 'checkOut': listing.checkOut,
         if (listing.houseRules.isNotEmpty) 'houseRules': listing.houseRules,
+        if (listing.latitude != null && listing.longitude != null) ...{
+          'latitude': listing.latitude,
+          'longitude': listing.longitude,
+        },
         'photoCount': photosBase64.length,
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
@@ -156,8 +177,97 @@ class ListingRepository {
         });
       }
 
+      // Private contact details stay outside the public listing document.
+      final phone = listing.contactPhone;
+      if (phone != null) {
+        batch.set(ref.collection('contact').doc('info'), {
+          'contactPhone': phone,
+          'whatsappEnabled': listing.whatsappEnabled,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
+
       await batch.commit();
       return ref.id;
+    } on FirebaseException catch (e) {
+      throw ListingFailure(_mapCode(e.code));
+    }
+  }
+
+  /// Updates a listing, its photos and its private contact in ONE batch.
+  /// The offer type and period are immutable in the edit flow because they
+  /// determine which statuses are valid. [originalPhotos] identifies entries
+  /// that can be skipped when rewriting photo documents.
+  Future<void> updateListing({
+    required String listingId,
+    required NewListing listing,
+    required List<String> photosBase64,
+    required List<String> originalPhotos,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null) throw const ListingFailure(ListingError.notSignedIn);
+    if (photosBase64.isEmpty) {
+      throw const ListingFailure(ListingError.noPhotos);
+    }
+    if (photosBase64.length > maxListingPhotos) {
+      throw const ListingFailure(ListingError.tooManyPhotos);
+    }
+
+    try {
+      final ref = _db.collection('listings').doc(listingId);
+      final batch = _db.batch();
+      final hasPosition = listing.latitude != null && listing.longitude != null;
+
+      batch.update(ref, {
+        'title': listing.title,
+        'description': listing.description,
+        'price': listing.price,
+        'propertyType': listing.propertyType,
+        'city': listing.city,
+        'bedrooms': listing.bedrooms ?? FieldValue.delete(),
+        'bathrooms': listing.bathrooms ?? FieldValue.delete(),
+        'areaSqm': listing.areaSqm ?? FieldValue.delete(),
+        'maxGuests': listing.maxGuests ?? FieldValue.delete(),
+        'amenities': listing.amenities.isEmpty
+            ? FieldValue.delete()
+            : listing.amenities,
+        'checkIn': listing.checkIn ?? FieldValue.delete(),
+        'checkOut': listing.checkOut ?? FieldValue.delete(),
+        'houseRules': listing.houseRules.isEmpty
+            ? FieldValue.delete()
+            : listing.houseRules,
+        'latitude': hasPosition ? listing.latitude : FieldValue.delete(),
+        'longitude': hasPosition ? listing.longitude : FieldValue.delete(),
+        'photoCount': photosBase64.length,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      for (var i = 0; i < photosBase64.length; i++) {
+        final unchanged =
+            i < originalPhotos.length && originalPhotos[i] == photosBase64[i];
+        if (unchanged) continue;
+        batch.set(ref.collection('photos').doc('p$i'), {
+          'base64': photosBase64[i],
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+      for (final id in stalePhotoIds(photosBase64.length)) {
+        batch.delete(ref.collection('photos').doc(id));
+      }
+
+      final contactRef = ref.collection('contact').doc('info');
+      final phone = listing.contactPhone;
+      if (phone == null) {
+        batch.delete(contactRef);
+      } else {
+        batch.set(contactRef, {
+          'contactPhone': phone,
+          'whatsappEnabled': listing.whatsappEnabled,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      await batch.commit();
     } on FirebaseException catch (e) {
       throw ListingFailure(_mapCode(e.code));
     }
@@ -191,6 +301,26 @@ class ListingRepository {
       batch.delete(ref.collection('contact').doc('info'));
       batch.delete(ref);
       await batch.commit();
+    } on FirebaseException catch (e) {
+      throw ListingFailure(_mapCode(e.code));
+    }
+  }
+
+  /// Reads the private contact of a listing (contact/info).
+  /// Call it only for a signed-in user: guests must not even try (rules).
+  /// Returns null when the owner gave no number.
+  Future<({String phone, bool whatsapp})?> getContact(String listingId) async {
+    try {
+      final snap = await _db
+          .collection('listings')
+          .doc(listingId)
+          .collection('contact')
+          .doc('info')
+          .get();
+      final data = snap.data();
+      final phone = data?['contactPhone'] as String?;
+      if (phone == null) return null;
+      return (phone: phone, whatsapp: data?['whatsappEnabled'] == true);
     } on FirebaseException catch (e) {
       throw ListingFailure(_mapCode(e.code));
     }

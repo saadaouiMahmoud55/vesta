@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-navigation/bottom-tabs": "^7.21.0",
     "@react-navigation/native": "^7.5.1",
     "@react-navigation/native-stack": "^7.21.0",
     "expo": "^57.0.27",
+    "expo-image-manipulator": "~57.0.22",
+    "expo-image-picker": "~57.0.21",
     "expo-localization": "~57.0.2",
     "firebase": "^13.0.0",
     "i18next": "^26.4.7",

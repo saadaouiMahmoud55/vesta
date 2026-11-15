@@ -27,6 +27,15 @@ const _listing = Listing(
 
 const _conversationId = 'l1_buyer1';
 
+/// A conversation that already exists (at least one message was sent).
+const _existing = Conversation(
+  id: _conversationId,
+  listingId: 'l1',
+  participantIds: ['buyer1', 'owner1'],
+  lastMessage: 'Hi',
+  lastMessageAt: null,
+);
+
 /// Replaces Firestore: records what the screen sends and what it marks read.
 class _FakeChatRepository extends ChatRepository {
   final sent = <String>[];
@@ -54,7 +63,7 @@ Future<_FakeChatRepository> _pump(
   WidgetTester tester, {
   String? myUid = 'buyer1',
   List<ChatMessage> messages = const [],
-  List<Conversation> conversations = const [],
+  List<Conversation>? conversations,
   Locale locale = const Locale('en'),
   ChatFailure? failWith,
 }) async {
@@ -66,7 +75,9 @@ Future<_FakeChatRepository> _pump(
         chatRepositoryProvider.overrideWithValue(repository),
         messagesProvider(_conversationId)
             .overrideWith((ref) => Stream.value(messages)),
-        conversationsProvider.overrideWith((ref) => Stream.value(conversations)),
+        conversationsProvider.overrideWith(
+          (ref) => Stream.value(conversations ?? [_existing]),
+        ),
         conversationListingProvider('l1').overrideWith((ref) async => _listing),
         userNameProvider('owner1').overrideWith((ref) async => 'Sami'),
         userNameProvider('buyer1').overrideWith((ref) async => 'Lina'),
@@ -86,6 +97,45 @@ Future<_FakeChatRepository> _pump(
 }
 
 void main() {
+  testWidgets(
+      'a conversation that does not exist yet shows the empty state, '
+      'not a spinner, and never reads its messages', (tester) async {
+    var messagesRead = 0;
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          myUidProvider.overrideWithValue('buyer1'),
+          chatRepositoryProvider.overrideWithValue(_FakeChatRepository()),
+          messagesProvider(_conversationId).overrideWith((ref) {
+            messagesRead++;
+            return const Stream<List<ChatMessage>>.empty();
+          }),
+          conversationsProvider.overrideWith(
+            (ref) => Stream.value(const <Conversation>[]),
+          ),
+          conversationListingProvider('l1')
+              .overrideWith((ref) async => _listing),
+          userNameProvider('owner1').overrideWith((ref) async => 'Sami'),
+          userNameProvider('buyer1').overrideWith((ref) async => 'Lina'),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
+          home: const Scaffold(
+            body: ChatScreen(conversationId: _conversationId),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('No messages yet. Say hello!'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(messagesRead, 0);
+    expect(find.byType(TextField), findsOneWidget);
+  });
+
   testWidgets('shows the other person, the listing and an empty state',
       (tester) async {
     await _pump(tester);

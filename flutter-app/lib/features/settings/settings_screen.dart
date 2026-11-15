@@ -7,9 +7,15 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/config/app_links.dart';
 import '../../core/config/locale_provider.dart';
 import '../../core/router/app_router.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/widgets/filter_tag.dart';
+import '../../core/widgets/rtl_helpers.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../auth/auth_controller.dart';
 import '../auth/delete_account_dialog.dart';
+import '../auth/forgot_password_dialog.dart';
 
 /// Settings opened from the Profile tab (VST-95): language, about, sign out,
 /// delete account (VST-84).
@@ -57,75 +63,107 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     final current = Localizations.localeOf(context).languageCode;
     final signedIn = ref.watch(authStateProvider).value != null;
     final privacyUri = Uri.parse(AppLinks.privacyAndDeletionUrl);
 
     return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         _SectionTitle(l10n.languageLabel),
-        RadioGroup<String>(
-          groupValue: current,
-          onChanged: (code) {
-            if (code != null) {
-              ref.read(localeProvider.notifier).setLocale(Locale(code));
-            }
-          },
-          child: Column(
-            children: [
-              for (final entry in _languages.entries)
-                RadioListTile<String>(
-                  value: entry.key,
-                  title: Text(entry.value),
-                ),
-            ],
-          ),
-        ),
-        const Divider(),
-        _SectionTitle(l10n.settingsAbout),
-        FutureBuilder<PackageInfo>(
-          future: PackageInfo.fromPlatform(),
-          builder: (context, snapshot) {
-            final info = snapshot.data;
-            return ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: Text(l10n.settingsVersion),
-              subtitle: info == null
-                  ? null
-                  : Text('${info.version} (${info.buildNumber})'),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.privacy_tip_outlined),
-          title: Text(l10n.settingsPrivacy),
-          onTap: () => _open(context, privacyUri),
-        ),
-        ListTile(
-          leading: const Icon(Icons.mail_outline),
-          title: Text(l10n.settingsContact),
-          subtitle: const Text(AppLinks.contactEmail),
-          onTap: () => _open(
-            context,
-            Uri(scheme: 'mailto', path: AppLinks.contactEmail),
-          ),
+        _SettingsCard(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: Wrap(
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
+                children: [
+                  for (final entry in _languages.entries)
+                    FilterTag(
+                      label: entry.value,
+                      selected: current == entry.key,
+                      onTap: () => ref
+                          .read(localeProvider.notifier)
+                          .setLocale(Locale(entry.key)),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
         if (signedIn) ...[
-          const Divider(),
-          ListTile(
-            leading: Icon(Icons.delete_outline, color: theme.colorScheme.error),
-            title: Text(
-              l10n.settingsDeleteAccount,
-              style: TextStyle(color: theme.colorScheme.error),
-            ),
-            onTap: () => _deleteAccount(context),
+          _SectionTitle(l10n.settingsAccount),
+          _SettingsCard(
+            children: [
+              _SettingsRow(
+                title: l10n.settingsChangePassword,
+                chevron: true,
+                onTap: () => showForgotPasswordDialog(
+                  context,
+                  initialEmail:
+                      ref.read(authStateProvider).value?.email ?? '',
+                ),
+              ),
+              _SettingsRow(
+                title: l10n.notificationsTitle,
+                chevron: true,
+                onTap: () => context.push(AppRoutes.notifications),
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: Text(l10n.authLogoutButton),
-            onTap: () => _signOut(context, ref),
+        ],
+        _SectionTitle(l10n.settingsAbout),
+        _SettingsCard(
+          children: [
+            FutureBuilder<PackageInfo>(
+              future: PackageInfo.fromPlatform(),
+              builder: (context, snapshot) {
+                final info = snapshot.data;
+                return _SettingsRow(
+                  title: l10n.settingsVersion,
+                  trailing: info == null
+                      ? null
+                      : LtrText(
+                          '${info.version}+${info.buildNumber}',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.grey,
+                          ),
+                        ),
+                );
+              },
+            ),
+            _SettingsRow(
+              title: l10n.settingsPrivacy,
+              chevron: true,
+              onTap: () => _open(context, privacyUri),
+            ),
+            _SettingsRow(
+              title: l10n.settingsContact,
+              subtitle: AppLinks.contactEmail,
+              chevron: true,
+              onTap: () => _open(
+                context,
+                Uri(scheme: 'mailto', path: AppLinks.contactEmail),
+              ),
+            ),
+          ],
+        ),
+        if (signedIn) ...[
+          const SizedBox(height: AppSpacing.lg),
+          _SettingsCard(
+            children: [
+              _SettingsRow(
+                title: l10n.authLogoutButton,
+                danger: true,
+                onTap: () => _signOut(context, ref),
+              ),
+              _SettingsRow(
+                title: l10n.settingsDeleteAccount,
+                danger: true,
+                onTap: () => _deleteAccount(context),
+              ),
+            ],
           ),
         ],
       ],
@@ -141,13 +179,84 @@ class _SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xs,
+        AppSpacing.lg,
+        AppSpacing.xs,
+        AppSpacing.sm,
+      ),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+        style: AppTextStyles.caption.copyWith(color: AppColors.grey),
       ),
+    );
+  }
+}
+
+/// White rounded block that groups rows, with thin dividers between them.
+class _SettingsCard extends StatelessWidget {
+  const _SettingsCard({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.white,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        side: const BorderSide(color: AppColors.border),
+      ),
+      child: Column(
+        children: [
+          for (var i = 0; i < children.length; i++) ...[
+            if (i > 0) const Divider(height: 1, color: AppColors.border),
+            children[i],
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SettingsRow extends StatelessWidget {
+  const _SettingsRow({
+    required this.title,
+    this.subtitle,
+    this.trailing,
+    this.chevron = false,
+    this.danger = false,
+    this.onTap,
+  });
+
+  final String title;
+  final String? subtitle;
+  final Widget? trailing;
+  final bool chevron;
+  final bool danger;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      title: Text(
+        title,
+        style: AppTextStyles.subtitle.copyWith(
+          color: danger ? AppColors.error : AppColors.navy,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      subtitle: subtitle == null
+          ? null
+          : LtrText(
+              subtitle!,
+              style: AppTextStyles.caption.copyWith(color: AppColors.grey),
+            ),
+      trailing: chevron
+          ? const DirectionalIcon(Icons.chevron_right, color: AppColors.grey)
+          : trailing,
     );
   }
 }

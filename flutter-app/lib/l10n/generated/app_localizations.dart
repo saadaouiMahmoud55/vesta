@@ -124,54 +124,6 @@ abstract class AppLocalizations {
   /// **'Map'**
   String get tabMap;
 
-  /// No description provided for @mapMyLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'My location'**
-  String get mapMyLocation;
-
-  /// No description provided for @mapLocationDenied.
-  ///
-  /// In en, this message translates to:
-  /// **'Location permission denied. The map still works.'**
-  String get mapLocationDenied;
-
-  /// No description provided for @mapLocationDeniedForever.
-  ///
-  /// In en, this message translates to:
-  /// **'Location is blocked for Vesta. You can enable it in the app settings.'**
-  String get mapLocationDeniedForever;
-
-  /// No description provided for @mapLocationServiceOff.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on location (GPS) on your phone to see where you are.'**
-  String get mapLocationServiceOff;
-
-  /// No description provided for @mapLocationError.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not find your position. Try again.'**
-  String get mapLocationError;
-
-  /// No description provided for @mapOpenSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get mapOpenSettings;
-
-  /// No description provided for @mapViewDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'View details'**
-  String get mapViewDetails;
-
-  /// No description provided for @mapNoListings.
-  ///
-  /// In en, this message translates to:
-  /// **'No listing with a location yet'**
-  String get mapNoListings;
-
   /// No description provided for @tabFavorites.
   ///
   /// In en, this message translates to:
@@ -190,101 +142,23 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notificationsTitle;
 
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No new notifications'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'New messages appear here until you read them.'**
+  String get notificationsEmptyBody;
+
   /// No description provided for @chatTitle.
   ///
   /// In en, this message translates to:
   /// **'Messages'**
   String get chatTitle;
-
-  /// No description provided for @chatEmptyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'No conversations yet'**
-  String get chatEmptyTitle;
-
-  /// No description provided for @chatEmptyBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Open a listing and tap Contact owner to start.'**
-  String get chatEmptyBody;
-
-  /// No description provided for @chatContactOwner.
-  ///
-  /// In en, this message translates to:
-  /// **'Contact owner'**
-  String get chatContactOwner;
-
-  /// No description provided for @chatOwnListing.
-  ///
-  /// In en, this message translates to:
-  /// **'This is your own listing'**
-  String get chatOwnListing;
-
-  /// No description provided for @chatContactError.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not open the chat, try again'**
-  String get chatContactError;
-
-  /// No description provided for @chatUnknownUser.
-  ///
-  /// In en, this message translates to:
-  /// **'Vesta user'**
-  String get chatUnknownUser;
-
-  /// No description provided for @chatLoadError.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not load your messages'**
-  String get chatLoadError;
-
-  /// No description provided for @chatRetry.
-  ///
-  /// In en, this message translates to:
-  /// **'Try again'**
-  String get chatRetry;
-
-  /// No description provided for @chatListingRemoved.
-  ///
-  /// In en, this message translates to:
-  /// **'Listing no longer available'**
-  String get chatListingRemoved;
-
-  /// No description provided for @chatMessageHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Write a message'**
-  String get chatMessageHint;
-
-  /// No description provided for @chatSend.
-  ///
-  /// In en, this message translates to:
-  /// **'Send'**
-  String get chatSend;
-
-  /// No description provided for @chatSending.
-  ///
-  /// In en, this message translates to:
-  /// **'Sending…'**
-  String get chatSending;
-
-  /// No description provided for @chatNoMessages.
-  ///
-  /// In en, this message translates to:
-  /// **'No messages yet. Say hello!'**
-  String get chatNoMessages;
-
-  /// No description provided for @chatSendError.
-  ///
-  /// In en, this message translates to:
-  /// **'Not sent yet. It will be sent when you are back online.'**
-  String get chatSendError;
-
-  /// No description provided for @chatSendFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Message not sent, try again'**
-  String get chatSendFailed;
 
   /// No description provided for @loginTitle.
   ///
@@ -315,6 +189,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get authPasswordLabel;
+
+  /// No description provided for @authShowPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get authShowPassword;
+
+  /// No description provided for @authHidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get authHidePassword;
 
   /// No description provided for @authDisplayNameLabel.
   ///
@@ -435,6 +321,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your listing has been published'**
   String get publishSuccess;
+
+  /// No description provided for @publishEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit listing'**
+  String get publishEditTitle;
+
+  /// No description provided for @publishEditSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get publishEditSubmit;
+
+  /// No description provided for @publishEditSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing updated'**
+  String get publishEditSuccess;
+
+  /// No description provided for @publishEditLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the listing'**
+  String get publishEditLoadFailed;
+
+  /// No description provided for @publishEditOfferLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'The offer type cannot be changed'**
+  String get publishEditOfferLocked;
 
   /// No description provided for @publishFieldTitle.
   ///
@@ -565,7 +481,7 @@ abstract class AppLocalizations {
   /// No description provided for @publishPhotosTitle.
   ///
   /// In en, this message translates to:
-  /// **'Photos (up to 5)'**
+  /// **'Photos (up to 10)'**
   String get publishPhotosTitle;
 
   /// No description provided for @publishAddFromGallery.
@@ -637,8 +553,14 @@ abstract class AppLocalizations {
   /// No description provided for @listingErrorTooManyPhotos.
   ///
   /// In en, this message translates to:
-  /// **'You can add up to 5 photos'**
+  /// **'You can add up to 10 photos'**
   String get listingErrorTooManyPhotos;
+
+  /// No description provided for @publishPhotosDuplicates.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate photos were not added'**
+  String get publishPhotosDuplicates;
 
   /// No description provided for @listingErrorNoNetwork.
   ///
@@ -669,90 +591,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not read this photo'**
   String get photoErrorReadFailed;
-
-  /// No description provided for @listingDetailNotFound.
-  ///
-  /// In en, this message translates to:
-  /// **'Listing not found'**
-  String get listingDetailNotFound;
-
-  /// No description provided for @listingDetailLoadError.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not load this listing.'**
-  String get listingDetailLoadError;
-
-  /// No description provided for @listingDetailRetry.
-  ///
-  /// In en, this message translates to:
-  /// **'Try again'**
-  String get listingDetailRetry;
-
-  /// No description provided for @listingDetailNoPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'No photo'**
-  String get listingDetailNoPhoto;
-
-  /// No description provided for @listingDetailBedrooms.
-  ///
-  /// In en, this message translates to:
-  /// **'Bedrooms'**
-  String get listingDetailBedrooms;
-
-  /// No description provided for @listingDetailBathrooms.
-  ///
-  /// In en, this message translates to:
-  /// **'Bathrooms'**
-  String get listingDetailBathrooms;
-
-  /// No description provided for @listingDetailArea.
-  ///
-  /// In en, this message translates to:
-  /// **'Area (m²)'**
-  String get listingDetailArea;
-
-  /// No description provided for @listingDetailPerNight.
-  ///
-  /// In en, this message translates to:
-  /// **'/ night'**
-  String get listingDetailPerNight;
-
-  /// No description provided for @listingDetailAtAGlance.
-  ///
-  /// In en, this message translates to:
-  /// **'At a glance'**
-  String get listingDetailAtAGlance;
-
-  /// No description provided for @listingDetailGuests.
-  ///
-  /// In en, this message translates to:
-  /// **'Guests'**
-  String get listingDetailGuests;
-
-  /// No description provided for @listingDetailReadMore.
-  ///
-  /// In en, this message translates to:
-  /// **'Read more'**
-  String get listingDetailReadMore;
-
-  /// No description provided for @listingDetailReadLess.
-  ///
-  /// In en, this message translates to:
-  /// **'Read less'**
-  String get listingDetailReadLess;
-
-  /// No description provided for @listingDetailPerMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'/ month'**
-  String get listingDetailPerMonth;
-
-  /// No description provided for @listingDetailPerYear.
-  ///
-  /// In en, this message translates to:
-  /// **'/ year'**
-  String get listingDetailPerYear;
 
   /// No description provided for @profileEditTitle.
   ///
@@ -861,60 +699,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Listing deleted'**
   String get profileListingDeleted;
-
-  /// No description provided for @profileStatusAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Available'**
-  String get profileStatusAvailable;
-
-  /// No description provided for @profileStatusReserved.
-  ///
-  /// In en, this message translates to:
-  /// **'Reserved'**
-  String get profileStatusReserved;
-
-  /// No description provided for @profileStatusSold.
-  ///
-  /// In en, this message translates to:
-  /// **'Sold'**
-  String get profileStatusSold;
-
-  /// No description provided for @profileStatusRented.
-  ///
-  /// In en, this message translates to:
-  /// **'Rented'**
-  String get profileStatusRented;
-
-  /// No description provided for @profileStatusUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Unavailable'**
-  String get profileStatusUnavailable;
-
-  /// No description provided for @profileStatusHidden.
-  ///
-  /// In en, this message translates to:
-  /// **'Hidden'**
-  String get profileStatusHidden;
-
-  /// No description provided for @profileStatusSheetTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Change the status'**
-  String get profileStatusSheetTitle;
-
-  /// No description provided for @profileStatusUpdated.
-  ///
-  /// In en, this message translates to:
-  /// **'Status updated'**
-  String get profileStatusUpdated;
-
-  /// No description provided for @profilePublishFirst.
-  ///
-  /// In en, this message translates to:
-  /// **'Publish your first listing'**
-  String get profilePublishFirst;
 
   /// No description provided for @profileErrorNameRequired.
   ///
@@ -1048,6 +832,12 @@ abstract class AppLocalizations {
   /// **'No favorites in this category'**
   String get favoritesFilterEmpty;
 
+  /// No description provided for @favoritesEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore listings'**
+  String get favoritesEmptyAction;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
@@ -1083,36 +873,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete my account'**
   String get settingsDeleteAccount;
-
-  /// No description provided for @deleteAccountTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete your account?'**
-  String get deleteAccountTitle;
-
-  /// No description provided for @deleteAccountBody.
-  ///
-  /// In en, this message translates to:
-  /// **'This permanently deletes your account, your profile, your listings and their photos, and your favorites. Messages you sent stay in the other person\'s conversation. This cannot be undone.'**
-  String get deleteAccountBody;
-
-  /// No description provided for @deleteAccountPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your password to confirm'**
-  String get deleteAccountPassword;
-
-  /// No description provided for @deleteAccountConfirm.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete'**
-  String get deleteAccountConfirm;
-
-  /// No description provided for @deleteAccountDone.
-  ///
-  /// In en, this message translates to:
-  /// **'Your account has been deleted.'**
-  String get deleteAccountDone;
 
   /// No description provided for @settingsLinkError.
   ///
@@ -1179,6 +939,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too many attempts, please try again in a few minutes'**
   String get authErrorTooManyRequests;
+
+  /// No description provided for @authWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Vesta'**
+  String get authWelcomeTitle;
+
+  /// No description provided for @authWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to contact owners, save favorites and publish your own place.'**
+  String get authWelcomeSubtitle;
+
+  /// No description provided for @authContinueAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as guest'**
+  String get authContinueAsGuest;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get loading;
+
+  /// No description provided for @homePriceExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Example price: {price}'**
+  String homePriceExample(String price);
+
+  /// No description provided for @languageEn.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEn;
+
+  /// No description provided for @languageFr.
+  ///
+  /// In en, this message translates to:
+  /// **'Français'**
+  String get languageFr;
+
+  /// No description provided for @languageAr.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get languageAr;
+
+  /// No description provided for @settingsAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsAccount;
+
+  /// No description provided for @settingsChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get settingsChangePassword;
+
+  /// No description provided for @listingDetailNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing not found'**
+  String get listingDetailNotFound;
+
+  /// No description provided for @listingDetailLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load this listing.'**
+  String get listingDetailLoadError;
+
+  /// No description provided for @listingDetailRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get listingDetailRetry;
+
+  /// No description provided for @listingDetailNoPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'No photo'**
+  String get listingDetailNoPhoto;
+
+  /// No description provided for @listingDetailBedrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms'**
+  String get listingDetailBedrooms;
+
+  /// No description provided for @listingDetailBathrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms'**
+  String get listingDetailBathrooms;
+
+  /// No description provided for @listingDetailArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area (m²)'**
+  String get listingDetailArea;
+
+  /// No description provided for @listingDetailPerNight.
+  ///
+  /// In en, this message translates to:
+  /// **'/ night'**
+  String get listingDetailPerNight;
+
+  /// No description provided for @listingDetailPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'/ month'**
+  String get listingDetailPerMonth;
+
+  /// No description provided for @listingDetailPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'/ year'**
+  String get listingDetailPerYear;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account, your profile, your listings and their photos, and your favorites. Messages you sent stay in the other person\'s conversation. This cannot be undone.'**
+  String get deleteAccountBody;
+
+  /// No description provided for @deleteAccountPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password to confirm'**
+  String get deleteAccountPassword;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @deleteAccountDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been deleted.'**
+  String get deleteAccountDone;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by city'**
+  String get searchHint;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No listings match your search'**
+  String get searchNoResults;
+
+  /// No description provided for @searchFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get searchFilters;
+
+  /// No description provided for @searchPriceMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Min price'**
+  String get searchPriceMin;
+
+  /// No description provided for @searchPriceMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max price'**
+  String get searchPriceMax;
+
+  /// No description provided for @searchOfferType.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer type'**
+  String get searchOfferType;
+
+  /// No description provided for @searchPropertyType.
+  ///
+  /// In en, this message translates to:
+  /// **'Property type'**
+  String get searchPropertyType;
+
+  /// No description provided for @searchAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get searchAll;
+
+  /// No description provided for @searchTypeSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale'**
+  String get searchTypeSale;
+
+  /// No description provided for @searchTypeRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent'**
+  String get searchTypeRent;
+
+  /// No description provided for @searchTypeStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get searchTypeStay;
+
+  /// No description provided for @searchApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get searchApply;
+
+  /// No description provided for @searchReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get searchReset;
+
+  /// No description provided for @searchPropApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get searchPropApartment;
+
+  /// No description provided for @searchPropHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'House'**
+  String get searchPropHouse;
+
+  /// No description provided for @searchPropVilla.
+  ///
+  /// In en, this message translates to:
+  /// **'Villa'**
+  String get searchPropVilla;
+
+  /// No description provided for @searchPropStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio'**
+  String get searchPropStudio;
+
+  /// No description provided for @searchPropRiad.
+  ///
+  /// In en, this message translates to:
+  /// **'Riad'**
+  String get searchPropRiad;
+
+  /// No description provided for @searchPropGuestHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest house'**
+  String get searchPropGuestHouse;
+
+  /// No description provided for @mapMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get mapMyLocation;
+
+  /// No description provided for @mapLocationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied. The map still works.'**
+  String get mapLocationDenied;
+
+  /// No description provided for @mapLocationDeniedForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is blocked for Vesta. You can enable it in the app settings.'**
+  String get mapLocationDeniedForever;
+
+  /// No description provided for @mapLocationServiceOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location (GPS) on your phone to see where you are.'**
+  String get mapLocationServiceOff;
+
+  /// No description provided for @mapLocationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find your position. Try again.'**
+  String get mapLocationError;
+
+  /// No description provided for @mapOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get mapOpenSettings;
+
+  /// No description provided for @mapViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get mapViewDetails;
+
+  /// No description provided for @mapNoListings.
+  ///
+  /// In en, this message translates to:
+  /// **'No listing to show on the map yet'**
+  String get mapNoListings;
+
+  /// No description provided for @mapPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the location'**
+  String get mapPickerTitle;
+
+  /// No description provided for @mapPickerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map to place the pin'**
+  String get mapPickerHint;
+
+  /// No description provided for @mapPickerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get mapPickerConfirm;
+
+  /// No description provided for @chatEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get chatEmptyTitle;
+
+  /// No description provided for @chatEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open a listing and tap Contact owner to start.'**
+  String get chatEmptyBody;
+
+  /// No description provided for @chatContactOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact owner'**
+  String get chatContactOwner;
+
+  /// No description provided for @chatOwnListing.
+  ///
+  /// In en, this message translates to:
+  /// **'This is your own listing'**
+  String get chatOwnListing;
+
+  /// No description provided for @chatContactError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the chat, try again'**
+  String get chatContactError;
+
+  /// No description provided for @chatUnknownUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Vesta user'**
+  String get chatUnknownUser;
+
+  /// No description provided for @chatLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your messages'**
+  String get chatLoadError;
+
+  /// No description provided for @chatRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get chatRetry;
+
+  /// No description provided for @chatListingRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing no longer available'**
+  String get chatListingRemoved;
+
+  /// No description provided for @chatMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message'**
+  String get chatMessageHint;
+
+  /// No description provided for @chatSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get chatSend;
+
+  /// No description provided for @chatSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending…'**
+  String get chatSending;
+
+  /// No description provided for @chatNoMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet. Say hello!'**
+  String get chatNoMessages;
+
+  /// No description provided for @chatSendError.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sent yet. It will be sent when you are back online.'**
+  String get chatSendError;
+
+  /// No description provided for @chatSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Message not sent, try again'**
+  String get chatSendFailed;
+
+  /// No description provided for @chatToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get chatToday;
+
+  /// No description provided for @chatYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get chatYesterday;
+
+  /// No description provided for @listingDetailAtAGlance.
+  ///
+  /// In en, this message translates to:
+  /// **'At a glance'**
+  String get listingDetailAtAGlance;
+
+  /// No description provided for @listingDetailLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get listingDetailLocation;
+
+  /// No description provided for @listingDetailOpenMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get listingDetailOpenMaps;
+
+  /// No description provided for @listingDetailGuests.
+  ///
+  /// In en, this message translates to:
+  /// **'Guests'**
+  String get listingDetailGuests;
+
+  /// No description provided for @listingDetailReadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Read more'**
+  String get listingDetailReadMore;
+
+  /// No description provided for @listingDetailReadLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Read less'**
+  String get listingDetailReadLess;
 
   /// No description provided for @listingErrorGuestsInvalid.
   ///
@@ -1318,120 +1546,6 @@ abstract class AppLocalizations {
   /// **'Quiet hours'**
   String get ruleQuietHours;
 
-  /// No description provided for @searchHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Search by city'**
-  String get searchHint;
-
-  /// No description provided for @searchNoResults.
-  ///
-  /// In en, this message translates to:
-  /// **'No listings match your search'**
-  String get searchNoResults;
-
-  /// No description provided for @searchFilters.
-  ///
-  /// In en, this message translates to:
-  /// **'Filters'**
-  String get searchFilters;
-
-  /// No description provided for @searchPriceMin.
-  ///
-  /// In en, this message translates to:
-  /// **'Min price'**
-  String get searchPriceMin;
-
-  /// No description provided for @searchPriceMax.
-  ///
-  /// In en, this message translates to:
-  /// **'Max price'**
-  String get searchPriceMax;
-
-  /// No description provided for @searchOfferType.
-  ///
-  /// In en, this message translates to:
-  /// **'Offer type'**
-  String get searchOfferType;
-
-  /// No description provided for @searchPropertyType.
-  ///
-  /// In en, this message translates to:
-  /// **'Property type'**
-  String get searchPropertyType;
-
-  /// No description provided for @searchAll.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get searchAll;
-
-  /// No description provided for @searchTypeSale.
-  ///
-  /// In en, this message translates to:
-  /// **'Sale'**
-  String get searchTypeSale;
-
-  /// No description provided for @searchTypeRent.
-  ///
-  /// In en, this message translates to:
-  /// **'Rent'**
-  String get searchTypeRent;
-
-  /// No description provided for @searchTypeStay.
-  ///
-  /// In en, this message translates to:
-  /// **'Stay'**
-  String get searchTypeStay;
-
-  /// No description provided for @searchApply.
-  ///
-  /// In en, this message translates to:
-  /// **'Apply'**
-  String get searchApply;
-
-  /// No description provided for @searchReset.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset'**
-  String get searchReset;
-
-  /// No description provided for @searchPropApartment.
-  ///
-  /// In en, this message translates to:
-  /// **'Apartment'**
-  String get searchPropApartment;
-
-  /// No description provided for @searchPropHouse.
-  ///
-  /// In en, this message translates to:
-  /// **'House'**
-  String get searchPropHouse;
-
-  /// No description provided for @searchPropVilla.
-  ///
-  /// In en, this message translates to:
-  /// **'Villa'**
-  String get searchPropVilla;
-
-  /// No description provided for @searchPropStudio.
-  ///
-  /// In en, this message translates to:
-  /// **'Studio'**
-  String get searchPropStudio;
-
-  /// No description provided for @searchPropRiad.
-  ///
-  /// In en, this message translates to:
-  /// **'Riad'**
-  String get searchPropRiad;
-
-  /// No description provided for @searchPropGuestHouse.
-  ///
-  /// In en, this message translates to:
-  /// **'Guest house'**
-  String get searchPropGuestHouse;
-
   /// No description provided for @onboardingSkip.
   ///
   /// In en, this message translates to:
@@ -1485,6 +1599,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add your listing with photos in a few minutes.'**
   String get onboardingBody3;
+
+  /// No description provided for @profileStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get profileStatusAvailable;
+
+  /// No description provided for @profileStatusReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved'**
+  String get profileStatusReserved;
+
+  /// No description provided for @profileStatusSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold'**
+  String get profileStatusSold;
+
+  /// No description provided for @profileStatusRented.
+  ///
+  /// In en, this message translates to:
+  /// **'Rented'**
+  String get profileStatusRented;
+
+  /// No description provided for @profileStatusUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get profileStatusUnavailable;
+
+  /// No description provided for @profileStatusHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get profileStatusHidden;
+
+  /// No description provided for @profileStatusSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the status'**
+  String get profileStatusSheetTitle;
+
+  /// No description provided for @profileStatusUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Status updated'**
+  String get profileStatusUpdated;
+
+  /// No description provided for @profilePublishFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish your first listing'**
+  String get profilePublishFirst;
+
+  /// No description provided for @publishFieldPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get publishFieldPhone;
+
+  /// No description provided for @publishWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'Available on WhatsApp'**
+  String get publishWhatsapp;
+
+  /// No description provided for @publishCityHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing: Tunis, Sousse, Tozeur…'**
+  String get publishCityHelper;
+
+  /// No description provided for @publishLocationSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the exact location on the map'**
+  String get publishLocationSet;
+
+  /// No description provided for @publishLocationChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the location on the map'**
+  String get publishLocationChange;
+
+  /// No description provided for @publishLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it, your listing appears near the city center on the map.'**
+  String get publishLocationHint;
+
+  /// No description provided for @publishLocationSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact location saved'**
+  String get publishLocationSaved;
+
+  /// No description provided for @publishLocationRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get publishLocationRemove;
+
+  /// No description provided for @listingErrorPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Tunisian phone number'**
+  String get listingErrorPhoneInvalid;
+
+  /// No description provided for @offerSale.
+  ///
+  /// In en, this message translates to:
+  /// **'For sale'**
+  String get offerSale;
+
+  /// No description provided for @offerRent.
+  ///
+  /// In en, this message translates to:
+  /// **'For rent'**
+  String get offerRent;
+
+  /// No description provided for @offerStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get offerStay;
+
+  /// No description provided for @unitNight.
+  ///
+  /// In en, this message translates to:
+  /// **'/ night'**
+  String get unitNight;
+
+  /// No description provided for @unitMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'/ month'**
+  String get unitMonth;
+
+  /// No description provided for @unitYear.
+  ///
+  /// In en, this message translates to:
+  /// **'/ year'**
+  String get unitYear;
+
+  /// No description provided for @commonRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get commonRetry;
+
+  /// No description provided for @commonOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. Some content may not load.'**
+  String get commonOffline;
+
+  /// No description provided for @contactCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get contactCall;
+
+  /// No description provided for @contactWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get contactWhatsapp;
+
+  /// No description provided for @contactSignInToSee.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see the contact'**
+  String get contactSignInToSee;
+
+  /// No description provided for @contactNoWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp is not installed on this phone'**
+  String get contactNoWhatsapp;
+
+  /// No description provided for @contactCallError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the phone app'**
+  String get contactCallError;
+
+  /// No description provided for @contactMessageSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I am interested in buying {title} on Vesta'**
+  String contactMessageSale(String title);
+
+  /// No description provided for @contactMessageRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I am interested in renting {title} on Vesta'**
+  String contactMessageRent(String title);
+
+  /// No description provided for @contactMessageStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I am interested in staying at {title} on Vesta'**
+  String contactMessageStay(String title);
 }
 
 class _AppLocalizationsDelegate

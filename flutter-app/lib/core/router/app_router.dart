@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +25,7 @@ import '../../features/profile/profile_screen.dart';
 import '../../features/search/search_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../widgets/ui_kit_screen.dart';
 
 abstract class AppRoutes {
   static const explore = '/';
@@ -40,9 +42,14 @@ abstract class AppRoutes {
   static const publish = '/publish';
   static const editProfile = '/profile/edit';
   static const settings = '/settings';
+
+  /// Debug only: every shared widget on one screen (VST-93).
+  static const uiKit = '/ui-kit';
   static const listingDetail = '/listing/:id';
+  static const editListing = '/listing/:id/edit';
 
   static String listingDetailPath(String id) => '/listing/$id';
+  static String editListingPath(String id) => '/listing/$id/edit';
   static String chatRoomPath(String conversationId) => '/chat/$conversationId';
 }
 
@@ -79,7 +86,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final signedIn = auth.value != null;
       final location = state.matchedLocation;
       final accountOnly = _accountOnlyRoutes.contains(location) ||
-          location.startsWith('${AppRoutes.chat}/');
+          location.startsWith('${AppRoutes.chat}/') ||
+          (location.startsWith('/listing/') && location.endsWith('/edit'));
       if (!signedIn && accountOnly) {
         return AppRoutes.explore;
       }
@@ -160,9 +168,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           child: const SettingsScreen(),
         ),
       ),
+      if (kDebugMode)
+        GoRoute(
+          path: AppRoutes.uiKit,
+          builder: (context, state) => const UiKitScreen(),
+        ),
       GoRoute(
         path: AppRoutes.publish,
         builder: (context, state) => const PublishListingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.editListing,
+        builder: (context, state) =>
+            PublishListingScreen(listingId: state.pathParameters['id']),
       ),
       // Details of one listing, open to guests (VST-72).
       GoRoute(
@@ -231,7 +249,12 @@ class _MainShell extends ConsumerWidget {
             onPressed: () => _openAccountPage(context, ref, AppRoutes.chat),
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_none),
+            // Same red number as the chat icon: messages to read.
+            icon: Badge(
+              isLabelVisible: unread > 0,
+              label: Text(unread > 99 ? '99+' : '$unread'),
+              child: const Icon(Icons.notifications_none),
+            ),
             tooltip: l10n.notificationsTitle,
             onPressed: () =>
                 _openAccountPage(context, ref, AppRoutes.notifications),
