@@ -1,9 +1,25 @@
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import {
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+  writeBatch,
+} from 'firebase/firestore';
+import { appConfig } from '../../core/config';
+import { auth, db } from '../firebase';
 import { errorCodeOf } from './authErrors';
 import { FavoritesFailure, mapFavoritesCode } from './favoritesErrors';
+import { ListingFailure, toListingFailure } from './listingErrors';
 import { Listing, listingFromData } from '../models/listing';
+<<<<<<< HEAD
 import { ListingContact, contactFromData } from '../models/listingContact';
+=======
+import {
+  listingDocumentData,
+  maxListingPhotos,
+  NewListing,
+} from '../models/newListing';
+>>>>>>> origin/develop
 
 /** Only place that reads the `listings` collection and its photos. */
 export class ListingsRepository {
@@ -27,6 +43,8 @@ export class ListingsRepository {
       throw new FavoritesFailure(mapFavoritesCode(code));
     }
   }
+
+  createListing = createListing;
 
   /** Cover photo (id p0) as base64, or null. */
   async getCoverPhotoBase64(listingId: string): Promise<string | null> {
@@ -62,6 +80,54 @@ export class ListingsRepository {
       }
       throw new FavoritesFailure(mapFavoritesCode(code));
     }
+  }
+}
+
+/** Creates a listing, its photos and its private contact in ONE batch. */
+async function createListing(
+  listing: NewListing,
+  photosBase64: string[],
+): Promise<string> {
+  const user = auth.currentUser;
+  try {
+    if (!user) {
+      throw new ListingFailure('notSignedIn');
+    }
+    if (photosBase64.length === 0) {
+      throw new ListingFailure('noPhotos');
+    }
+    if (photosBase64.length > maxListingPhotos) {
+      throw new ListingFailure('tooManyPhotos');
+    }
+    const ref = doc(collection(db, 'listings')); // auto id
+    const batch = writeBatch(db);
+    batch.set(ref, {
+      ...listingDocumentData(
+        listing,
+        user.uid,
+        appConfig.currency,
+        photosBase64.length,
+      ),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    // Fixed ids p0..p9: the id gives the display order, p0 is the cover.
+    photosBase64.forEach((base64, index) => {
+      batch.set(doc(ref, 'photos', `p${index}`), {
+        base64,
+        createdAt: serverTimestamp(),
+      });
+    });
+    // The phone stays outside the public listing document.
+    batch.set(doc(ref, 'contact', 'info'), {
+      contactPhone: listing.contactPhone,
+      whatsappEnabled: listing.whatsappEnabled,
+      updatedAt: serverTimestamp(),
+    });
+    await batch.commit();
+    return ref.id;
+  } catch (error) {
+    throw toListingFailure(error);
   }
 }
 

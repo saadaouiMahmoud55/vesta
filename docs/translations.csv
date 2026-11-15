@@ -36,6 +36,11 @@ publish.title,Publish a listing,Publier une annonce,انشر إعلان,Publish 
 publish.button,Publish a listing,Publier une annonce,انشر إعلان,Publish listing,
 publish.submit,Publish,Publier,نشر,Publish listing,
 publish.success,Your listing has been published,Votre annonce a été publiée,تم نشر الإعلان متاعك,Publish listing,
+publish.edit.title,Edit listing,Modifier l'annonce,تعديل الإعلان,Edit listing,
+publish.edit.submit,Save changes,Enregistrer,حفظ,Edit listing,
+publish.edit.success,Listing updated,Annonce mise à jour,تم تحديث الإعلان,Edit listing,
+publish.edit.load.failed,Could not load the listing,Impossible de charger l'annonce,تعذّر تحميل الإعلان,Edit listing,
+publish.edit.offer.locked,The offer type cannot be changed,Le type d'offre ne peut pas être modifié,لا يمكن تغيير نوع العرض,Edit listing,
 publish.field.title,Title,Titre,العنوان,Publish listing,
 publish.field.description,Description,Description,الوصف,Publish listing,same in en and fr
 publish.field.price,Price (TND),Prix (TND),السوم (TND),Publish listing,

@@ -122,6 +122,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get publishSuccess => 'تم نشر الإعلان متاعك';
 
   @override
+  String get publishEditTitle => 'تعديل الإعلان';
+
+  @override
+  String get publishEditSubmit => 'حفظ';
+
+  @override
+  String get publishEditSuccess => 'تم تحديث الإعلان';
+
+  @override
+  String get publishEditLoadFailed => 'تعذّر تحميل الإعلان';
+
+  @override
+  String get publishEditOfferLocked => 'لا يمكن تغيير نوع العرض';
+
+  @override
   String get publishFieldTitle => 'العنوان';
 
   @override
