@@ -610,7 +610,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mapViewDetails => 'Voir les détails';
 
   @override
-  String get mapNoListings => 'Aucune annonce avec une position pour le moment';
+  String get mapNoListings =>
+      'Aucune annonce à afficher sur la carte pour le moment';
 
   @override
   String get mapPickerTitle => 'Choisir l’emplacement';
@@ -677,6 +678,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get listingDetailAtAGlance => 'En un coup d\'œil';
+
+  @override
+  String get listingDetailLocation => 'Emplacement';
+
+  @override
+  String get listingDetailOpenMaps => 'Ouvrir dans Maps';
 
   @override
   String get listingDetailGuests => 'Invités';

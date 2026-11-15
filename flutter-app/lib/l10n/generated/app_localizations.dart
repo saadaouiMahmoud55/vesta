@@ -1249,7 +1249,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapNoListings.
   ///
   /// In en, this message translates to:
-  /// **'No listing with a location yet'**
+  /// **'No listing to show on the map yet'**
   String get mapNoListings;
 
   /// No description provided for @mapPickerTitle.
@@ -1377,6 +1377,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'At a glance'**
   String get listingDetailAtAGlance;
+
+  /// No description provided for @listingDetailLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get listingDetailLocation;
+
+  /// No description provided for @listingDetailOpenMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get listingDetailOpenMaps;
 
   /// No description provided for @listingDetailGuests.
   ///

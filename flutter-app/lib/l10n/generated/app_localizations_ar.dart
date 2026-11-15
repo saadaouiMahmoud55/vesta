@@ -379,7 +379,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesFilterEmpty => 'لا توجد مفضلة في هذه الفئة';
 
   @override
-  String get favoritesEmptyAction => 'استكشف الإعلانات';
+  String get favoritesEmptyAction => 'اكتشف الإعلانات';
 
   @override
   String get settingsTitle => 'الإعدادات';
@@ -594,7 +594,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mapViewDetails => 'عرض التفاصيل';
 
   @override
-  String get mapNoListings => 'لا توجد إعلانات بموقع حتى الآن';
+  String get mapNoListings => 'لا توجد إعلانات للعرض على الخريطة حتى الآن';
 
   @override
   String get mapPickerTitle => 'اختار الموقع';
@@ -658,6 +658,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get listingDetailAtAGlance => 'نظرة سريعة';
+
+  @override
+  String get listingDetailLocation => 'الموقع';
+
+  @override
+  String get listingDetailOpenMaps => 'فتح في الخرائط';
 
   @override
   String get listingDetailGuests => 'الضيوف';
