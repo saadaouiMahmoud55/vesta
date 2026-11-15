@@ -147,6 +147,8 @@ export default {
   authWelcomeTitle: 'Welcome to Vesta',
   authWelcomeSubtitle:
     'Sign in to contact owners, save favorites and publish your own place.',
+  authSignUpSubtitle:
+    'Create your account to save favorites, publish your own place and send messages to owners.',
   authContinueAsGuest: 'Continue as guest',
   loading: 'Loading…',
   homePriceExample: 'Example price: {{price}}',

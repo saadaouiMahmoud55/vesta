@@ -141,6 +141,7 @@ verify.banner.sent,Verification email sent,E-mail de vérification envoyé,تب�
 auth.error.too.many.requests,"Too many attempts, please try again in a few minutes","Trop de tentatives, réessayez dans quelques minutes",برشا محاولات، عاود جرّب بعد شوية دقايق,Auth,
 auth.welcome.title,Welcome to Vesta,Bienvenue sur Vesta,مرحبا بيك في Vesta,Auth,
 auth.welcome.subtitle,"Sign in to contact owners, save favorites and publish your own place.","Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.","ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.",Auth,
+auth.sign.up.subtitle,"Create your account to save favorites, publish your own place and send messages to owners.","Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.","أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.",Auth,
 auth.continue_as_guest,Continue as guest,Continuer en tant qu'invité,كمّل كضيف,Auth,
 loading,Loading…,Chargement…,جارٍ التحميل…,Common,React Native only so far
 home.price.example,Example price: {price},Exemple de prix : {price},مثال على السعر: {price},Home,React Native only so far

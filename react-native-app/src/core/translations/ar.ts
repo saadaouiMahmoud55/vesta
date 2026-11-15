@@ -143,6 +143,8 @@ export default {
   authErrorTooManyRequests: 'برشا محاولات، عاود جرّب بعد شوية دقايق',
   authWelcomeTitle: 'مرحبا بيك في Vesta',
   authWelcomeSubtitle: 'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.',
+  authSignUpSubtitle:
+    'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.',
   authContinueAsGuest: 'كمّل كضيف',
   loading: 'جارٍ التحميل…',
   homePriceExample: 'مثال على السعر: {{price}}',

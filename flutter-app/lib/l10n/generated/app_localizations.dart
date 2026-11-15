@@ -952,6 +952,12 @@ abstract class AppLocalizations {
   /// **'Sign in to contact owners, save favorites and publish your own place.'**
   String get authWelcomeSubtitle;
 
+  /// No description provided for @authSignUpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account to save favorites, publish your own place and send messages to owners.'**
+  String get authSignUpSubtitle;
+
   /// No description provided for @authContinueAsGuest.
   ///
   /// In en, this message translates to:

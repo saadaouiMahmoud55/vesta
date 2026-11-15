@@ -32,8 +32,16 @@ void main() {
     );
   });
 
-  testWidgets('sign up shows the logo', (tester) async {
+  testWidgets('sign up shows the logo and the welcome sentence', (tester) async {
     await _pump(tester, const SignUpScreen());
     expect(find.byKey(const Key('auth-logo')), findsOneWidget);
+    expect(find.text('Create account'), findsWidgets);
+    expect(
+      find.text(
+        'Create your account to save favorites, publish your own place and '
+        'send messages to owners.',
+      ),
+      findsOneWidget,
+    );
   });
 }

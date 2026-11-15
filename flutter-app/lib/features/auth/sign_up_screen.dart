@@ -94,6 +94,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l10n.authSignUpSubtitle,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
+              ),
               const SizedBox(height: AppSpacing.xl),
               AppTextField(
                 label: l10n.authDisplayNameLabel,
