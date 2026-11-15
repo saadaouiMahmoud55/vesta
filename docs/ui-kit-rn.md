@@ -16,3 +16,4 @@ Twins of the Flutter UI kit (`docs/ui-kit.md`). They only draw: they read nothin
 Radius tokens added to `theme.ts` with the Flutter names: `card`, `row`, `thumb`, `field`, `pill`.
 
 Buttons and the loading, empty and error states already exist in `react-native-app/src/core/components` (`PrimaryButton`, `TextButton`, `LoadingView`, `EmptyView`, `ErrorView`). Not yet: the debug screen with screenshots in English, French and Arabic (part 3). The spacing scale of `theme.ts` (`md` 16, `lg` 24) differs from Flutter's `AppSpacing` (`md` 12, `lg` 16): changing it would move the existing screens, so it is a decision for Manar.
+
