@@ -1,5 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
 import {
   createNativeStackNavigator,
   NativeStackScreenProps,
@@ -7,21 +6,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ChatListScreen } from '../features/chat/ChatListScreen';
 import { ChatScreen } from '../features/chat/ChatScreen';
+import { PublishListingScreen } from '../features/listings/PublishListingScreen';
 import { MainTabs } from './MainTabs';
 
 export type MainStackParamList = {
   Tabs: undefined;
   ChatList: undefined;
   ChatRoom: { conversationId: string };
+  PublishListing: undefined;
 };
-=======
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useTranslation } from 'react-i18next';
-import { PublishListingScreen } from '../features/listings/PublishListingScreen';
-import { MainTabs } from './MainTabs';
-
-export type MainStackParamList = { Tabs: undefined; PublishListing: undefined };
->>>>>>> origin/develop
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 function ChatListRoute({
@@ -46,7 +39,6 @@ function ChatRoomRoute({
 export function MainStack(): React.JSX.Element {
   const { t } = useTranslation();
   return (
-<<<<<<< HEAD
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={MainTabs} />
       <Stack.Screen
@@ -58,18 +50,11 @@ export function MainStack(): React.JSX.Element {
         name="ChatRoom"
         component={ChatRoomRoute}
         options={{ headerShown: true, title: t('chatTitle') }}
-=======
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Tabs"
-        component={MainTabs}
-        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PublishListing"
         component={PublishListingScreen}
-        options={{ title: t('publishTitle') }}
->>>>>>> origin/develop
+        options={{ headerShown: true, title: t('publishTitle') }}
       />
     </Stack.Navigator>
   );
