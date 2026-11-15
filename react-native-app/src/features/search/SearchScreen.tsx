@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { AppText } from '../../core/components/AppText';
 import { ErrorView } from '../../core/components/ErrorView';
@@ -22,6 +23,7 @@ import { useSearchController } from './searchController';
 
 export function SearchScreen(): React.JSX.Element {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { isSignedIn } = useAuth();
   const search = useSearchController();
   const favorites = useFavorites();
@@ -96,7 +98,7 @@ export function SearchScreen(): React.JSX.Element {
   };
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { paddingTop: insets.top }]}>
       <View style={styles.bar}>
         <TextInput
           style={styles.input}
