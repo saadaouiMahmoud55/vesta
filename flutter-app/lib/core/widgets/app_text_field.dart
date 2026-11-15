@@ -67,6 +67,9 @@ class AppTextField extends StatelessWidget {
           enabled: enabled,
           onChanged: onChanged,
           textDirection: ltr ? TextDirection.ltr : null,
+          // Email, password and phone read left-to-right, but in Arabic the
+          // field still starts on the right edge, like every other Arabic field.
+          textAlign: ltr && isRtl(context) ? TextAlign.right : TextAlign.start,
           style: AppTextStyles.body.copyWith(color: AppColors.navy),
           decoration: InputDecoration(
             hintText: hintText,

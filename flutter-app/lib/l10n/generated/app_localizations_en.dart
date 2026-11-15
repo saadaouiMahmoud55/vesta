@@ -31,6 +31,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsTitle => 'Notifications';
 
   @override
+  String get notificationsEmptyTitle => 'No new notifications';
+
+  @override
+  String get notificationsEmptyBody =>
+      'New messages appear here until you read them.';
+
+  @override
   String get chatTitle => 'Messages';
 
   @override
@@ -47,6 +54,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authPasswordLabel => 'Password';
+
+  @override
+  String get authShowPassword => 'Show password';
+
+  @override
+  String get authHidePassword => 'Hide password';
 
   @override
   String get authDisplayNameLabel => 'Full name';
@@ -109,6 +122,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get publishSuccess => 'Your listing has been published';
+
+  @override
+  String get publishEditTitle => 'Edit listing';
+
+  @override
+  String get publishEditSubmit => 'Save changes';
+
+  @override
+  String get publishEditSuccess => 'Listing updated';
+
+  @override
+  String get publishEditLoadFailed => 'Could not load the listing';
+
+  @override
+  String get publishEditOfferLocked => 'The offer type cannot be changed';
 
   @override
   String get publishFieldTitle => 'Title';
@@ -174,7 +202,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get propertyGuestHouse => 'Guest house';
 
   @override
-  String get publishPhotosTitle => 'Photos (up to 5)';
+  String get publishPhotosTitle => 'Photos (up to 10)';
 
   @override
   String get publishAddFromGallery => 'Gallery';
@@ -211,7 +239,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listingErrorNoPhotos => 'Add at least one photo';
 
   @override
-  String get listingErrorTooManyPhotos => 'You can add up to 5 photos';
+  String get listingErrorTooManyPhotos => 'You can add up to 10 photos';
+
+  @override
+  String get publishPhotosDuplicates => 'Duplicate photos were not added';
 
   @override
   String get listingErrorNoNetwork => 'No internet connection';
@@ -570,7 +601,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapViewDetails => 'View details';
 
   @override
-  String get mapNoListings => 'No listing with a location yet';
+  String get mapNoListings => 'No listing to show on the map yet';
+
+  @override
+  String get mapPickerTitle => 'Choose the location';
+
+  @override
+  String get mapPickerHint => 'Tap the map to place the pin';
+
+  @override
+  String get mapPickerConfirm => 'Use this location';
 
   @override
   String get chatEmptyTitle => 'No conversations yet';
@@ -626,6 +666,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get listingDetailAtAGlance => 'At a glance';
+
+  @override
+  String get listingDetailLocation => 'Location';
+
+  @override
+  String get listingDetailOpenMaps => 'Open in Maps';
 
   @override
   String get listingDetailGuests => 'Guests';
@@ -770,6 +816,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get publishWhatsapp => 'Available on WhatsApp';
+
+  @override
+  String get publishCityHelper => 'Start typing: Tunis, Sousse, Tozeur…';
+
+  @override
+  String get publishLocationSet => 'Set the exact location on the map';
+
+  @override
+  String get publishLocationChange => 'Change the location on the map';
+
+  @override
+  String get publishLocationHint =>
+      'Without it, your listing appears near the city center on the map.';
+
+  @override
+  String get publishLocationSaved => 'Exact location saved';
+
+  @override
+  String get publishLocationRemove => 'Remove';
 
   @override
   String get listingErrorPhoneInvalid => 'Enter a valid Tunisian phone number';

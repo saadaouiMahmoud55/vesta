@@ -142,6 +142,18 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notificationsTitle;
 
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No new notifications'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'New messages appear here until you read them.'**
+  String get notificationsEmptyBody;
+
   /// No description provided for @chatTitle.
   ///
   /// In en, this message translates to:
@@ -177,6 +189,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get authPasswordLabel;
+
+  /// No description provided for @authShowPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get authShowPassword;
+
+  /// No description provided for @authHidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get authHidePassword;
 
   /// No description provided for @authDisplayNameLabel.
   ///
@@ -297,6 +321,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your listing has been published'**
   String get publishSuccess;
+
+  /// No description provided for @publishEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit listing'**
+  String get publishEditTitle;
+
+  /// No description provided for @publishEditSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get publishEditSubmit;
+
+  /// No description provided for @publishEditSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing updated'**
+  String get publishEditSuccess;
+
+  /// No description provided for @publishEditLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the listing'**
+  String get publishEditLoadFailed;
+
+  /// No description provided for @publishEditOfferLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'The offer type cannot be changed'**
+  String get publishEditOfferLocked;
 
   /// No description provided for @publishFieldTitle.
   ///
@@ -427,7 +481,7 @@ abstract class AppLocalizations {
   /// No description provided for @publishPhotosTitle.
   ///
   /// In en, this message translates to:
-  /// **'Photos (up to 5)'**
+  /// **'Photos (up to 10)'**
   String get publishPhotosTitle;
 
   /// No description provided for @publishAddFromGallery.
@@ -499,8 +553,14 @@ abstract class AppLocalizations {
   /// No description provided for @listingErrorTooManyPhotos.
   ///
   /// In en, this message translates to:
-  /// **'You can add up to 5 photos'**
+  /// **'You can add up to 10 photos'**
   String get listingErrorTooManyPhotos;
+
+  /// No description provided for @publishPhotosDuplicates.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate photos were not added'**
+  String get publishPhotosDuplicates;
 
   /// No description provided for @listingErrorNoNetwork.
   ///
@@ -1189,8 +1249,26 @@ abstract class AppLocalizations {
   /// No description provided for @mapNoListings.
   ///
   /// In en, this message translates to:
-  /// **'No listing with a location yet'**
+  /// **'No listing to show on the map yet'**
   String get mapNoListings;
+
+  /// No description provided for @mapPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the location'**
+  String get mapPickerTitle;
+
+  /// No description provided for @mapPickerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map to place the pin'**
+  String get mapPickerHint;
+
+  /// No description provided for @mapPickerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get mapPickerConfirm;
 
   /// No description provided for @chatEmptyTitle.
   ///
@@ -1299,6 +1377,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'At a glance'**
   String get listingDetailAtAGlance;
+
+  /// No description provided for @listingDetailLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get listingDetailLocation;
+
+  /// No description provided for @listingDetailOpenMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get listingDetailOpenMaps;
 
   /// No description provided for @listingDetailGuests.
   ///
@@ -1575,6 +1665,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Available on WhatsApp'**
   String get publishWhatsapp;
+
+  /// No description provided for @publishCityHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing: Tunis, Sousse, Tozeur…'**
+  String get publishCityHelper;
+
+  /// No description provided for @publishLocationSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the exact location on the map'**
+  String get publishLocationSet;
+
+  /// No description provided for @publishLocationChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the location on the map'**
+  String get publishLocationChange;
+
+  /// No description provided for @publishLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it, your listing appears near the city center on the map.'**
+  String get publishLocationHint;
+
+  /// No description provided for @publishLocationSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact location saved'**
+  String get publishLocationSaved;
+
+  /// No description provided for @publishLocationRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get publishLocationRemove;
 
   /// No description provided for @listingErrorPhoneInvalid.
   ///

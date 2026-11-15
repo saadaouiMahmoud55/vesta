@@ -1,20 +1,27 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/phone_utils.dart';
 import '../../l10n/generated/app_localizations.dart';
+import 'listing_card.dart';
 import 'listing_controller.dart';
+import '../map/location_picker_screen.dart';
+import '../map/tunisia_places.dart';
 import 'listing_labels.dart';
 import 'listing_repository.dart';
 import 'photo_service.dart';
 
 class PublishListingScreen extends ConsumerStatefulWidget {
-  const PublishListingScreen({super.key});
+  const PublishListingScreen({super.key, this.listingId});
+
+  final String? listingId;
 
   @override
   ConsumerState<PublishListingScreen> createState() =>
@@ -27,6 +34,9 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
   final _description = TextEditingController();
   final _price = TextEditingController();
   final _city = TextEditingController();
+  final _cityFocus = FocusNode();
+  // Exact position chosen on the map (optional, VST-42).
+  LatLng? _location;
   final _bedrooms = TextEditingController();
   final _bathrooms = TextEditingController();
   final _area = TextEditingController();
@@ -45,6 +55,21 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
   TimeOfDay? _checkOut;
   String? _photoMessage;
   bool _rentPeriodMissing = false;
+  bool _loadingEdit = false;
+  bool _editNotFound = false;
+  bool _editLoadFailed = false;
+  bool _hadContact = false;
+
+  bool get _isEditing => widget.listingId != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_isEditing) {
+      _loadingEdit = true;
+      unawaited(_loadListingForEdit());
+    }
+  }
 
   @override
   void dispose() {
@@ -61,7 +86,91 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
     ]) {
       c.dispose();
     }
+    _cityFocus.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadListingForEdit() async {
+    final id = widget.listingId!;
+    final repository = ref.read(listingRepositoryProvider);
+    try {
+      final listing = await repository.getListing(id);
+      if (listing == null) {
+        if (mounted) {
+          setState(() {
+            _loadingEdit = false;
+            _editNotFound = true;
+          });
+        }
+        return;
+      }
+
+      final photos = await repository.getPhotos(id);
+      final contact = await repository.getContact(id);
+      if (!mounted) return;
+
+      _title.text = listing.title;
+      _description.text = listing.description;
+      _price.text = _numText(listing.price);
+      _city.text = listing.city;
+      _bedrooms.text = _numText(listing.bedrooms);
+      _bathrooms.text = _numText(listing.bathrooms);
+      _area.text = _numText(listing.areaSqm);
+      _guests.text = _numText(listing.maxGuests);
+      _phone.text = contact?.phone.replaceFirst('+216', '') ?? '';
+      _whatsapp = contact?.whatsapp ?? false;
+      _hadContact = contact != null;
+      _listingType = listing.listingType;
+      _rentPeriod = listing.rentPeriod;
+      if (propertyTypes.contains(listing.propertyType)) {
+        _propertyType = listing.propertyType;
+      }
+      _location = listing.hasLocation
+          ? LatLng(listing.latitude!, listing.longitude!)
+          : null;
+      _amenities.addAll(listing.amenities);
+      _houseRules.addAll(listing.houseRules);
+      _checkIn = _parseTime(listing.checkIn);
+      _checkOut = _parseTime(listing.checkOut);
+      _photos.addAll(photos);
+      setState(() => _loadingEdit = false);
+    } on ListingFailure {
+      if (!mounted) return;
+      setState(() {
+        _loadingEdit = false;
+        _editLoadFailed = true;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _loadingEdit = false;
+        _editLoadFailed = true;
+      });
+    }
+  }
+
+  String _numText(num? value) {
+    if (value == null) return '';
+    return value == value.roundToDouble()
+        ? value.toInt().toString()
+        : value.toString();
+  }
+
+  TimeOfDay? _parseTime(String? value) {
+    if (value == null) return null;
+    final parts = value.split(':');
+    if (parts.length != 2) return null;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null ||
+        minute == null ||
+        hour < 0 ||
+        hour > 23 ||
+        minute < 0 ||
+        minute > 59) {
+      return null;
+    }
+    return TimeOfDay(hour: hour, minute: minute);
   }
 
   // ---- translation of error enums (no text in the logic files) ----
@@ -165,18 +274,34 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
   }
 
   // ---- photos ----
+  /// Gallery: several photos at once. Camera: one photo.
+  /// A photo already in the list is not added twice.
   Future<void> _addPhoto(ImageSource source) async {
     final l = AppLocalizations.of(context);
     try {
-      final encoded = await _photoService.pickPhoto(
-        source: source,
-        currentCount: _photos.length,
-        maxPhotos: maxListingPhotos,
-      );
-      if (encoded == null || !mounted) return;
+      final remaining = maxListingPhotos - _photos.length;
+      final List<String> picked;
+      if (source == ImageSource.gallery) {
+        picked = await _photoService.pickPhotos(remaining: remaining);
+      } else {
+        final one = await _photoService.pickPhoto(
+          source: source,
+          currentCount: _photos.length,
+          maxPhotos: maxListingPhotos,
+        );
+        picked = [?one];
+      }
+      if (picked.isEmpty || !mounted) return;
+      final added = addUniquePhotos(_photos, picked, max: maxListingPhotos);
       setState(() {
-        _photos.add(encoded);
-        _photoMessage = null;
+        _photos
+          ..clear()
+          ..addAll(added.photos);
+        _photoMessage = added.duplicates
+            ? l.publishPhotosDuplicates
+            : added.overLimit
+            ? l.listingErrorTooManyPhotos
+            : null;
       });
     } on PhotoFailure catch (e) {
       if (!mounted) return;
@@ -230,18 +355,153 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
         for (final k in houseRuleKeys)
           if (_houseRules.contains(k)) k,
       ],
+      latitude: _location == null ? null : _round6(_location!.latitude),
+      longitude: _location == null ? null : _round6(_location!.longitude),
     );
 
-    final ok = await ref
-        .read(listingControllerProvider.notifier)
-        .publish(listing: listing, photosBase64: List.of(_photos));
+    final controller = ref.read(listingControllerProvider.notifier);
+    final ok = _isEditing
+        ? await controller.update(
+            listingId: widget.listingId!,
+            listing: listing,
+            photosBase64: List.of(_photos),
+            // Rewrite all photos so gaps in legacy photo ids cannot lose one.
+            originalPhotos: const [],
+          )
+        : await controller.publish(
+            listing: listing,
+            photosBase64: List.of(_photos),
+          );
     if (!mounted) return;
 
     if (ok) {
-      messenger.showSnackBar(SnackBar(content: Text(l.publishSuccess)));
-      ref.read(listingControllerProvider.notifier).reset();
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(_isEditing ? l.publishEditSuccess : l.publishSuccess),
+        ),
+      );
+      if (_isEditing) {
+        ref.invalidate(listingDetailProvider(widget.listingId!));
+        ref.invalidate(listingCoverPhotoProvider(widget.listingId!));
+      }
+      controller.reset();
       context.pop();
     }
+  }
+
+  /// Rounds to 6 decimals (about 10 cm): enough, and a clean number.
+  double _round6(double v) => (v * 1e6).roundToDouble() / 1e6;
+
+  /// City with suggestions: the owner types and picks a Tunisian city or town
+  /// (Latin or Arabic spelling). Typing something else is still allowed.
+  Widget _cityField(AppLocalizations l) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    return RawAutocomplete<TunisiaPlace>(
+      textEditingController: _city,
+      focusNode: _cityFocus,
+      displayStringForOption: (place) => place.name,
+      optionsBuilder: (value) => searchPlaces(value.text),
+      onSelected: (_) => setState(() {}),
+      fieldViewBuilder: (context, controller, focusNode, onSubmitted) {
+        return TextFormField(
+          controller: controller,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: l.publishFieldCity,
+            helperText: l.publishCityHelper,
+            suffixIcon: const Icon(Icons.search),
+          ),
+          onChanged: (_) => setState(() {}),
+          validator: (v) {
+            final e = validateCity(v);
+            return e == null ? null : _fieldError(l, e);
+          },
+        );
+      },
+      optionsViewBuilder: (context, onSelected, options) {
+        return Align(
+          alignment: AlignmentDirectional.topStart,
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(8),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 240,
+                maxWidth: MediaQuery.sizeOf(context).width - 32,
+              ),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  for (final place in options)
+                    ListTile(
+                      dense: true,
+                      leading: const Icon(Icons.place_outlined),
+                      title: Text(isArabic ? place.nameAr : place.name),
+                      subtitle: Text(isArabic ? place.name : place.nameAr),
+                      onTap: () => onSelected(place),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickLocation() async {
+    final picked = await Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        builder: (_) => LocationPickerScreen(
+          initialPoint: _location,
+          cityCenter: placeByName(_city.text)?.point,
+        ),
+      ),
+    );
+    if (picked != null && mounted) setState(() => _location = picked);
+  }
+
+  /// Button to place the exact position on the map, and its state.
+  Widget _locationTile(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final location = _location;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        OutlinedButton.icon(
+          onPressed: _pickLocation,
+          icon: const Icon(Icons.pin_drop_outlined),
+          label: Text(
+            location == null ? l.publishLocationSet : l.publishLocationChange,
+          ),
+        ),
+        const SizedBox(height: 4),
+        if (location == null)
+          Text(l.publishLocationHint, style: theme.textTheme.bodySmall)
+        else
+          Row(
+            children: [
+              const Icon(
+                Icons.check_circle,
+                size: 18,
+                color: AppColors.primary,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  l.publishLocationSaved,
+                  style: theme.textTheme.bodySmall,
+                ),
+              ),
+              TextButton(
+                onPressed: () => setState(() => _location = null),
+                child: Text(l.publishLocationRemove),
+              ),
+            ],
+          ),
+      ],
+    );
   }
 
   Widget _timeTile({
@@ -269,6 +529,7 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
     final theme = Theme.of(context);
     final state = ref.watch(listingControllerProvider);
     final loading = state.isLoading;
+    final title = _isEditing ? l.publishEditTitle : l.publishTitle;
 
     String? fieldValidator(
       String? v,
@@ -278,8 +539,27 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
       return e == null ? null : _fieldError(l, e);
     }
 
+    if (_loadingEdit) {
+      return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (_editNotFound) {
+      return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: Center(child: Text(l.listingDetailNotFound)),
+      );
+    }
+    if (_editLoadFailed) {
+      return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: Center(child: Text(l.publishEditLoadFailed)),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(l.publishTitle)),
+      appBar: AppBar(title: Text(title)),
       body: AbsorbPointer(
         absorbing: loading,
         child: Form(
@@ -308,12 +588,22 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                   ButtonSegment(value: 'rent', label: Text(l.publishTypeRent)),
                 ],
                 selected: {_listingType},
-                onSelectionChanged: (s) => setState(() {
-                  _listingType = s.first;
-                  if (_listingType == 'sale') _rentPeriod = null;
-                  _rentPeriodMissing = false;
-                }),
+                onSelectionChanged: _isEditing
+                    ? null
+                    : (s) => setState(() {
+                        _listingType = s.first;
+                        if (_listingType == 'sale') _rentPeriod = null;
+                        _rentPeriodMissing = false;
+                      }),
               ),
+              if (_isEditing)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    l.publishEditOfferLocked,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
               if (_listingType == 'rent') ...[
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
@@ -331,10 +621,12 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                         child: Text(_periodLabel(l, p)),
                       ),
                   ],
-                  onChanged: (v) => setState(() {
-                    _rentPeriod = v;
-                    _rentPeriodMissing = false;
-                  }),
+                  onChanged: _isEditing
+                      ? null
+                      : (v) => setState(() {
+                          _rentPeriod = v;
+                          _rentPeriodMissing = false;
+                        }),
                 ),
               ],
               const SizedBox(height: 12),
@@ -361,11 +653,9 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                     setState(() => _propertyType = v ?? _propertyType),
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _city,
-                decoration: InputDecoration(labelText: l.publishFieldCity),
-                validator: (v) => fieldValidator(v, validateCity),
-              ),
+              _cityField(l),
+              const SizedBox(height: 12),
+              _locationTile(l),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _phone,
@@ -375,7 +665,9 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                   labelText: l.publishFieldPhone,
                   prefixText: '+216 ',
                 ),
-                validator: (v) => isValidTunisianPhone(v ?? '')
+                validator: (v) =>
+                    (_isEditing && !_hadContact && (v ?? '').trim().isEmpty) ||
+                        isValidTunisianPhone(v ?? '')
                     ? null
                     : l.listingErrorPhoneInvalid,
               ),
@@ -396,18 +688,14 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
               TextFormField(
                 controller: _bedrooms,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: l.publishFieldBedrooms,
-                ),
+                decoration: InputDecoration(labelText: l.publishFieldBedrooms),
                 validator: (v) => fieldValidator(v, validateRooms),
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _bathrooms,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: l.publishFieldBathrooms,
-                ),
+                decoration: InputDecoration(labelText: l.publishFieldBathrooms),
                 validator: (v) => fieldValidator(v, validateRooms),
               ),
               const SizedBox(height: 12),
@@ -578,7 +866,7 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : Text(l.publishSubmit),
+                    : Text(_isEditing ? l.publishEditSubmit : l.publishSubmit),
               ),
             ],
           ),
