@@ -11,15 +11,12 @@ import { errorCodeOf } from './authErrors';
 import { FavoritesFailure, mapFavoritesCode } from './favoritesErrors';
 import { ListingFailure, toListingFailure } from './listingErrors';
 import { Listing, listingFromData } from '../models/listing';
-<<<<<<< HEAD
 import { ListingContact, contactFromData } from '../models/listingContact';
-=======
 import {
   listingDocumentData,
   maxListingPhotos,
   NewListing,
 } from '../models/newListing';
->>>>>>> origin/develop
 
 /** Only place that reads the `listings` collection and its photos. */
 export class ListingsRepository {
