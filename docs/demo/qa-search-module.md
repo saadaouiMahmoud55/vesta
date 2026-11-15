@@ -40,7 +40,7 @@ The Search tab reads the 100 newest listings once, then filters them inside the 
    The results provider passes the loading and error state of the read to the screen, with a retry. A failed read does not show a blank screen.
 
 9. **How is it tested?**
-   `SearchFilters` has no Firebase, so unit tests cover each filter, the accents, the empty state and the order. Eya also tested on a real Redmi phone in Arabic.
+   `SearchFilters` has no Firebase, so unit tests cover each filter, the accents, the empty state and the order.
 
 10. **What would you improve with more time?**
     Server-side filters and pagination, sort options (price, distance) and saving a search.
