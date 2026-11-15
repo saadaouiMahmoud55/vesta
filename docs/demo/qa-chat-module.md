@@ -1,39 +1,39 @@
-# Q&A cheat sheet: the chat module (VST-120)
+# Fiche de révision Q&R : le module chat (VST-120)
 
-Module: Flutter chat, written by Manar (VST-44, alert hook VST-50, bell VST-99). Files in `flutter-app/lib/features/chat/`: `chat_repository.dart`, `chat_controller.dart`, `chat_models.dart`, `chat_list_screen.dart`, `chat_screen.dart`. Rules in `firebase/firestore.rules` (block `conversations`). Tests: `chat_models_test.dart`, `chat_screen_test.dart`.
+Module : chat Flutter, écrit par Manar (VST-44, alerte VST-50, cloche VST-99). Fichiers dans `flutter-app/lib/features/chat/` : `chat_repository.dart`, `chat_controller.dart`, `chat_models.dart`, `chat_list_screen.dart`, `chat_screen.dart`. Règles dans `firebase/firestore.rules` (bloc `conversations`). Tests : `chat_models_test.dart`, `chat_screen_test.dart`.
 
-## The 30-second explanation
+## L'explication en 30 secondes
 
-A buyer opens a listing and taps Chat. There is one conversation per listing and per buyer, with the id `{listingId}_{buyerId}`. The messages are in a subcollection `messages`. The conversation document is created with the first message, so opening a chat writes nothing. Everything goes through `ChatRepository`; screens never call Firebase directly.
+Un acheteur ouvre une annonce et appuie sur Chat. Il y a une conversation par annonce et par acheteur, avec l'identifiant `{listingId}_{buyerId}`. Les messages sont dans une sous-collection `messages`. Le document de conversation est créé avec le premier message : ouvrir un chat n'écrit donc rien. Tout passe par `ChatRepository` ; les écrans n'appellent jamais Firebase directement.
 
-## How it is built (3 layers)
+## Comment c'est construit (3 couches)
 
-- **Repository** (`chat_repository.dart`): the only place that talks to Firestore. It sends messages, watches conversations and messages, marks as read, and turns Firebase errors into a small `ChatError` list.
-- **Controller** (`chat_controller.dart`): Riverpod providers. They give the live conversation list, the live messages (last 50), the unread total for the badge, and `sendChatMessage` with an 8 second wait limit.
-- **Screens**: the list and the chat screen only show state and call the controller.
+- **Repository** (`chat_repository.dart`) : le seul endroit qui parle à Firestore. Il envoie les messages, surveille les conversations et les messages, marque comme lu, et transforme les erreurs Firebase en une petite liste `ChatError`.
+- **Controller** (`chat_controller.dart`) : providers Riverpod. Ils donnent la liste de conversations en direct, les messages en direct (les 50 derniers), le total de non lus pour le badge, et `sendChatMessage` avec une limite d'attente de 8 secondes.
+- **Écrans** : la liste et l'écran de chat affichent seulement l'état et appellent le controller.
 
-## Likely questions and short answers
+## Questions probables et réponses courtes
 
-1. **How is a message sent?** One Firestore batch writes two things together: the message, and the conversation summary (`lastMessage`, `lastMessageAt`, +1 unread for the other person). So a conversation never shows a message that does not exist. For the first message, the same `set` also creates the conversation.
-2. **How do you stop a stranger from reading a conversation?** Firestore rules: only a user whose uid is in `participantIds` can read the conversation and its messages. Messages cannot be edited or deleted (`allow update, delete: if false`). A message must be sent by the user himself (`senderId == uid`) and have at most 2000 characters.
-3. **Can the owner talk to himself, or can someone create a conversation for two other people?** No. The create rule needs the id to be `{listingId}_{myUid}`, and refuses it when the creator is the listing owner. The code also throws `ownListing` before sending.
-4. **What happens offline?** Firestore keeps the write in a local queue. The screen waits 8 seconds, then shows a "no network" message, but the message is not lost: it is sent when the network is back. Known limit: there is no real internet check before sending.
-5. **How does the unread badge work?** Each conversation has `unread` with one counter per user. Sending adds 1 for the other person. Opening the chat sets your own counter to 0 (`markRead`). The badge on the chat icon and on the bell sums the counters from the same live list, so no second Firestore listener is opened.
-6. **Why is the list sorted in the app and not in the query?** `arrayContains` plus `orderBy` would need a Firestore index. Sorting in the app avoids it, and the lists are small.
-7. **Why only the last 50 messages?** To keep the screen fast and cheap on reads. The listener stops when the screen closes (`autoDispose`), so no listener leaks.
-8. **Why is `participantIds` always `[buyer, owner]`?** The update rule refuses a change of the array, and arrays are compared in order. So the app always writes it in the same order.
-9. **How is mixed Arabic, French and English handled?** Each message gets its own text direction from its first letter (`textDirectionFor`, the Unicode "first strong character" rule). "Salut مرحبا" is left to right, "مرحبا Salut" is right to left. Digits and emoji follow the fallback.
-10. **How are errors shown?** The repository maps Firebase codes to `ChatError` (not signed in, own listing, message too long, no network, permission denied, unknown). The screens turn them into translated texts in English, French and Arabic.
-11. **How is it tested?** Unit tests for the models, the id parsing, the text direction and the sorting, and widget tests for the chat screen. I also tested on a real phone with two accounts.
+1. **Comment un message est-il envoyé ?** Un seul lot d'écritures Firestore écrit deux choses ensemble : le message, et le résumé de la conversation (`lastMessage`, `lastMessageAt`, +1 non lu pour l'autre personne). Une conversation ne peut donc jamais afficher un message qui n'existe pas. Pour le premier message, le même `set` crée aussi la conversation.
+2. **Comment empêcher un inconnu de lire une conversation ?** Les règles Firestore : seul un utilisateur dont l'uid est dans `participantIds` peut lire la conversation et ses messages. Les messages ne peuvent être ni modifiés ni supprimés (`allow update, delete: if false`). Un message doit être envoyé par l'utilisateur lui-même (`senderId == uid`) et faire au plus 2000 caractères.
+3. **Le propriétaire peut-il se parler à lui-même, ou quelqu'un peut-il créer une conversation pour deux autres personnes ?** Non. La règle de création exige que l'identifiant soit `{listingId}_{myUid}`, et la refuse quand le créateur est le propriétaire de l'annonce. Le code lève aussi `ownListing` avant l'envoi.
+4. **Que se passe-t-il hors ligne ?** Firestore garde l'écriture dans une file locale. L'écran attend 8 secondes, puis affiche un message « pas de réseau », mais le message n'est pas perdu : il est envoyé au retour du réseau. Limite connue : il n'y a pas de vraie vérification d'internet avant l'envoi.
+5. **Comment fonctionne le badge de non lus ?** Chaque conversation a `unread` avec un compteur par utilisateur. Envoyer ajoute 1 pour l'autre personne. Ouvrir le chat remet votre propre compteur à 0 (`markRead`). Le badge de l'icône du chat et de la cloche additionne les compteurs de la même liste en direct, donc aucun second écouteur Firestore n'est ouvert.
+6. **Pourquoi la liste est-elle triée dans l'application et pas dans la requête ?** `arrayContains` avec `orderBy` demanderait un index Firestore. Trier dans l'application l'évite, et les listes sont petites.
+7. **Pourquoi seulement les 50 derniers messages ?** Pour garder l'écran rapide et peu coûteux en lectures. L'écouteur s'arrête quand l'écran se ferme (`autoDispose`), donc aucun écouteur ne fuit.
+8. **Pourquoi `participantIds` est-il toujours `[acheteur, propriétaire]` ?** La règle de modification refuse un changement du tableau, et les tableaux sont comparés dans l'ordre. L'application l'écrit donc toujours dans le même ordre.
+9. **Comment gérer l'arabe, le français et l'anglais mélangés ?** Chaque message a sa propre direction de texte, donnée par sa première lettre (`textDirectionFor`, règle Unicode du « premier caractère fort »). « Salut مرحبا » va de gauche à droite, « مرحبا Salut » de droite à gauche. Les chiffres et les emojis suivent la valeur par défaut.
+10. **Comment les erreurs sont-elles affichées ?** Le repository associe les codes Firebase à `ChatError` (non connecté, propre annonce, message trop long, pas de réseau, permission refusée, inconnue). Les écrans les transforment en textes traduits en anglais, français et arabe.
+11. **Comment est-ce testé ?** Des tests unitaires pour les modèles, l'analyse de l'identifiant, la direction du texte et le tri, et des tests de widget pour l'écran de chat. J'ai aussi testé sur un vrai téléphone avec deux comptes.
 
-## Honest limits (say them before they are asked)
+## Limites honnêtes (à dire avant qu'on les demande)
 
-- No push notifications. The alert is in-app only (it is created after a successful send, see the VST-50 hook in `sendChatMessage`). Push is future work (VST-135).
-- No internet check before sending; the message waits in the queue.
-- Messages are text only (no photos) and cannot be edited or deleted.
-- The update rule lets a participant change the unread counters, so counters are not tamper-proof. It is acceptable for this project, and a Cloud Function would fix it.
-- The React Native chat (VST-45, PR #102) exists but is not merged before the freeze.
+- Pas de notifications push. L'alerte est dans l'application uniquement (elle est créée après un envoi réussi, voir le point d'accroche VST-50 dans `sendChatMessage`). Le push est un travail futur (VST-135).
+- Pas de vérification d'internet avant l'envoi ; le message attend dans la file.
+- Les messages sont du texte uniquement (pas de photos) et ne peuvent être ni modifiés ni supprimés.
+- La règle de modification permet à un participant de changer les compteurs de non lus : les compteurs ne sont donc pas à l'épreuve de la falsification. C'est acceptable pour ce projet, et une Cloud Function réglerait le problème.
+- Le chat React Native (VST-45, PR #102) existe mais n'est pas fusionné avant le gel du code.
 
-## If you do not know the answer
+## Si vous ne connaissez pas la réponse
 
-Say: "That part is in `chat_repository.dart`, I can show you the exact lines." Then open the file. Do not guess.
+Dire : « Cette partie est dans `chat_repository.dart`, je peux vous montrer les lignes exactes. » Puis ouvrir le fichier. Ne pas deviner.

@@ -1,57 +1,57 @@
-# Q&A cheat sheet: the search and filters module (VST-122)
+# Fiche de révision Q&R : le module recherche et filtres (VST-122)
 
-Module: Flutter search and filters, written by Eya (VST-40). Files in `flutter-app/lib/features/search/`: `search_filters.dart` (the filter logic), `search_filters_notifier.dart` (state and reading), `search_filters_sheet.dart` (the filter panel), `search_screen.dart` (the screen). Reads listings through `ListingRepository.getLatestListings` in `flutter-app/lib/features/listings/listing_repository.dart`. Tests: the search tests in `flutter-app/test/`.
+Module : recherche et filtres Flutter, écrit par Eya (VST-40). Fichiers dans `flutter-app/lib/features/search/` : `search_filters.dart` (la logique des filtres), `search_filters_notifier.dart` (l'état et la lecture), `search_filters_sheet.dart` (le panneau de filtres), `search_screen.dart` (l'écran). Lit les annonces avec `ListingRepository.getLatestListings` dans `flutter-app/lib/features/listings/listing_repository.dart`. Tests : les tests de recherche dans `flutter-app/test/`.
 
-## The 30-second explanation
+## L'explication en 30 secondes
 
-The Search tab reads the 100 newest listings once, then filters them inside the app. The filters are a city or title text, a price range, an offer type (sale, rent, stay) and a property type. The text waits 400 ms after the last key before filtering. Sold, rented, unavailable and hidden listings are not offered. Filtering is pure Dart logic with no Firebase in it, so it is easy to test.
+L'onglet Recherche lit une fois les 100 annonces les plus récentes, puis les filtre dans l'application. Les filtres sont un texte (ville ou titre), une fourchette de prix, un type d'offre (vente, location, séjour) et un type de bien. Le texte attend 400 ms après la dernière touche avant de filtrer. Les annonces vendues, louées, indisponibles et masquées ne sont pas proposées. Le filtrage est de la logique Dart pure, sans Firebase, donc facile à tester.
 
-## How it is built
+## Comment c'est construit
 
-- **`SearchFilters`** (`search_filters.dart`): plain data and logic. `matches(listing)` checks each filter, `apply(listings)` keeps the order (newest first) and removes unavailable listings, `activeCount` gives the number for the badge on the filter button.
-- **`SearchFiltersNotifier`** (`search_filters_notifier.dart`): Riverpod notifier that holds the filters. `setCity` uses a 400 ms timer so only the last keystroke counts. When the signed-in user changes, the filters start again empty.
-- **`searchableListingsProvider`**: reads the 100 newest listings once; `searchResultsProvider` applies the filters on that list and passes loading and error states to the screen.
-- **Screen and sheet**: only show the state and call the notifier.
+- **`SearchFilters`** (`search_filters.dart`) : données et logique simples. `matches(listing)` vérifie chaque filtre, `apply(listings)` garde l'ordre (plus récent d'abord) et retire les annonces indisponibles, `activeCount` donne le nombre du badge sur le bouton de filtres.
+- **`SearchFiltersNotifier`** (`search_filters_notifier.dart`) : notifier Riverpod qui garde les filtres. `setCity` utilise un minuteur de 400 ms pour que seule la dernière frappe compte. Quand l'utilisateur connecté change, les filtres repartent vides.
+- **`searchableListingsProvider`** : lit une fois les 100 annonces les plus récentes ; `searchResultsProvider` applique les filtres sur cette liste et transmet les états de chargement et d'erreur à l'écran.
+- **Écran et panneau** : ils affichent seulement l'état et appellent le notifier.
 
-## Likely questions and short answers
+## Questions probables et réponses courtes
 
-1. **Why filter in the app and not in Firestore?**
-   Firestore needs one composite index for each combination of filters, and a price range forces the first sort on `price`, so "newest first" would be lost. Reading the 100 newest listings (no index needed) and filtering them in memory is simple and fast at our size. The code comment says it: if the app grows to thousands of listings, move the main filters into the query.
+1. **Pourquoi filtrer dans l'application et pas dans Firestore ?**
+   Firestore demande un index composite pour chaque combinaison de filtres, et une fourchette de prix impose le premier tri sur `price`, donc « plus récent d'abord » serait perdu. Lire les 100 plus récentes (aucun index nécessaire) et les filtrer en mémoire est simple et rapide à notre échelle. Le commentaire du code le dit : si l'application grandit jusqu'à des milliers d'annonces, il faudra déplacer les filtres principaux dans la requête.
 
-2. **What is the limit of that choice?**
-   Only the 100 newest listings are searchable. An older listing does not appear in the search, although it is still in the app. This is in the report as a known limit and as future work (server-side search with pagination).
+2. **Quelle est la limite de ce choix ?**
+   Seules les 100 annonces les plus récentes sont recherchables. Une annonce plus ancienne n'apparaît pas dans la recherche, bien qu'elle soit toujours dans l'application. C'est dans le rapport comme limite connue et comme travail futur (recherche côté serveur avec pagination).
 
-3. **Why wait 400 ms after typing?**
-   To avoid filtering on every key and to keep the screen smooth. Only the last keystroke counts (`Timer` in `setCity`, cancelled on each new key and on dispose).
+3. **Pourquoi attendre 400 ms après la saisie ?**
+   Pour éviter de filtrer à chaque touche et garder l'écran fluide. Seule la dernière frappe compte (`Timer` dans `setCity`, annulé à chaque nouvelle touche et à la fermeture).
 
-4. **How does the city search work with accents and Arabic?**
-   `normalizeSearchText` lowers the case, removes accents (so "gabes" finds "Gabès") and trims spaces. Arabic is kept as typed, since it has no case or accents. The text matches the city or the title of the listing.
+4. **Comment la recherche de ville gère-t-elle les accents et l'arabe ?**
+   `normalizeSearchText` met en minuscules, retire les accents (donc « gabes » trouve « Gabès ») et supprime les espaces en trop. L'arabe est gardé tel quel, car il n'a ni casse ni accents. Le texte est comparé à la ville et au titre de l'annonce.
 
-5. **What is the difference between "rent" and "stay"?**
-   The filter uses `offerTypeOf(listing)`, never `listingType` alone: a rent per night is a stay, a rent per month or year is a rent, and a sale is a sale. This is the same rule as the badges and the status choices (`docs/offer-types.md`).
+5. **Quelle est la différence entre « location » et « séjour » ?**
+   Le filtre utilise `offerTypeOf(listing)`, jamais `listingType` seul : une location à la nuit est un séjour, une location au mois ou à l'année est une location, et une vente est une vente. C'est la même règle que les badges et les choix de statut (`docs/offer-types.md`).
 
-6. **Why do sold or hidden listings not appear?**
-   `apply` removes any listing that is unavailable. They still show in the favorites (with a banner), but the search should not offer something nobody can rent or buy. Reserved listings stay visible: PR #106 documents that choice.
+6. **Pourquoi les annonces vendues ou masquées n'apparaissent-elles pas ?**
+   `apply` retire toute annonce indisponible. Elles restent visibles dans les favoris (avec une bannière), mais la recherche ne doit pas proposer ce que personne ne peut louer ou acheter. Les annonces réservées restent visibles : la PR #106 documente ce choix.
 
-7. **What happens when the user logs out or in?**
-   The provider watches the user id: the list is read again and the filters are reset, so a new user never sees the filters of the previous one.
+7. **Que se passe-t-il quand l'utilisateur se déconnecte ou se connecte ?**
+   Le provider surveille l'identifiant de l'utilisateur : la liste est relue et les filtres sont réinitialisés, donc un nouvel utilisateur ne voit jamais les filtres du précédent.
 
-8. **How are loading and errors shown?**
-   The results provider passes the loading and error state of the read to the screen, with a retry. A failed read does not show a blank screen.
+8. **Comment sont affichés le chargement et les erreurs ?**
+   Le provider de résultats transmet l'état de chargement et d'erreur de la lecture à l'écran, avec un bouton pour réessayer. Une lecture qui échoue n'affiche pas un écran vide.
 
-9. **How is it tested?**
-   `SearchFilters` has no Firebase, so unit tests cover each filter, the accents, the empty state and the order.
+9. **Comment est-ce testé ?**
+   `SearchFilters` n'a pas de Firebase, donc des tests unitaires couvrent chaque filtre, les accents, l'état vide et l'ordre.
 
-10. **What would you improve with more time?**
-    Server-side filters and pagination, sort options (price, distance) and saving a search.
+10. **Qu'amélioreriez-vous avec plus de temps ?**
+    Des filtres côté serveur et la pagination, des options de tri (prix, distance) et l'enregistrement d'une recherche.
 
-## Honest limits (say them before they are asked)
+## Limites honnêtes (à dire avant qu'on les demande)
 
-- Only the newest 100 listings are searched.
-- No sort choice: newest first only.
-- No search by distance from the user.
-- The React Native search (VST-41, PR #105) is a separate version for the reduced RN app.
+- Seules les 100 annonces les plus récentes sont recherchées.
+- Pas de choix de tri : plus récent d'abord uniquement.
+- Pas de recherche par distance depuis l'utilisateur.
+- La recherche React Native (VST-41, PR #105) est une version séparée pour l'application RN réduite.
 
-## If you do not know the answer
+## Si vous ne connaissez pas la réponse
 
-Say: "That part is in `search_filters.dart`, I can show you the exact lines." Then open the file. Do not guess.
+Dire : « Cette partie est dans `search_filters.dart`, je peux vous montrer les lignes exactes. » Puis ouvrir le fichier. Ne pas deviner.

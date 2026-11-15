@@ -1,57 +1,57 @@
-# Vesta demo script (Mon 16 Nov)
+# Script de démonstration Vesta (lun. 16 nov.)
 
-Draft written on 15 Nov from what is merged in `develop`. Lines marked **(if merged)** depend on PRs still open on Sunday: update them after the last merges. Test accounts and who speaks are placeholders to fill in.
+Brouillon rédigé le 15 nov. à partir de ce qui est fusionné dans `develop`. Les lignes marquées **(si fusionné)** dépendent de pull requests encore ouvertes le dimanche : à mettre à jour après les dernières fusions. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
 
-## Before the demo (Sunday night)
+## Avant la démo (dimanche soir)
 
-- Build the debug APK from the final `develop` and install it on two phones. Check that sign-in works on both. The API key is restricted by package name and SHA-1, and the SHA-1 belongs to the keystore that signed the APK (the PC that built it), not to the phone. So build the demo APK on a PC whose debug SHA-1 is already in the key, and install that same APK on both phones.
-- Create two test accounts: **Owner** and **Client**. Owner has 2 or 3 listings (one sale, one rent, one stay) with real photos and an exact location.
-- Put one phone in Arabic and one in French, so the RTL switch is visible.
-- Charge the phones, turn off notifications from other apps, connect to a stable network. Keep a second network (phone hotspot) ready.
-- Have the app already signed out on the Client phone, to show guest browsing first.
-- Close all other apps. Keep a screen recording of the full flow as a backup.
+- Construire l'APK debug depuis la version finale de `develop` et l'installer sur deux téléphones. Vérifier que la connexion fonctionne sur les deux. La clé API est limitée par nom de package et SHA-1, et le SHA-1 appartient au keystore qui a signé l'APK (le PC qui l'a construit), pas au téléphone. Il faut donc construire l'APK de démo sur un PC dont le SHA-1 debug est déjà dans la clé, et installer ce même APK sur les deux téléphones.
+- Créer deux comptes de test : **Propriétaire** et **Client**. Le Propriétaire a 2 ou 3 annonces (une vente, une location, un séjour) avec de vraies photos et une position exacte.
+- Mettre un téléphone en arabe et l'autre en français, pour que le passage de droite à gauche soit visible.
+- Charger les téléphones, couper les notifications des autres applications, se connecter à un réseau stable. Garder un second réseau (partage de connexion) prêt.
+- Avoir l'application déjà déconnectée sur le téléphone Client, pour montrer d'abord la navigation en invité.
+- Fermer toutes les autres applications. Garder un enregistrement d'écran du parcours complet en secours.
 
-## Flow (about 8 minutes)
+## Déroulé (environ 8 minutes)
 
-**1. Open and browse as a guest (1 min).** Open the app without an account. Explore shows the listings. Say: *"You can browse without signing up; an account is only needed to contact, favorite or publish."* Search a city (try an Arabic spelling) and filter by offer type.
+**1. Ouvrir et parcourir en invité (1 min).** Ouvrir l'application sans compte. L'écran Explorer affiche les annonces. Dire : *« On peut parcourir sans s'inscrire ; un compte n'est nécessaire que pour contacter, mettre en favori ou publier. »* Chercher une ville (essayer une orthographe arabe) et filtrer par type d'offre.
 
-**2. Listing details (1 min).** Open a listing. Show the price and the offer badge (sale, rent, stay), the photos, the amenities, and the small map with the exact location and the **Open in Maps** button. Tap **Contact owner**: the app asks the guest to sign in. Sign in as Client.
+**2. Détails d'une annonce (1 min).** Ouvrir une annonce. Montrer le prix et le badge d'offre (vente, location, séjour), les photos, les équipements, et la petite carte avec la position exacte et le bouton **Ouvrir dans Maps**. Appuyer sur **Contacter le propriétaire** : l'application demande à l'invité de se connecter. Se connecter avec le compte Client.
 
-**3. Map (1 min).** Open the Map tab. All listings appear as pins with price; tap a pin to see the preview card, tap the card to open the details. Search a Tunisian city.
+**3. Carte (1 min).** Ouvrir l'onglet Carte. Toutes les annonces apparaissent en repères avec le prix ; appuyer sur un repère pour voir l'aperçu, appuyer sur l'aperçu pour ouvrir les détails. Chercher une ville tunisienne.
 
-**4. Favorites and chat (1.5 min).** Favorite a listing, open Favorites, tap it: it opens the details. Send the first message to the owner. Show the listing strip at the top of the chat and the date separator.
+**4. Favoris et chat (1,5 min).** Mettre une annonce en favori, ouvrir Favoris, appuyer dessus : les détails s'ouvrent. Envoyer le premier message au propriétaire. Montrer le bandeau de l'annonce en haut du chat et le séparateur de date.
 
-**5. Owner side: notifications and My listings (1.5 min).** On the Owner phone: the bell and the chat icon show an unread badge; the notification center lists the conversation and opens the right chat. Say clearly: *"Alerts work while the app is running; there is no server push, because that needs a paid plan."* Then Profile > My listings: change a status (available, reserved, sold).
+**5. Côté propriétaire : notifications et Mes annonces (1,5 min).** Sur le téléphone du Propriétaire : la cloche et l'icône du chat affichent un badge de messages non lus ; le centre de notifications liste la conversation et ouvre le bon chat. Dire clairement : *« Les alertes fonctionnent quand l'application est ouverte ; il n'y a pas de push serveur, car cela demande une offre payante. »* Puis Profil > Mes annonces : changer un statut (disponible, réservé, vendu).
 
-**6. Publish and edit (1.5 min).** Publish a listing: fields, city, picking the exact location, up to 10 photos (duplicates are skipped). Edit the listing from My listings: the form is pre-filled, change the price and a photo, save, and show the updated listing on the Client phone.
+**6. Publier et modifier (1,5 min).** Publier une annonce : champs, ville, choix de la position exacte, jusqu'à 10 photos (les doublons sont ignorés). Modifier l'annonce depuis Mes annonces : le formulaire est pré-rempli, changer le prix et une photo, enregistrer, puis montrer l'annonce mise à jour sur le téléphone Client.
 
-**7. Profile, language and safety (1 min).** Profile: edit name and photo, **(if merged)** remove the photo, tap the photo to see it full size. Settings: switch the language between Arabic, French and English, and show that the layout flips to right-to-left. Mention that the account can be deleted from Settings.
+**7. Profil, langue et sécurité (1 min).** Profil : modifier le nom et la photo, **(si fusionné)** supprimer la photo, appuyer sur la photo pour la voir en grand. Paramètres : changer la langue entre arabe, français et anglais, et montrer que la mise en page passe de droite à gauche. Mentionner que le compte peut être supprimé depuis les Paramètres.
 
-**8. React Native app (30 s).** Say plainly that the React Native app is a reduced version (sign-in, navigation, a map **(if merged)**, part of the listings), and that Flutter is the full app.
+**8. Application React Native (30 s).** Dire franchement que l'application React Native est une version réduite (connexion, navigation, une carte **(si fusionné)**, une partie des annonces), et que Flutter est l'application complète.
 
-## What we say about the limits
+## Ce que nous disons sur les limites
 
-Say them yourselves before the jury asks. The full list is in the report ("limits and future work"):
+Les dire nous-mêmes avant que le jury ne les demande. La liste complète est dans le rapport (« limites et travaux futurs ») :
 
-- Photos are stored as compressed text in Firestore (no paid Storage); maximum 10 per listing.
-- No alert when the app is closed (no server push, no paid plan).
-- Search reads the newest 100 listings and filters in the app.
-- Names typed by users are not translated or transliterated.
-- Google and Apple sign-in are future work; the listings are not yet split into separate collections by type.
-- Real listings are only published with the owner's written consent; the others are marked as demo content.
+- Les photos sont stockées en texte compressé dans Firestore (pas de Storage payant) ; maximum 10 par annonce.
+- Pas d'alerte quand l'application est fermée (pas de push serveur, pas d'offre payante).
+- La recherche lit les 100 annonces les plus récentes et filtre dans l'application.
+- Les noms saisis par les utilisateurs ne sont ni traduits ni translittérés.
+- La connexion Google et Apple est un travail futur ; les annonces ne sont pas encore séparées en collections par type.
+- Les annonces réelles ne sont publiées qu'avec l'accord écrit du propriétaire ; les autres sont indiquées comme contenu de démonstration.
 
-## If something fails during the demo
+## Si quelque chose échoue pendant la démo
 
-- **Sign-in fails on a phone:** the SHA-1 of this build is missing from the API key. Both phones run the same APK, so switching phones does not help. Play the screen recording of the sign-in step and continue. Afterwards run gradlew signingReport on the build PC and add the SHA-1 to the key.
-- **Slow or no network:** switch to the hotspot. If it is still slow, play the screen recording of that step.
-- **A photo or listing does not load:** go to the next listing; do not retry more than once on stage.
-- **The app crashes:** reopen it, sign in again, and continue from the next step.
+- **La connexion échoue sur un téléphone :** le SHA-1 de cette version manque dans la clé API. Les deux téléphones utilisent le même APK, donc changer de téléphone n'aide pas. Lancer l'enregistrement d'écran de l'étape de connexion et continuer. Ensuite, lancer `gradlew signingReport` sur le PC qui a construit l'APK et ajouter le SHA-1 à la clé.
+- **Réseau lent ou absent :** passer sur le partage de connexion. Si c'est encore lent, lancer l'enregistrement d'écran de cette étape.
+- **Une photo ou une annonce ne se charge pas :** passer à l'annonce suivante ; ne pas réessayer plus d'une fois sur scène.
+- **L'application plante :** la rouvrir, se reconnecter et continuer à l'étape suivante.
 
-## Likely questions (prepare one answer each)
+## Questions probables (préparer une réponse chacune)
 
-1. **Why Firebase and no own backend?** Free plan, fast to build, security rules protect the data (owner-only edits, private contact, valid listings only).
-2. **How do you protect the owner's phone number?** It is in a separate private document readable only by signed-in users; guests cannot read it.
-3. **How does the edit mode keep the data valid?** One batch updates the listing, its photos and its contact together; the offer type and period are locked so the status rules stay valid.
-4. **How do you handle Arabic?** The text files (CSV) generate the Flutter and React Native translations; prices, phone numbers and emails are forced left-to-right inside right-to-left screens.
-5. **What would you do with more time?** See "Future work" in the report.
-6. **How did you work as a team?** Sprints in Jira, one branch and one pull request per ticket, a required review, and a green check (translations, colors, analyze, tests) before every merge.
+1. **Pourquoi Firebase et pas notre propre backend ?** Offre gratuite, développement rapide, et les règles de sécurité protègent les données (modification réservée au propriétaire, contact privé, annonces valides uniquement).
+2. **Comment protégez-vous le numéro de téléphone du propriétaire ?** Il est dans un document privé séparé, lisible seulement par les utilisateurs connectés ; les invités ne peuvent pas le lire.
+3. **Comment le mode modification garde-t-il les données valides ?** Un seul lot d'écritures met à jour l'annonce, ses photos et son contact ensemble ; le type d'offre et la période sont verrouillés pour que les règles de statut restent valides.
+4. **Comment gérez-vous l'arabe ?** Les fichiers texte (CSV) génèrent les traductions Flutter et React Native ; les prix, numéros de téléphone et e-mails sont forcés de gauche à droite dans les écrans de droite à gauche.
+5. **Que feriez-vous avec plus de temps ?** Voir « Travaux futurs » dans le rapport.
+6. **Comment avez-vous travaillé en équipe ?** Des sprints dans Jira, une branche et une pull request par ticket, une revue obligatoire, et une vérification verte (traductions, couleurs, analyse, tests) avant chaque fusion.
