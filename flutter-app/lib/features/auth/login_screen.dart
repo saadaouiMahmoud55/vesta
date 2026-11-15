@@ -11,6 +11,7 @@ import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/password_text_field.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'auth_controller.dart';
+import 'auth_logo.dart';
 import 'auth_messages.dart';
 import 'forgot_password_dialog.dart';
 import 'require_sign_in.dart';
@@ -82,22 +83,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Round light-primary badge with the Vesta door icon.
-              Center(
-                child: Container(
-                  width: 76,
-                  height: 76,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.primary.withValues(alpha: 0.12),
-                  ),
-                  child: const Icon(
-                    Icons.sensor_door_outlined,
-                    size: 36,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
+              const AuthLogo(),
               const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.authWelcomeTitle,
