@@ -4,7 +4,7 @@ Draft written on 15 Nov from what is merged in `develop`. Lines marked **(if mer
 
 ## Before the demo (Sunday night)
 
-- Build the debug APK from the final `develop` and install it on two phones. Check that sign-in works on both (the API key is restricted by package name and SHA-1: every phone's SHA-1 must be in the key).
+- Build the debug APK from the final `develop` and install it on two phones. Check that sign-in works on both. The API key is restricted by package name and SHA-1, and the SHA-1 belongs to the keystore that signed the APK (the PC that built it), not to the phone. So build the demo APK on a PC whose debug SHA-1 is already in the key, and install that same APK on both phones.
 - Create two test accounts: **Owner** and **Client**. Owner has 2 or 3 listings (one sale, one rent, one stay) with real photos and an exact location.
 - Put one phone in Arabic and one in French, so the RTL switch is visible.
 - Charge the phones, turn off notifications from other apps, connect to a stable network. Keep a second network (phone hotspot) ready.
@@ -23,7 +23,7 @@ Draft written on 15 Nov from what is merged in `develop`. Lines marked **(if mer
 
 **5. Owner side: notifications and My listings (1.5 min).** On the Owner phone: the bell and the chat icon show an unread badge; the notification center lists the conversation and opens the right chat. Say clearly: *"Alerts work while the app is running; there is no server push, because that needs a paid plan."* Then Profile > My listings: change a status (available, reserved, sold).
 
-**6. Publish and edit (1.5 min).** Publish a listing: fields, city, picking the exact location, up to 10 photos (duplicates are skipped). **(if merged)** Edit the listing from My listings: the form is pre-filled, change the price and a photo, save, and show the updated listing on the Client phone.
+**6. Publish and edit (1.5 min).** Publish a listing: fields, city, picking the exact location, up to 10 photos (duplicates are skipped). Edit the listing from My listings: the form is pre-filled, change the price and a photo, save, and show the updated listing on the Client phone.
 
 **7. Profile, language and safety (1 min).** Profile: edit name and photo, **(if merged)** remove the photo, tap the photo to see it full size. Settings: switch the language between Arabic, French and English, and show that the layout flips to right-to-left. Mention that the account can be deleted from Settings.
 
@@ -42,7 +42,7 @@ Say them yourselves before the jury asks. The full list is in the report ("limit
 
 ## If something fails during the demo
 
-- **Sign-in fails on a phone:** the phone's SHA-1 is missing from the API key. Switch to the other phone and continue; fix it after.
+- **Sign-in fails on a phone:** the SHA-1 of this build is missing from the API key. Both phones run the same APK, so switching phones does not help. Play the screen recording of the sign-in step and continue. Afterwards run gradlew signingReport on the build PC and add the SHA-1 to the key.
 - **Slow or no network:** switch to the hotspot. If it is still slow, play the screen recording of that step.
 - **A photo or listing does not load:** go to the next listing; do not retry more than once on stage.
 - **The app crashes:** reopen it, sign in again, and continue from the next step.

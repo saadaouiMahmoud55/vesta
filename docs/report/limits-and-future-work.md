@@ -33,7 +33,7 @@ Draft for the final report (VST-57). Written 14 Nov 2026 from what we found in t
 
 **React Native app**
 
-- It is a reduced MVP of the Flutter app: sign-in, navigation, a map, and part of the listings. No AI assistant, bookings, reviews or message alerts. The listings work (VST-39) was not finished.
+- It is a reduced MVP of the Flutter app: sign-in, navigation, and part of the listings (the map and the contact buttons only if their pull requests are merged before the freeze). Message alerts and the unread badge are in. No AI assistant, bookings or reviews. The listings work (VST-39) was not finished.
 
 **Content**
 
@@ -53,5 +53,5 @@ Draft for the final report (VST-57). Written 14 Nov 2026 from what we found in t
 - **Native Arabic review** of every text, aligned with the Tunisian glossary.
 - **Dark mode** in Settings. Every screen uses the brand color tokens, so it needs a second set of tokens and a check of each screen.
 - **Change the offer type of an existing listing** (sale, rent or stay). The allowed statuses depend on the offer type, so a change also needs a status reset and a rules change.
-- **Edit name and email in the profile** (VST-128), not only the photo.
+- **Edit email and phone in the profile** (VST-128): the name and the photo are already done.
 - **More real-phone testing** on different devices and Android versions.
