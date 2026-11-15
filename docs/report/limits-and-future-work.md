@@ -51,4 +51,7 @@ Draft for the final report (VST-57). Written 14 Nov 2026 from what we found in t
 - **Report and block users**, privacy page and terms checkbox at sign-up.
 - **Web support for photos** (add the `pica` script and read bytes instead of a file path).
 - **Native Arabic review** of every text, aligned with the Tunisian glossary.
+- **Dark mode** in Settings. Every screen uses the brand color tokens, so it needs a second set of tokens and a check of each screen.
+- **Change the offer type of an existing listing** (sale, rent or stay). The allowed statuses depend on the offer type, so a change also needs a status reset and a rules change.
+- **Edit name and email in the profile** (VST-128), not only the photo.
 - **More real-phone testing** on different devices and Android versions.
