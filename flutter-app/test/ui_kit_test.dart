@@ -377,6 +377,22 @@ void main() {
       expect(labelDirection.textDirection, TextDirection.ltr);
     });
 
+    testWidgets('starts on the right edge in Arabic, on the left otherwise', (
+      tester,
+    ) async {
+      await pumpField(tester, ltr: true);
+      expect(
+        tester.widget<TextField>(find.byType(TextField)).textAlign,
+        TextAlign.right,
+      );
+
+      await pumpField(tester, ltr: false);
+      expect(
+        tester.widget<TextField>(find.byType(TextField)).textAlign,
+        TextAlign.start,
+      );
+    });
+
     testWidgets('does not change the hint and the label without ltr', (
       tester,
     ) async {

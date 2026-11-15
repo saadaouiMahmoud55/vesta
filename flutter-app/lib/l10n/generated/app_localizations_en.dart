@@ -124,6 +124,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get publishSuccess => 'Your listing has been published';
 
   @override
+  String get publishEditTitle => 'Edit listing';
+
+  @override
+  String get publishEditSubmit => 'Save changes';
+
+  @override
+  String get publishEditSuccess => 'Listing updated';
+
+  @override
+  String get publishEditLoadFailed => 'Could not load the listing';
+
+  @override
+  String get publishEditOfferLocked => 'The offer type cannot be changed';
+
+  @override
   String get publishFieldTitle => 'Title';
 
   @override
@@ -586,7 +601,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapViewDetails => 'View details';
 
   @override
-  String get mapNoListings => 'No listing with a location yet';
+  String get mapNoListings => 'No listing to show on the map yet';
 
   @override
   String get mapPickerTitle => 'Choose the location';
@@ -651,6 +666,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get listingDetailAtAGlance => 'At a glance';
+
+  @override
+  String get listingDetailLocation => 'Location';
+
+  @override
+  String get listingDetailOpenMaps => 'Open in Maps';
 
   @override
   String get listingDetailGuests => 'Guests';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -10,6 +11,7 @@ import { PrimaryButton } from '../../core/components/PrimaryButton';
 import { changeAppLanguage } from '../../core/i18n';
 import { useAuth } from '../auth/authController';
 import { theme } from '../../core/theme';
+import { MainStackParamList } from '../../navigation/MainStack';
 
 const languageKeys = {
   en: 'languageEn',
@@ -20,8 +22,12 @@ const languageKeys = {
 export function HomeScreen(): React.JSX.Element {
   const { t } = useTranslation();
   const { signOut } = useAuth();
+<<<<<<< HEAD
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+=======
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+>>>>>>> origin/develop
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <AppText translationKey="appName" style={styles.title} />
@@ -40,10 +46,16 @@ export function HomeScreen(): React.JSX.Element {
           />
         ))}
       </View>
+<<<<<<< HEAD
       {/* Temporary: opens the chat until the real entry point exists. */}
       <PrimaryButton
         labelKey="chatTitle"
         onPress={() => navigation.navigate('ChatList')}
+=======
+      <PrimaryButton
+        labelKey="publishButton"
+        onPress={() => navigation.navigate('PublishListing')}
+>>>>>>> origin/develop
       />
       {/* Temporary: the profile and settings screens will own Log out. */}
       <PrimaryButton labelKey="authLogoutButton" onPress={() => signOut()} />

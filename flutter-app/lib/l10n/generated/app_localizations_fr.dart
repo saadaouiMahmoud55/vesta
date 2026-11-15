@@ -124,6 +124,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get publishSuccess => 'Votre annonce a été publiée';
 
   @override
+  String get publishEditTitle => 'Modifier l\'annonce';
+
+  @override
+  String get publishEditSubmit => 'Enregistrer';
+
+  @override
+  String get publishEditSuccess => 'Annonce mise à jour';
+
+  @override
+  String get publishEditLoadFailed => 'Impossible de charger l\'annonce';
+
+  @override
+  String get publishEditOfferLocked =>
+      'Le type d\'offre ne peut pas être modifié';
+
+  @override
   String get publishFieldTitle => 'Titre';
 
   @override
@@ -594,7 +610,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mapViewDetails => 'Voir les détails';
 
   @override
-  String get mapNoListings => 'Aucune annonce avec une position pour le moment';
+  String get mapNoListings =>
+      'Aucune annonce à afficher sur la carte pour le moment';
 
   @override
   String get mapPickerTitle => 'Choisir l’emplacement';
@@ -661,6 +678,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get listingDetailAtAGlance => 'En un coup d\'œil';
+
+  @override
+  String get listingDetailLocation => 'Emplacement';
+
+  @override
+  String get listingDetailOpenMaps => 'Ouvrir dans Maps';
 
   @override
   String get listingDetailGuests => 'Invités';
