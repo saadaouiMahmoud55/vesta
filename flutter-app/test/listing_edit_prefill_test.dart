@@ -134,4 +134,17 @@ void main() {
     expect(fake.updated, 1);
     expect(fake.created, 0);
   });
+    testWidgets('editing with an empty phone is refused when the listing had one',
+      (tester) async {
+    final fake = await _pump(tester);
+
+    final phoneField = find.widgetWithText(TextFormField, '20123456');
+    await tester.enterText(phoneField, '');
+    await tester.ensureVisible(find.text('Save changes'));
+    await tester.tap(find.text('Save changes'));
+    await tester.pumpAndSettle();
+
+    expect(fake.updated, 0);
+    expect(find.text('Enter a valid Tunisian phone number'), findsOneWidget);
+  });
 }

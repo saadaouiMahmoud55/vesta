@@ -58,6 +58,7 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
   bool _loadingEdit = false;
   bool _editNotFound = false;
   bool _editLoadFailed = false;
+  bool _hadContact = false;
 
   bool get _isEditing => widget.listingId != null;
 
@@ -118,6 +119,7 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
       _guests.text = _numText(listing.maxGuests);
       _phone.text = contact?.phone.replaceFirst('+216', '') ?? '';
       _whatsapp = contact?.whatsapp ?? false;
+      _hadContact = contact != null;
       _listingType = listing.listingType;
       _rentPeriod = listing.rentPeriod;
       if (propertyTypes.contains(listing.propertyType)) {
@@ -664,7 +666,7 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                   prefixText: '+216 ',
                 ),
                 validator: (v) =>
-                    (_isEditing && (v ?? '').trim().isEmpty) ||
+                    (_isEditing && !_hadContact && (v ?? '').trim().isEmpty) ||
                         isValidTunisianPhone(v ?? '')
                     ? null
                     : l.listingErrorPhoneInvalid,
