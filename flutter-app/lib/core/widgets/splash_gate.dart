@@ -54,14 +54,18 @@ class _SplashGateState extends State<SplashGate> {
             key: const Key('splash'),
             opacity: _showing ? 1 : 0,
             duration: _fade,
-            child: const ColoredBox(
-              color: AppColors.white,
-              child: Center(
-                child: Image(
-                  image: AssetImage('assets/images/logo.png'),
-                  width: 220,
-                  height: 220,
-                  semanticLabel: 'Vesta',
+            // No MaterialApp above: the label of the logo needs a direction.
+            child: const Directionality(
+              textDirection: TextDirection.ltr,
+              child: ColoredBox(
+                color: AppColors.white,
+                child: Center(
+                  child: Image(
+                    image: AssetImage('assets/images/logo.png'),
+                    width: 220,
+                    height: 220,
+                    semanticLabel: 'Vesta',
+                  ),
                 ),
               ),
             ),
