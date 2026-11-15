@@ -515,7 +515,10 @@ class _PhotoGalleryState extends State<_PhotoGallery> {
                   color: theme.colorScheme.surface.withValues(alpha: 0.85),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Text('${_index + 1} / ${widget.photos.length}'),
+                child: Text(
+                  '${_index + 1} / ${widget.photos.length}',
+                  textDirection: TextDirection.ltr,
+                ),
               ),
             ),
         ],
