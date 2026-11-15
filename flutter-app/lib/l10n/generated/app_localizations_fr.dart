@@ -375,6 +375,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get listingsEmpty => 'Aucune annonce pour l\'instant';
 
   @override
+  String listingsWelcomeBack(String name) {
+    return 'Bon retour, $name';
+  }
+
+  @override
+  String listingsWelcomeNew(String name) {
+    return 'Bienvenue sur Vesta, $name';
+  }
+
+  @override
   String get favoritesFilterAll => 'Tous';
 
   @override
@@ -456,6 +466,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get authSignUpSubtitle =>
       'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.';
+
+  @override
+  String get authSignUpProverb => '« Le voisin avant la maison. »';
 
   @override
   String get authContinueAsGuest => 'Continuer en tant qu\'invité';

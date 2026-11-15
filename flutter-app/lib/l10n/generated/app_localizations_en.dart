@@ -369,6 +369,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listingsEmpty => 'No listings yet';
 
   @override
+  String listingsWelcomeBack(String name) {
+    return 'Welcome back, $name';
+  }
+
+  @override
+  String listingsWelcomeNew(String name) {
+    return 'Welcome to Vesta, $name';
+  }
+
+  @override
   String get favoritesFilterAll => 'All';
 
   @override
@@ -450,6 +460,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authSignUpSubtitle =>
       'Create your account to save favorites, publish your own place and send messages to owners.';
+
+  @override
+  String get authSignUpProverb => '“The neighbor before the house.”';
 
   @override
   String get authContinueAsGuest => 'Continue as guest';

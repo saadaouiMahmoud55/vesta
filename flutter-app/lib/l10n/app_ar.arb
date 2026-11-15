@@ -117,6 +117,22 @@
   "favoritesErrorNotSignedIn": "سجّل الدخول لحفظ المفضلة.",
   "favoritesErrorUnknown": "حدث خطأ. حاول مرة أخرى.",
   "listingsEmpty": "لا توجد إعلانات بعد",
+  "listingsWelcomeBack": "مرحبا بيك من جديد، {name}",
+  "@listingsWelcomeBack": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "listingsWelcomeNew": "مرحبا بيك في Vesta، {name}",
+  "@listingsWelcomeNew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "favoritesFilterAll": "الكل",
   "favoritesFilterBuy": "شراء",
   "favoritesFilterRent": "كراء",
@@ -143,6 +159,7 @@
   "authWelcomeTitle": "مرحبا بيك في Vesta",
   "authWelcomeSubtitle": "ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.",
   "authSignUpSubtitle": "أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.",
+  "authSignUpProverb": "«الجار قبل الدار»",
   "authContinueAsGuest": "كمّل كضيف",
   "loading": "جارٍ التحميل…",
   "homePriceExample": "مثال على السعر: {price}",
