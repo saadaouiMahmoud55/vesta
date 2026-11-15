@@ -46,8 +46,10 @@ abstract class AppRoutes {
   /// Debug only: every shared widget on one screen (VST-93).
   static const uiKit = '/ui-kit';
   static const listingDetail = '/listing/:id';
+  static const editListing = '/listing/:id/edit';
 
   static String listingDetailPath(String id) => '/listing/$id';
+  static String editListingPath(String id) => '/listing/$id/edit';
   static String chatRoomPath(String conversationId) => '/chat/$conversationId';
 }
 
@@ -84,7 +86,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final signedIn = auth.value != null;
       final location = state.matchedLocation;
       final accountOnly = _accountOnlyRoutes.contains(location) ||
-          location.startsWith('${AppRoutes.chat}/');
+          location.startsWith('${AppRoutes.chat}/') ||
+          (location.startsWith('/listing/') && location.endsWith('/edit'));
       if (!signedIn && accountOnly) {
         return AppRoutes.explore;
       }
@@ -173,6 +176,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.publish,
         builder: (context, state) => const PublishListingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.editListing,
+        builder: (context, state) =>
+            PublishListingScreen(listingId: state.pathParameters['id']),
       ),
       // Details of one listing, open to guests (VST-72).
       GoRoute(

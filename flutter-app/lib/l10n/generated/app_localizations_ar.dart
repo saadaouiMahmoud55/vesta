@@ -55,6 +55,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authPasswordLabel => 'كلمة السر';
 
   @override
+  String get authShowPassword => 'أظهر كلمة السر';
+
+  @override
+  String get authHidePassword => 'أخفي كلمة السر';
+
+  @override
   String get authDisplayNameLabel => 'الاسم الكامل';
 
   @override
@@ -114,6 +120,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get publishSuccess => 'تم نشر الإعلان متاعك';
+
+  @override
+  String get publishEditTitle => 'تعديل الإعلان';
+
+  @override
+  String get publishEditSubmit => 'حفظ';
+
+  @override
+  String get publishEditSuccess => 'تم تحديث الإعلان';
+
+  @override
+  String get publishEditLoadFailed => 'تعذّر تحميل الإعلان';
+
+  @override
+  String get publishEditOfferLocked => 'لا يمكن تغيير نوع العرض';
 
   @override
   String get publishFieldTitle => 'العنوان';
@@ -361,7 +382,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesFilterEmpty => 'لا توجد مفضلة في هذه الفئة';
 
   @override
-  String get favoritesEmptyAction => 'استكشف الإعلانات';
+  String get favoritesEmptyAction => 'اكتشف الإعلانات';
 
   @override
   String get settingsTitle => 'الإعدادات';
@@ -576,7 +597,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mapViewDetails => 'عرض التفاصيل';
 
   @override
-  String get mapNoListings => 'لا توجد إعلانات بموقع حتى الآن';
+  String get mapNoListings => 'لا توجد إعلانات للعرض على الخريطة حتى الآن';
 
   @override
   String get mapPickerTitle => 'اختار الموقع';
@@ -640,6 +661,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get listingDetailAtAGlance => 'نظرة سريعة';
+
+  @override
+  String get listingDetailLocation => 'الموقع';
+
+  @override
+  String get listingDetailOpenMaps => 'فتح في الخرائط';
 
   @override
   String get listingDetailGuests => 'الضيوف';

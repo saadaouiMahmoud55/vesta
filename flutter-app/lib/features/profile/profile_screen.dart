@@ -157,6 +157,8 @@ class ProfileScreen extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           _MyListings(
+            onEdit: (listing) =>
+                context.push(AppRoutes.editListingPath(listing.id)),
             onDelete: (listing) => _confirmDelete(context, ref, listing),
             onChangeStatus: (listing) => _changeStatus(context, ref, listing),
             onPublish: () => _publish(context, ref),
@@ -259,11 +261,13 @@ class _ProfileHeader extends ConsumerWidget {
 
 class _MyListings extends ConsumerWidget {
   const _MyListings({
+    required this.onEdit,
     required this.onDelete,
     required this.onChangeStatus,
     required this.onPublish,
   });
 
+  final void Function(Listing listing) onEdit;
   final void Function(Listing listing) onDelete;
   final void Function(Listing listing) onChangeStatus;
   final VoidCallback onPublish;
@@ -297,6 +301,7 @@ class _MyListings extends ConsumerWidget {
                 child: _MyListingCard(
                   listing: listing,
                   busy: busy,
+                  onEdit: () => onEdit(listing),
                   onDelete: () => onDelete(listing),
                   onChangeStatus: () => onChangeStatus(listing),
                 ),
@@ -312,12 +317,14 @@ class _MyListingCard extends ConsumerWidget {
   const _MyListingCard({
     required this.listing,
     required this.busy,
+    required this.onEdit,
     required this.onDelete,
     required this.onChangeStatus,
   });
 
   final Listing listing;
   final bool busy;
+  final VoidCallback onEdit;
   final VoidCallback onDelete;
   final VoidCallback onChangeStatus;
 
@@ -426,6 +433,11 @@ class _MyListingCard extends ConsumerWidget {
                     ),
                   ],
                 ),
+              ),
+              IconButton(
+                tooltip: l10n.profileEditListing,
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: busy ? null : onEdit,
               ),
               IconButton(
                 tooltip: l10n.profileDeleteListing,

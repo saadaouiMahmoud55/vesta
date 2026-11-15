@@ -118,21 +118,36 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // Opening or receiving messages clears the unread badge.
     ref.listen(conversationsProvider, (_, _) => _markReadIfNeeded(myUid));
-    ref.listen(messagesProvider(widget.conversationId), (_, next) {
-      final count = next.value?.length ?? 0;
-      _markReadIfNeeded(myUid);
-      if (count > _lastCount && _scroll.hasClients) {
-        // The list is reversed: 0 is the bottom, where the newest message is.
-        _scroll.animateTo(
-          0,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-        );
-      }
-      _lastCount = count;
-    });
 
-    final messages = ref.watch(messagesProvider(widget.conversationId));
+    // The conversation document is created with the FIRST message. Before
+    // that, the rules refuse to read its messages (there is nobody in the
+    // conversation yet), and the provider would retry forever: the screen
+    // stayed on a spinner. So we only listen to the messages once the
+    // conversation exists. null = still checking.
+    final conversations = ref.watch(conversationsProvider);
+    final bool? exists = conversations.hasError
+        ? false
+        : conversations.value?.any((c) => c.id == widget.conversationId);
+
+    if (exists == true) {
+      ref.listen(messagesProvider(widget.conversationId), (_, next) {
+        final count = next.value?.length ?? 0;
+        _markReadIfNeeded(myUid);
+        if (count > _lastCount && _scroll.hasClients) {
+          // The list is reversed: 0 is the bottom, where the newest message is.
+          _scroll.animateTo(
+            0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+        _lastCount = count;
+      });
+    }
+
+    final messages = exists == true
+        ? ref.watch(messagesProvider(widget.conversationId))
+        : null;
 
     return Column(
       children: [
@@ -142,7 +157,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         else if (!listingAsync.isLoading)
           _ListingRemovedStrip(text: l10n.chatListingRemoved),
         Expanded(
-          child: messages.when(
+          child: exists == false
+              ? Center(
+                  child: Text(
+                    l10n.chatNoMessages,
+                    style: AppTextStyles.body.copyWith(color: AppColors.grey),
+                  ),
+                )
+              : messages == null
+              ? const LoadingView()
+              : messages.when(
             loading: () => const LoadingView(),
             error: (error, stackTrace) => ErrorState(
               message: l10n.chatLoadError,

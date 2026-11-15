@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/rtl_helpers.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'auth_controller.dart';
 import 'auth_messages.dart';
@@ -85,6 +86,9 @@ class _ForgotPasswordDialogState extends ConsumerState<_ForgotPasswordDialog> {
                   keyboardType: TextInputType.emailAddress,
                   autofillHints: const [AutofillHints.email],
                   autofocus: true,
+                  // An email reads left-to-right; in Arabic it starts on the right.
+                  textDirection: TextDirection.ltr,
+                  textAlign: isRtl(context) ? TextAlign.right : TextAlign.start,
                   decoration: InputDecoration(
                     labelText: l10n.authEmailLabel,
                     errorText: authErrorOrNull(l10n, _error),

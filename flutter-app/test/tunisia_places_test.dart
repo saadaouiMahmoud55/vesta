@@ -31,6 +31,13 @@ void main() {
       expect(placeByName('توزر')?.name, 'Tozeur');
     });
 
+    test('Arabic spelling variants and extra spaces find the same place', () {
+      expect(placeByName('اريانه')?.name, 'Ariana');
+      expect(placeByName('أريانة')?.name, 'Ariana');
+      expect(placeByName('  تونس  ')?.name, 'Tunis');
+      expect(placeByName('بن  عروس')?.name, 'Ben Arous');
+    });
+
     test('unknown or empty text gives null', () {
       expect(placeByName('Atlantis'), isNull);
       expect(placeByName(''), isNull);
@@ -50,6 +57,11 @@ void main() {
       expect(names.first, 'Sousse');
       expect(names, contains('Hammam Sousse'));
       expect(names.indexOf('Sousse'), lessThan(names.indexOf('Hammam Sousse')));
+    });
+
+    test('Arabic search ignores the spelling variants', () {
+      expect(searchPlaces('اريان').map((p) => p.name), contains('Ariana'));
+      expect(searchPlaces('أريان').map((p) => p.name), contains('Ariana'));
     });
 
     test('accents do not matter and the result is limited', () {
