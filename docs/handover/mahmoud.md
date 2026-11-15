@@ -44,7 +44,7 @@
 2. Appuyer sur Appeler puis WhatsApp : le numéro normalisé s'ouvre dans l'application du téléphone.
 3. Publier une annonce avec un numéro valide, puis avec un numéro invalide : le formulaire refuse l'invalide.
 4. Ouvrir Profil et Favoris, ajouter puis retirer un favori.
-5. Lancer `flutter analyze`, `flutter test` (117 tests passent) et `node tools/check-colors.js`.
+5. Lancer `flutter analyze`, `flutter test` (tous les tests passent) et `node tools/check-colors.js`.
 6. Tester sur un téléphone Android réel : appel, WhatsApp, langue arabe (écran inversé, numéros restant de gauche à droite).
 
 ## Limites connues
@@ -53,7 +53,6 @@
 - **Preuve que le numéro est protégé** : la règle est `allow read: if signedIn();` sur `listings/{id}/contact/info` (`firestore.rules`, ligne 160). Le test `assertFails(getDoc(contactRef(anon())))` dans `rules.test.js` (ligne 568) prouve qu'un visiteur sans compte ne peut pas le lire. L'application ne connecte jamais personne en anonyme, donc le risque ne vient que d'un appel direct à Firebase par un compte anonyme créé hors de l'application.
 - Pas de téléphone Android réel utilisé pour mes tests : validés sur Chrome, et sur la tablette de Manar.
 - Clé d'upload Google Play détenue par Manar : je ne peux pas signer un nouveau build seul.
-- Éditer une annonce existante : pas d'écran.
 
 ## Questions de VST-113
 
