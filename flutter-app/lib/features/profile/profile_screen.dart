@@ -291,23 +291,15 @@ class _MyListings extends ConsumerWidget {
         return Column(
           children: [
             for (final listing in items)
-<<<<<<< HEAD
-              _MyListingCard(
-                listing: listing,
-                busy: busy,
-                onEdit: () => onEdit(listing),
-                onDelete: () => onDelete(listing),
-                onChangeStatus: () => onChangeStatus(listing),
-=======
               Padding(
                 padding: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: _MyListingCard(
                   listing: listing,
                   busy: busy,
+                  onEdit: () => onEdit(listing),
                   onDelete: () => onDelete(listing),
                   onChangeStatus: () => onChangeStatus(listing),
                 ),
->>>>>>> origin/develop
               ),
           ],
         );
