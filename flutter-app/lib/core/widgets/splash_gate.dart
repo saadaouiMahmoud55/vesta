@@ -11,7 +11,7 @@ class SplashGate extends StatefulWidget {
   const SplashGate({
     super.key,
     required this.child,
-    this.duration = const Duration(milliseconds: 1800),
+    this.duration = const Duration(milliseconds: 1200),
   });
 
   final Widget child;
@@ -54,24 +54,35 @@ class _SplashGateState extends State<SplashGate> {
             key: const Key('splash'),
             opacity: _showing ? 1 : 0,
             duration: _fade,
-            // No MaterialApp above: the label of the logo needs a direction.
-            child: const Directionality(
-              textDirection: TextDirection.ltr,
-              child: ColoredBox(
-                color: AppColors.white,
-                child: Center(
-                  child: Image(
-                    image: AssetImage('assets/images/logo.png'),
-                    width: 220,
-                    height: 220,
-                    semanticLabel: 'Vesta',
-                  ),
-                ),
-              ),
-            ),
+            child: const SplashView(),
           ),
         ),
       ],
+    );
+  }
+}
+
+/// The Vesta logo with the name under it, on white. It has no MaterialApp
+/// above it, so it sets its own text direction. The same picture is the first
+/// frame of the app (see main.dart), so the name is there from the start.
+class SplashView extends StatelessWidget {
+  const SplashView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Directionality(
+      textDirection: TextDirection.ltr,
+      child: ColoredBox(
+        color: AppColors.white,
+        child: Center(
+          child: Image(
+            image: AssetImage('assets/images/logo.png'),
+            width: 220,
+            height: 220,
+            semanticLabel: 'Vesta',
+          ),
+        ),
+      ),
     );
   }
 }
