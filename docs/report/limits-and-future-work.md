@@ -37,7 +37,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 **Contenu**
 
-- Les annonces réelles demandent l'accord écrit du propriétaire. Les annonces sans accord sont clairement indiquées comme contenu de démonstration.
+- Nous n'avons l'accord écrit d'aucun propriétaire, donc il n'y a aucune vraie annonce, même sur Google Play. L'application contient uniquement du contenu de démonstration (annonces « Démo – … », avec le numéro de l'équipe et sans badge de vérification). Un lancement réel demanderait l'accord écrit de chaque propriétaire.
 
 ## Travaux futurs
 
