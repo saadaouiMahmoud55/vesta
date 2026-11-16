@@ -448,6 +448,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Sign in to contact owners, save favorites and publish your own place.';
 
   @override
+  String get authSignUpSubtitle =>
+      'Create your account to save favorites, publish your own place and send messages to owners.';
+
+  @override
   String get authContinueAsGuest => 'Continue as guest';
 
   @override

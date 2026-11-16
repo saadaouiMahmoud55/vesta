@@ -442,6 +442,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.';
 
   @override
+  String get authSignUpSubtitle =>
+      'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.';
+
+  @override
   String get authContinueAsGuest => 'كمّل كضيف';
 
   @override

@@ -11,6 +11,7 @@ import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/password_text_field.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'auth_controller.dart';
+import 'auth_logo.dart';
 import 'auth_messages.dart';
 import 'require_sign_in.dart';
 
@@ -83,6 +84,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const AuthLogo(),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.authSignUpTitle,
                 textAlign: TextAlign.center,
@@ -90,6 +93,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   color: AppColors.navy,
                   fontWeight: FontWeight.w700,
                 ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l10n.authSignUpSubtitle,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
               ),
               const SizedBox(height: AppSpacing.xl),
               AppTextField(

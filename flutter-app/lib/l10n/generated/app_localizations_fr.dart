@@ -454,6 +454,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.';
 
   @override
+  String get authSignUpSubtitle =>
+      'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.';
+
+  @override
   String get authContinueAsGuest => 'Continuer en tant qu\'invité';
 
   @override

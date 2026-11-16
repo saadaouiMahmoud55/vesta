@@ -149,6 +149,8 @@ export default {
   authWelcomeTitle: 'Bienvenue sur Vesta',
   authWelcomeSubtitle:
     'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.',
+  authSignUpSubtitle:
+    'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.',
   authContinueAsGuest: "Continuer en tant qu'invité",
   loading: 'Chargement…',
   homePriceExample: 'Exemple de prix : {{price}}',
