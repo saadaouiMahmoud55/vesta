@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vesta/core/widgets/fade_in_up.dart';
+import 'package:flutterapp/core/widgets/fade_in_up.dart';
 
 void main() {
   testWidgets('FadeInUp shows its child and ends fully visible', (
