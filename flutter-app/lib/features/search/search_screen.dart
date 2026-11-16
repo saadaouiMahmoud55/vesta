@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../auth/auth_controller.dart';
 
 import '../../core/router/app_router.dart';
+import '../../core/widgets/fade_in_up.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../listings/listing_card.dart';
 import '../listings/listing_repository.dart';
