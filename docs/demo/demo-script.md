@@ -15,7 +15,7 @@ Brouillon rédigé le 15 nov. à partir de ce qui est fusionné dans `develop`. 
 
 **1. Ouvrir et parcourir en invité (1 min).** Ouvrir l'application sans compte. L'écran Explorer affiche les annonces. Dire : *« On peut parcourir sans s'inscrire ; un compte n'est nécessaire que pour contacter, mettre en favori ou publier. »* Chercher une ville (essayer une orthographe arabe) et filtrer par type d'offre.
 
-**2. Détails d'une annonce (1 min).** Ouvrir une annonce. Montrer le prix et le badge d'offre (vente, location, séjour), les photos, les équipements, et la petite carte avec la position exacte et le bouton **Ouvrir dans Maps**. Appuyer sur **Contacter le propriétaire** : l'application demande à l'invité de se connecter. Se connecter avec le compte Client.
+**2. Détails d'une annonce (1 min).** Ouvrir une annonce. Montrer le prix et le badge d'offre (vente, location, séjour), les photos, les équipements, et la petite carte avec la position exacte et le bouton **Ouvrir dans Maps**. Appuyer sur **Contacter le propriétaire** : l'application demande à l'invité de se connecter. Se connecter avec le compte Client. Montrer ensuite les boutons **Appeler** et **WhatsApp** (WhatsApp seulement si le propriétaire l'a activé).
 
 **3. Carte (1 min).** Ouvrir l'onglet Carte. Toutes les annonces apparaissent en repères avec le prix ; appuyer sur un repère pour voir l'aperçu, appuyer sur l'aperçu pour ouvrir les détails. Chercher une ville tunisienne.
 
@@ -50,7 +50,7 @@ Les dire nous-mêmes avant que le jury ne les demande. La liste complète est da
 ## Questions probables (préparer une réponse chacune)
 
 1. **Pourquoi Firebase et pas notre propre backend ?** Offre gratuite, développement rapide, et les règles de sécurité protègent les données (modification réservée au propriétaire, contact privé, annonces valides uniquement).
-2. **Comment protégez-vous le numéro de téléphone du propriétaire ?** Il est dans un document privé séparé, lisible seulement par les utilisateurs connectés ; les invités ne peuvent pas le lire.
+2. **Comment protégez-vous le numéro de téléphone du propriétaire ?** Il est dans un document privé séparé, lisible seulement par les utilisateurs connectés ; les invités ne peuvent pas le lire. Limite connue : un compte Firebase anonyme compte comme connecté et pourrait le lire, car la règle `notAnonymous()` (PR #44, fermée) n'est pas dans `develop`. C'est dans les travaux futurs.
 3. **Comment le mode modification garde-t-il les données valides ?** Un seul lot d'écritures met à jour l'annonce, ses photos et son contact ensemble ; le type d'offre et la période sont verrouillés pour que les règles de statut restent valides.
 4. **Comment gérez-vous l'arabe ?** Les fichiers texte (CSV) génèrent les traductions Flutter et React Native ; les prix, numéros de téléphone et e-mails sont forcés de gauche à droite dans les écrans de droite à gauche.
 5. **Que feriez-vous avec plus de temps ?** Voir « Travaux futurs » dans le rapport.
