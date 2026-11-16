@@ -33,7 +33,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 **Application React Native**
 
-- C'est un MVP réduit de l'application Flutter : connexion, navigation et une partie des annonces (la carte et les boutons de contact seulement si leurs pull requests sont fusionnées avant le gel du code). Les alertes de messages et le badge de messages non lus sont présents. Pas d'assistant IA, de réservations ni d'avis. Les annonces (VST-39) n'ont pas été terminées.
+- C'est un MVP réduit de l'application Flutter : connexion, navigation, recherche et une partie des annonces (la carte, PR #91, seulement si elle est fusionnée avant le gel du code). Les alertes de messages et le badge de messages non lus de l'application React Native (PR #111) sont présents. Le chat React Native (VST-45, PR #102) et les boutons de contact (VST-80, PR #103) sont dans des PR ouvertes, non fusionnées avant le gel et non testées sur téléphones réels. Pas d'assistant IA, de réservations ni d'avis. Les annonces (VST-39) n'ont pas été terminées.
 
 **Contenu**
 
