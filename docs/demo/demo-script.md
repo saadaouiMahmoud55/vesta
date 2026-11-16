@@ -1,6 +1,6 @@
 # Script de démonstration Vesta (lun. 16 nov.)
 
-Brouillon rédigé le 15 nov. à partir de ce qui est fusionné dans `develop`. Les lignes marquées **(si fusionné)** dépendent de pull requests encore ouvertes le dimanche : à mettre à jour après les dernières fusions. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
+Rédigé à partir de ce qui est fusionné dans `develop` le 16 nov. (modification d'annonce, suppression et agrandissement de la photo de profil, carte React Native). Si une pull request est fusionnée après cette date, vérifier l'étape correspondante avant la démo. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
 
 ## Avant la démo (dimanche soir)
 
@@ -25,9 +25,9 @@ Brouillon rédigé le 15 nov. à partir de ce qui est fusionné dans `develop`. 
 
 **6. Publier et modifier (1,5 min).** Publier une annonce : champs, ville, choix de la position exacte, jusqu'à 10 photos (les doublons sont ignorés). Modifier l'annonce depuis Mes annonces : le formulaire est pré-rempli, changer le prix et une photo, enregistrer, puis montrer l'annonce mise à jour sur le téléphone Client.
 
-**7. Profil, langue et sécurité (1 min).** Profil : modifier le nom et la photo, **(si fusionné)** supprimer la photo, appuyer sur la photo pour la voir en grand. Paramètres : changer la langue entre arabe, français et anglais, et montrer que la mise en page passe de droite à gauche. Mentionner que le compte peut être supprimé depuis les Paramètres.
+**7. Profil, langue et sécurité (1 min).** Profil : modifier le nom et la photo, supprimer la photo, appuyer sur la photo pour la voir en grand. Paramètres : changer la langue entre arabe, français et anglais, et montrer que la mise en page passe de droite à gauche. Mentionner que le compte peut être supprimé depuis les Paramètres.
 
-**8. Application React Native (30 s).** Dire franchement que l'application React Native est une version réduite (connexion, navigation, une carte **(si fusionné)**, une partie des annonces), et que Flutter est l'application complète.
+**8. Application React Native (30 s).** Dire franchement que l'application React Native est une version réduite (connexion, navigation, une carte, une partie des annonces), et que Flutter est l'application complète.
 
 ## Ce que nous disons sur les limites
 
