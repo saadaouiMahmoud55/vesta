@@ -53,5 +53,6 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - **Relecture native de l'arabe** de tous les textes, alignée sur le glossaire tunisien.
 - **Mode sombre** dans les Paramètres. Chaque écran utilise les jetons de couleur de la marque : il faut un second jeu de jetons et une vérification de chaque écran.
 - **Changer le type d'offre d'une annonce existante** (vente, location ou séjour). Les statuts autorisés dépendent du type d'offre : un changement demande aussi une réinitialisation du statut et une modification des règles.
+- **Statut des annonces, partie 2** (VST-136) : rubans de couleur pour réservé, loué et vendu sur la page de détails, statut « masqué » visible seulement par le propriétaire (règle Firestore et tests de l'émulateur), et nombre de favoris sur chaque carte de « Mes annonces ». La partie 1 est fusionnée et testée sur téléphone.
 - **Modifier l'e-mail et le téléphone dans le profil** (VST-128) : le nom et la photo sont déjà faits.
 - **Plus de tests sur téléphones réels**, avec différents appareils et versions d'Android.
