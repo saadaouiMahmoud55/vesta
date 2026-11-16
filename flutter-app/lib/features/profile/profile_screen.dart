@@ -13,6 +13,7 @@ import '../../core/widgets/app_avatar.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_states.dart';
 import '../../core/widgets/filter_tag.dart';
+import '../../core/widgets/photo_viewer.dart';
 import '../../core/widgets/price_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../auth/auth_controller.dart';
@@ -233,10 +234,14 @@ class _ProfileHeader extends ConsumerWidget {
     final profile = ref.watch(myProfileProvider).value;
     return Column(
       children: [
-        AppAvatar(
-          photoBase64: profile?.photoBase64,
-          name: profile?.displayName,
-          radius: 48,
+        GestureDetector(
+          // Tap the photo to see it full size (VST-134).
+          onTap: () => showPhotoViewer(context, profile?.photoBase64),
+          child: AppAvatar(
+            photoBase64: profile?.photoBase64,
+            name: profile?.displayName,
+            radius: 48,
+          ),
         ),
         const SizedBox(height: AppSpacing.md),
         Text(

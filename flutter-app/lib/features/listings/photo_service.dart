@@ -64,9 +64,12 @@ class PhotoFailure implements Exception {
 /// We stay a little below to keep a safety margin.
 const int maxBase64Chars = 270000;
 
-/// Profile photo: square of 200 px, JPEG, under 100 KB (ticket VST-48).
-const int profilePhotoSide = 200;
-const int maxProfilePhotoBytes = 100 * 1024;
+/// Profile photo: square of 480 px, JPEG, under 120 KB. It was 200 px / 100 KB
+/// (ticket VST-48) but that looks blurry when the photo is shown full size
+/// (VST-134). 120 KB is about 160000 base64 characters, well under the 280000
+/// the rules accept.
+const int profilePhotoSide = 480;
+const int maxProfilePhotoBytes = 120 * 1024;
 
 class PhotoService {
   final ImagePicker _picker = ImagePicker();
