@@ -25,6 +25,13 @@ class ListingFailure implements Exception {
 /// sort before `p2`.
 const int maxListingPhotos = 10;
 
+/// Photo ids to delete after an edit: every id from p{newCount} to p9.
+/// Deleting a document that does not exist is harmless, so this also
+/// cleans old listings whose ids have gaps.
+List<String> stalePhotoIds(int newCount) => [
+  for (var i = newCount; i < maxListingPhotos; i++) 'p$i',
+];
+
 /// Values allowed by the rules and the data model.
 const List<String> listingTypes = ['sale', 'rent'];
 const List<String> rentPeriods = ['night', 'month', 'year'];
@@ -182,6 +189,85 @@ class ListingRepository {
 
       await batch.commit();
       return ref.id;
+    } on FirebaseException catch (e) {
+      throw ListingFailure(_mapCode(e.code));
+    }
+  }
+
+  /// Updates a listing, its photos and its private contact in ONE batch.
+  /// The offer type and period are immutable in the edit flow because they
+  /// determine which statuses are valid. [originalPhotos] identifies entries
+  /// that can be skipped when rewriting photo documents.
+  Future<void> updateListing({
+    required String listingId,
+    required NewListing listing,
+    required List<String> photosBase64,
+    required List<String> originalPhotos,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null) throw const ListingFailure(ListingError.notSignedIn);
+    if (photosBase64.isEmpty) {
+      throw const ListingFailure(ListingError.noPhotos);
+    }
+    if (photosBase64.length > maxListingPhotos) {
+      throw const ListingFailure(ListingError.tooManyPhotos);
+    }
+
+    try {
+      final ref = _db.collection('listings').doc(listingId);
+      final batch = _db.batch();
+      final hasPosition = listing.latitude != null && listing.longitude != null;
+
+      batch.update(ref, {
+        'title': listing.title,
+        'description': listing.description,
+        'price': listing.price,
+        'propertyType': listing.propertyType,
+        'city': listing.city,
+        'bedrooms': listing.bedrooms ?? FieldValue.delete(),
+        'bathrooms': listing.bathrooms ?? FieldValue.delete(),
+        'areaSqm': listing.areaSqm ?? FieldValue.delete(),
+        'maxGuests': listing.maxGuests ?? FieldValue.delete(),
+        'amenities': listing.amenities.isEmpty
+            ? FieldValue.delete()
+            : listing.amenities,
+        'checkIn': listing.checkIn ?? FieldValue.delete(),
+        'checkOut': listing.checkOut ?? FieldValue.delete(),
+        'houseRules': listing.houseRules.isEmpty
+            ? FieldValue.delete()
+            : listing.houseRules,
+        'latitude': hasPosition ? listing.latitude : FieldValue.delete(),
+        'longitude': hasPosition ? listing.longitude : FieldValue.delete(),
+        'photoCount': photosBase64.length,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      for (var i = 0; i < photosBase64.length; i++) {
+        final unchanged =
+            i < originalPhotos.length && originalPhotos[i] == photosBase64[i];
+        if (unchanged) continue;
+        batch.set(ref.collection('photos').doc('p$i'), {
+          'base64': photosBase64[i],
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+      for (final id in stalePhotoIds(photosBase64.length)) {
+        batch.delete(ref.collection('photos').doc(id));
+      }
+
+      final contactRef = ref.collection('contact').doc('info');
+      final phone = listing.contactPhone;
+      if (phone == null) {
+        batch.delete(contactRef);
+      } else {
+        batch.set(contactRef, {
+          'contactPhone': phone,
+          'whatsappEnabled': listing.whatsappEnabled,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      await batch.commit();
     } on FirebaseException catch (e) {
       throw ListingFailure(_mapCode(e.code));
     }

@@ -118,6 +118,32 @@ class ListingController extends Notifier<PublishState> {
     return false;
   }
 
+  /// Returns true when the listing edit was saved.
+  Future<bool> update({
+    required String listingId,
+    required NewListing listing,
+    required List<String> photosBase64,
+    required List<String> originalPhotos,
+  }) async {
+    if (state.isLoading) return false;
+    state = const PublishState(isLoading: true);
+    try {
+      await _repository.updateListing(
+        listingId: listingId,
+        listing: listing,
+        photosBase64: photosBase64,
+        originalPhotos: originalPhotos,
+      );
+      state = const PublishState();
+      return true;
+    } on ListingFailure catch (e) {
+      state = PublishState(error: e.error);
+    } catch (_) {
+      state = const PublishState(error: ListingError.unknown);
+    }
+    return false;
+  }
+
   void reset() => state = const PublishState();
 }
 

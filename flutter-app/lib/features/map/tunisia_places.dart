@@ -70,14 +70,27 @@ const List<TunisiaPlace> tunisiaPlaces = [
   TunisiaPlace('Sbeitla', 'سبيطلة', 35.2325, 9.1175),
 ];
 
+/// Same text, same spelling: [normalizeSearchText] plus the Arabic variants
+/// people type differently (أ إ آ for ا, ة for ه, ى for ي), the vowel marks
+/// removed, and inner spaces reduced to one. "أريانة" and "اريانه" match.
+String _normalizePlaceText(String input) {
+  final text = normalizeSearchText(input)
+      .replaceAll(RegExp('[\u064B-\u0652\u0640]'), '')
+      .replaceAll(RegExp('[\u0622\u0623\u0625]'), '\u0627')
+      .replaceAll('\u0629', '\u0647')
+      .replaceAll('\u0649', '\u064A')
+      .replaceAll(RegExp(r'\s+'), ' ');
+  return text;
+}
+
 /// The place with exactly this name (Latin or Arabic), ignoring case and
 /// accents. null when the text is not a known place.
 TunisiaPlace? placeByName(String? text) {
-  final wanted = normalizeSearchText(text ?? '');
+  final wanted = _normalizePlaceText(text ?? '');
   if (wanted.isEmpty) return null;
   for (final place in tunisiaPlaces) {
-    if (normalizeSearchText(place.name) == wanted ||
-        place.nameAr == wanted) {
+    if (_normalizePlaceText(place.name) == wanted ||
+        _normalizePlaceText(place.nameAr) == wanted) {
       return place;
     }
   }
@@ -87,15 +100,16 @@ TunisiaPlace? placeByName(String? text) {
 /// Places whose name (Latin or Arabic) contains [query], those that START
 /// with it first. At most [limit]. An empty query gives nothing.
 List<TunisiaPlace> searchPlaces(String query, {int limit = 8}) {
-  final wanted = normalizeSearchText(query);
+  final wanted = _normalizePlaceText(query);
   if (wanted.isEmpty) return const [];
   final starts = <TunisiaPlace>[];
   final contains = <TunisiaPlace>[];
   for (final place in tunisiaPlaces) {
-    final latin = normalizeSearchText(place.name);
-    if (latin.startsWith(wanted) || place.nameAr.startsWith(wanted)) {
+    final latin = _normalizePlaceText(place.name);
+    final arabic = _normalizePlaceText(place.nameAr);
+    if (latin.startsWith(wanted) || arabic.startsWith(wanted)) {
       starts.add(place);
-    } else if (latin.contains(wanted) || place.nameAr.contains(wanted)) {
+    } else if (latin.contains(wanted) || arabic.contains(wanted)) {
       contains.add(place);
     }
   }

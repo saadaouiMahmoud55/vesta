@@ -1,6 +1,6 @@
 # Vesta test plan (VST-52)
 
-Version 2, 3 November 2026 (review of 2 November applied). Owner: Ahmed. Reviewer: Manar.
+Version 2, 3 November 2026 (review of 2 November applied). Rows added on 13 November from the phone tests of the new features: AUTH-08, LST-11, LST-12, MAP-06, CHT-08, NTF-05, GEN-03. Owner: Ahmed. Reviewer: Manar.
 
 This is one test plan for both apps (Flutter and React Native). Every test is run on **both** apps, on a **real phone**, with the same steps and the same expected result. It is used in Sprint 3 (real-phone testing) and in the buffer (final tests), and it is the proof of the tests in the final report.
 
@@ -49,6 +49,7 @@ Accounts A (owner) and B (buyer) are created in AUTH-01. Password: 8 characters 
 | AUTH-05 | Session is kept | 1. Log in as A.<br>2. Close the app completely (swipe it away from the recent apps).<br>3. Open the app again. | The user is still signed in. The login screen is not shown. | Not tested | Not tested | | | |
 | AUTH-06 | Log out | 1. Log in as A.<br>2. Open Profile, tap Settings, then tap Log out.<br>3. Close and reopen the app. | The user is signed out and the app does not sign in again. Publish, Chat and Favorites ask to sign in. | Not tested | Not tested | | | |
 | AUTH-07 | Guest browsing | 1. Open the app signed out.<br>2. Browse the home screen, use Search and open the details of a listing.<br>3. Tap Favorite, Chat, the contact number and Publish.<br>4. Sign in from the sign-in sheet. | Step 2 works without an account and the contact number is hidden. Step 3: each action opens the sign-in sheet. After step 4 the user comes back to the same screen. | Not tested | Not tested | | | |
+| AUTH-08 | Show or hide the password | 1. Open Log in.<br>2. Type a password.<br>3. Tap the eye at the end of the field, then tap it again.<br>4. Repeat on Sign up. | The password is hidden at first. The first tap shows it, the second hides it again. The text typed is kept. It works on Log in and on Sign up, in the three languages. | Pass | Not tested | Manar | 2026-11-13 | |
 
 ## Listings
 Run these tests signed in as A unless the step says otherwise. Offer types and fields: `docs/offer-types.md`.
@@ -64,7 +65,9 @@ Run these tests signed in as A unless the step says otherwise. Offer types and f
 | LST-07 | View the details of a listing | 1. Log in as B.<br>2. Open a listing from the list.<br>3. Swipe through the photos.<br>4. Look at the price, the key facts and the buttons under the price.<br>5. Log in as A and open the same listing. | All photos can be swiped. The price has its unit. The key facts match the offer type. B sees the contact buttons (Call, WhatsApp if enabled, Chat) under the price. A (the owner) does not see the Chat button. | Not tested | Not tested | | | |
 | LST-08 | Edit my listing | 1. Log in as A and open My listings.<br>2. Open a listing, tap Edit, change the price and the description, save.<br>3. Log in as B and open the same listing. | The changes are visible in the list and the details for A and for B. B has no Edit and no Delete button on the listing of A. | Not tested | Not tested | | | |
 | LST-09 | Delete my listing | 1. Log in as A and open My listings.<br>2. Open a listing, tap Delete and confirm.<br>3. Check Search and the Map.<br>4. Log in as B, who had this listing in Favorites, and open Favorites. | A confirmation is asked first. The listing disappears from My listings, Search and the Map. In the Favorites of B it shows "no longer available" and the app does not crash. | Not tested | Not tested | | | |
-| LST-10 | Change the status | 1. Log in as A and open My listings.<br>2. Set the sale to Sold, the rent to Rented and the stay to Unavailable.<br>3. Log in as B, who has all three in Favorites, and check Search, Map and Favorites. | The status choices match the offer type. The three listings no longer appear in Search, Map and Home. In Favorites B still sees them with a status ribbon. | Not tested | Not tested | | | |
+| LST-10 | Change the status | 1. Log in as A and open My listings.<br>2. Set the sale to Sold, the rent to Rented and the stay to Unavailable.<br>3. Log in as B, who has all three in Favorites, and check Search, Map, Home and Favorites. | The status choices match the offer type. The three listings no longer appear in Search and Map. In Home they are still shown, greyed out (Home only skips hidden listings). In Favorites B still sees them with a status ribbon. | Not tested | Not tested | | | |
+| LST-11 | City suggestions (Tunisian places) | 1. Open Publish.<br>2. In the city field type `toz`, then `gabes`, then `توزر` (Tozeur in Arabic).<br>3. Pick a suggestion. Then type a place that is not in the list. | Suggestions of Tunisian places appear while typing (Latin or Arabic spelling, accents ignored: `gabes` finds Gabès, `توزر` finds Tozeur). The picked place fills the field. A place that is not in the list is still accepted. | Pass | Not tested | Manar | 2026-11-13 | |
+| LST-12 | Exact location of the listing | 1. Open Publish and fill the form with the city `Tozeur`.<br>2. Tap the location button.<br>3. Tap a spot on the map, then confirm. Try the my-location button.<br>4. Publish and open the Map tab.<br>5. Publish a second listing in `Tozeur` without choosing a spot, then open the Map tab. | The map opens on the city typed. The pin follows the tap. After publishing, the listing is on the Map tab at the chosen spot. A listing published without a chosen spot is shown at the center of its city. | Pass | Not tested | Manar | 2026-11-13 | |
 
 ## Search and filters
 Prerequisite: at least one sale, one rent and one stay are published (LST-01 to LST-03).
@@ -78,15 +81,16 @@ Prerequisite: at least one sale, one rent and one stay are published (LST-01 to 
 | SRC-05 | No result | 1. Open Search, tab Stay.<br>2. Filter for a combination with no listing (for example Tozeur, under 10 TND). | A clear empty-state message is shown (not a blank screen, not an error). Changing the filter shows results again. | Not tested | Not tested | | | |
 
 ## Map and location
-Prerequisite: listings with coordinates (one of each offer type) and one listing without coordinates.
+Prerequisite: listings with an exact location (one of each offer type) and one listing without coordinates (it is shown at the center of its city).
 
 | ID | Test | Steps | Expected result | Flutter | React Native | Tester | Date | Phone model |
 |---|---|---|---|---|---|---|---|---|
 | MAP-01 | Map opens | 1. Open the Map tab with network on. | The OpenStreetMap tiles load. The map is centered on Tunis by default. Pan and zoom work. `© OpenStreetMap contributors` is visible and can be tapped (not hidden behind a button). | Not tested | Not tested | | | |
 | MAP-02 | Location permission allowed | 1. Open the Map tab for the first time.<br>2. Tap the my-location button.<br>3. Allow the permission. | The permission dialog is shown. After Allow a marker shows the position of the phone and the map recenters on it. | Not tested | Not tested | | | |
 | MAP-03 | Location permission denied | 1. Open the Map tab for the first time.<br>2. Tap the my-location button.<br>3. Deny the permission. | The app does not crash. A message explains that the location is off. The map keeps working on the default center. | Not tested | Not tested | | | |
-| MAP-04 | Pins | 1. Open the Map tab.<br>2. Look at the pins.<br>3. Tap a pin, then tap its mini card. | Only listings with coordinates have a pin; the listing without coordinates is not shown. The pin color follows the offer type (Stay blue, Rent navy, Sale terracotta). The mini card opens the details. | Not tested | Not tested | | | |
+| MAP-04 | Pins | 1. Open the Map tab.<br>2. Look at the pins and check each pin has the color of its offer type (Stay blue, Rent navy, Sale terracotta).<br>3. Tap a pin, then tap its mini card. | Every available listing has a pin: at its exact location, or at the center of its city when it has no coordinates (see MAP-06). Each pin has the color of its offer type. The mini card opens the details. | Not tested | Not tested | | | |
 | MAP-05 | Map without network | 1. Turn off Wi-Fi and mobile data.<br>2. Open the Map tab.<br>3. Turn the network back on. | The app does not crash and shows missing tiles or a message. The tiles load again when the network is back. | Not tested | Not tested | | | |
+| MAP-06 | All listings are on the map | 1. Open the Explore tab and note the available listings.<br>2. Open the Map tab.<br>3. Look for a listing published with an exact location and for an older one without.<br>4. Tap a pin, then its mini card. | Every available listing has a pin. A listing with an exact location is at that spot. A listing without one is at the center of its city (several in the same city are spread so they do not hide each other). A sold, rented, unavailable or hidden listing and a listing with an unknown city have no pin. A reserved listing keeps its pin. The mini card opens the details. | Pass | Not tested | Manar | 2026-11-13 | |
 
 ## Chat
 Use two phones (or one phone and an emulator): phone 1 is signed in as B, phone 2 as A.
@@ -100,6 +104,7 @@ Use two phones (or one phone and an emulator): phone 1 is signed in as B, phone 
 | CHT-05 | Empty and long messages | 1. Open a conversation.<br>2. Try to send an empty message and a message with only spaces.<br>3. Send a message of 2000 characters.<br>4. Try to send a message of 2001 characters. | The empty messages are not sent. The message of 2000 characters is sent and wrapped, and the layout stays correct. The message of 2001 characters is not sent and the app does not crash. | Not tested | Not tested | | | |
 | CHT-06 | Chat when signed out | 1. Open a listing as a guest.<br>2. Tap Chat.<br>3. Sign in. | The sign-in sheet is shown. After signing in the user comes back to the same listing. | Not tested | Not tested | | | |
 | CHT-07 | Call and WhatsApp | 1. As B open a listing with WhatsApp enabled.<br>2. Tap Call, then go back and tap WhatsApp.<br>3. Open a listing without WhatsApp. | Call opens the phone dialer with the number of the listing (`+216...`). WhatsApp opens a chat with that number. The WhatsApp button is hidden when it is not enabled. | Not tested | Not tested | | | |
+| CHT-08 | First message to an owner (no conversation yet) | 1. As B open a listing of A that B never wrote about.<br>2. Tap Contact the owner.<br>3. Look at the screen before typing anything.<br>4. Send a message. | The chat opens at once with the message box and no endless loading spinner. After sending, the message appears and the conversation is in the chat list of B and of A. | Pass | Not tested | Manar | 2026-11-13 | |
 
 ## Favorites
 
@@ -129,6 +134,7 @@ Use two phones. Phone 2 is signed in as A, phone 1 as B. Real push notifications
 | NTF-02 | Notification when the app is in the background (not in MVP) | 1. On phone 2 (A) send the app to the background.<br>2. On phone 1 (B) send a message to A. | A receives a notification for the new message within a few seconds. Real push needs the paid Firebase plan. | Not in MVP | Not in MVP | | | |
 | NTF-03 | Tap the notification (not in MVP) | 1. Receive a message notification on phone 2.<br>2. Tap the notification. | The app opens on the right conversation. Real push needs the paid Firebase plan. | Not in MVP | Not in MVP | | | |
 | NTF-04 | App open and sender (in-app alert only) | 1. On phone 2 keep the app open on another screen.<br>2. On phone 1 send a message.<br>3. Look at both phones. | A sees an in-app alert or a badge for the new message (no push notification). B gets nothing for his own message. | Not tested | Not tested | | | |
+| NTF-05 | Notification center and the red number | 1. On phone 1 (B) send three messages to A in the same conversation.<br>2. On phone 2 (A) look at the chat icon and the bell.<br>3. Open Notifications, then tap the conversation.<br>4. Go back and look at both icons. | The chat icon and the bell show the same red number (3). Notifications lists the conversation with the unread count. Opening the chat clears both numbers and the entry disappears. With nothing unread, Notifications shows an empty message and not Coming soon. | Pass | Not tested | Manar | 2026-11-13 | |
 
 ## Languages, right-to-left and prices
 Run the main flows in the three languages. Test data is Tunisian stays.
@@ -149,6 +155,7 @@ Run the main flows in the three languages. Test data is Tunisian stays.
 |---|---|---|---|---|---|---|---|---|
 | GEN-01 | App without network | 1. Turn off Wi-Fi and mobile data.<br>2. Open the app while signed in.<br>3. Open Search and a listing, then try to publish.<br>4. Turn the network back on. | The app opens without crashing. A message or empty state is shown instead of an endless loading. No partial listing is created. The screens load again when the network is back. | Not tested | Not tested | | | |
 | GEN-02 | Install and first launch | 1. Flutter: install the release APK (`flutter build apk --release`) on a phone that does not have the Google Play test version.<br>2. React Native: open the app in Expo Go with the QR code.<br>3. Open each app for the first time. | Each app opens on the home or login screen without crashing and can reach Firebase (sign up works). | Not tested | Not tested | | | |
+| GEN-03 | No developer entry in Settings | 1. Log in and open Profile, then Settings. | Settings shows only the real entries (language, privacy, contact, version, and Delete account when signed in). There is no UI kit entry. | Pass | Not tested | Manar | 2026-11-13 | |
 
 ## Cross-app (same account, same Firebase)
 Run these tests with both apps installed. Write the result in both result columns.

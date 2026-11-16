@@ -322,6 +322,36 @@ abstract class AppLocalizations {
   /// **'Your listing has been published'**
   String get publishSuccess;
 
+  /// No description provided for @publishEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit listing'**
+  String get publishEditTitle;
+
+  /// No description provided for @publishEditSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get publishEditSubmit;
+
+  /// No description provided for @publishEditSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing updated'**
+  String get publishEditSuccess;
+
+  /// No description provided for @publishEditLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the listing'**
+  String get publishEditLoadFailed;
+
+  /// No description provided for @publishEditOfferLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'The offer type cannot be changed'**
+  String get publishEditOfferLocked;
+
   /// No description provided for @publishFieldTitle.
   ///
   /// In en, this message translates to:
@@ -1219,7 +1249,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapNoListings.
   ///
   /// In en, this message translates to:
-  /// **'No listing with a location yet'**
+  /// **'No listing to show on the map yet'**
   String get mapNoListings;
 
   /// No description provided for @mapPickerTitle.
