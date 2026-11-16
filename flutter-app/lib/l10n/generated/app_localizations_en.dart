@@ -337,6 +337,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profilePhotoErrorRead => 'Could not read this photo';
 
   @override
+  String get profileRemovePhoto => 'Remove photo';
+
+  @override
   String get favoritesEmptyTitle => 'No favorites yet';
 
   @override

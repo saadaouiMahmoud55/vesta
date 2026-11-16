@@ -742,6 +742,12 @@ abstract class AppLocalizations {
   /// **'Could not read this photo'**
   String get profilePhotoErrorRead;
 
+  /// No description provided for @profileRemovePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get profileRemovePhoto;
+
   /// No description provided for @favoritesEmptyTitle.
   ///
   /// In en, this message translates to:

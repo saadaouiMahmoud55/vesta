@@ -333,6 +333,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profilePhotoErrorRead => 'ما نجمناش نقراو الصورة';
 
   @override
+  String get profileRemovePhoto => 'امسح الصورة';
+
+  @override
   String get favoritesEmptyTitle => 'لا توجد مفضلة بعد';
 
   @override

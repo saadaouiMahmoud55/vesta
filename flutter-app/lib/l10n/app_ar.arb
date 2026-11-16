@@ -107,6 +107,7 @@
   "profileErrorUnknown": "صار مشكل، عاود جرّب",
   "profilePhotoErrorTooLarge": "الصورة هذي كبيرة برشا",
   "profilePhotoErrorRead": "ما نجمناش نقراو الصورة",
+  "profileRemovePhoto": "امسح الصورة",
   "favoritesEmptyTitle": "لا توجد مفضلة بعد",
   "favoritesEmptyBody": "اضغط على القلب في أي إعلان لحفظه هنا.",
   "favoritesUnavailable": "هذا الإعلان لم يعد متاحًا",

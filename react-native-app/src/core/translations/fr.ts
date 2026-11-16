@@ -109,6 +109,7 @@ export default {
   profileErrorUnknown: 'Une erreur est survenue. Veuillez réessayer.',
   profilePhotoErrorTooLarge: 'Cette photo est trop lourde',
   profilePhotoErrorRead: 'Impossible de lire cette photo',
+  profileRemovePhoto: 'Supprimer la photo',
   favoritesEmptyTitle: 'Aucun favori pour le moment',
   favoritesEmptyBody: 'Touchez le cœur sur une annonce pour la retrouver ici.',
   favoritesUnavailable: "Cette annonce n'est plus disponible",

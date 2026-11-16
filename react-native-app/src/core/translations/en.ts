@@ -108,6 +108,7 @@ export default {
   profileErrorUnknown: 'Something went wrong. Please try again.',
   profilePhotoErrorTooLarge: 'This photo is too large',
   profilePhotoErrorRead: 'Could not read this photo',
+  profileRemovePhoto: 'Remove photo',
   favoritesEmptyTitle: 'No favorites yet',
   favoritesEmptyBody: 'Tap the heart on a listing to save it here.',
   favoritesUnavailable: 'This listing is no longer available',
