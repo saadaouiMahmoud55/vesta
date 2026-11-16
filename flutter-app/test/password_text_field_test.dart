@@ -27,7 +27,7 @@ void main() {
   testWidgets('the password is hidden at first', (tester) async {
     await _pump(tester);
     expect(_obscured(tester), isTrue);
-    expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.visibility_off_outlined), findsOneWidget);
     expect(find.byTooltip('Show password'), findsOneWidget);
   });
 
@@ -37,13 +37,13 @@ void main() {
     await _pump(tester, controller: controller);
     await tester.enterText(find.byType(TextField), 'secret123');
 
-    await tester.tap(find.byIcon(Icons.visibility_outlined));
+    await tester.tap(find.byIcon(Icons.visibility_off_outlined));
     await tester.pump();
     expect(_obscured(tester), isFalse);
-    expect(find.byIcon(Icons.visibility_off_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
     expect(find.byTooltip('Hide password'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.visibility_off_outlined));
+    await tester.tap(find.byIcon(Icons.visibility_outlined));
     await tester.pump();
     expect(_obscured(tester), isTrue);
     expect(find.byTooltip('Show password'), findsOneWidget);

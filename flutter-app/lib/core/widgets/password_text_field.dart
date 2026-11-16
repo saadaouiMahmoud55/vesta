@@ -42,7 +42,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       onChanged: widget.onChanged,
       suffixIcon: IconButton(
         icon: Icon(
-          _hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+          // The icon shows the state: crossed eye = hidden, open eye = visible.
+          _hidden ? Icons.visibility_off_outlined : Icons.visibility_outlined,
           color: AppColors.grey,
         ),
         tooltip: _hidden ? l10n.authShowPassword : l10n.authHidePassword,
