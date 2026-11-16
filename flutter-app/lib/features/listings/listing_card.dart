@@ -86,7 +86,9 @@ class ListingCard extends ConsumerWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.zero,
-      elevation: 0,
+      // Soft shadow (navy at low opacity) instead of a flat card.
+      elevation: 4,
+      shadowColor: AppColors.navy.withValues(alpha: 0.2),
       color: AppColors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -101,21 +103,40 @@ class ListingCard extends ConsumerWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  if (image != null)
-                    Image(
-                      image: image,
-                      fit: BoxFit.cover,
-                      gaplessPlayback: true,
-                    )
-                  else
-                    ColoredBox(
-                      color: theme.colorScheme.surfaceContainerHighest,
-                      child: Icon(
-                        Icons.home_work_outlined,
-                        size: 48,
-                        color: theme.colorScheme.onSurfaceVariant,
+                  // The photo fades in when it arrives (no jump on scroll).
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: image != null
+                        ? Image(
+                            key: const ValueKey('cover-photo'),
+                            image: image,
+                            fit: BoxFit.cover,
+                            gaplessPlayback: true,
+                          )
+                        : ColoredBox(
+                            key: const ValueKey('cover-placeholder'),
+                            color: theme.colorScheme.surfaceContainerHighest,
+                            child: Icon(
+                              Icons.home_work_outlined,
+                              size: 48,
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                  ),
+                  // Soft navy gradient at the bottom, so the price stays
+                  // readable on any photo.
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.center,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColors.navy.withValues(alpha: 0),
+                          AppColors.navy.withValues(alpha: 0.35),
+                        ],
                       ),
                     ),
+                  ),
                   if (unavailable) ...[
                     // Grey veil over the photo.
                     ColoredBox(color: AppColors.navy.withValues(alpha: 0.45)),
@@ -144,6 +165,27 @@ class ListingCard extends ConsumerWidget {
                     top: AppSpacing.sm,
                     start: AppSpacing.sm,
                     child: OfferTypeBadge(type: type),
+                  ),
+                  PositionedDirectional(
+                    bottom: AppSpacing.sm,
+                    end: AppSpacing.sm,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                        vertical: AppSpacing.xs + 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.white.withValues(alpha: 0.95),
+                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                      ),
+                      child: PriceText(
+                        price: listing.price,
+                        currency: listing.currency,
+                        period: type == OfferType.sale
+                            ? null
+                            : listing.rentPeriod,
+                      ),
+                    ),
                   ),
                   if (showFavorite)
                     PositionedDirectional(
@@ -184,12 +226,6 @@ class ListingCard extends ConsumerWidget {
                     const SizedBox(height: AppSpacing.sm),
                     KeyFactsRow(facts: facts),
                   ],
-                  const SizedBox(height: AppSpacing.sm),
-                  PriceText(
-                    price: listing.price,
-                    currency: listing.currency,
-                    period: type == OfferType.sale ? null : listing.rentPeriod,
-                  ),
                 ],
               ),
             ),

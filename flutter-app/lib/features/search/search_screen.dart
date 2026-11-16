@@ -114,10 +114,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       padding: const EdgeInsets.all(16),
                       itemCount: items.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 12),
-                      itemBuilder: (_, index) => ListingCard(
-                        listing: items[index],
-                        onTap: () => context.push(
-                          AppRoutes.listingDetailPath(items[index].id),
+                      itemBuilder: (_, index) => FadeInUp(
+                        delay: Duration(milliseconds: index < 4 ? index * 60 : 0),
+                        child: ListingCard(
+                          listing: items[index],
+                          onTap: () => context.push(
+                            AppRoutes.listingDetailPath(items[index].id),
+                          ),
                         ),
                       ),
                     ),
