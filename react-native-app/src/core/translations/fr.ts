@@ -121,6 +121,8 @@ export default {
   favoritesErrorNotSignedIn: 'Connecte-toi pour enregistrer des favoris.',
   favoritesErrorUnknown: 'Une erreur est survenue. Réessaie.',
   listingsEmpty: "Aucune annonce pour l'instant",
+  listingsWelcomeBack: 'Bon retour, {{name}}',
+  listingsWelcomeNew: 'Bienvenue sur Vesta, {{name}}',
   favoritesFilterAll: 'Tous',
   favoritesFilterBuy: 'Acheter',
   favoritesFilterRent: 'Louer',
@@ -152,6 +154,7 @@ export default {
     'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.',
   authSignUpSubtitle:
     'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.',
+  authSignUpProverb: '« Ici, vous êtes chez vous. »',
   authContinueAsGuest: "Continuer en tant qu'invité",
   loading: 'Chargement…',
   homePriceExample: 'Exemple de prix : {{price}}',

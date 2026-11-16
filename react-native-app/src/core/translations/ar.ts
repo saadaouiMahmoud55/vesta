@@ -118,6 +118,8 @@ export default {
   favoritesErrorNotSignedIn: 'سجّل الدخول لحفظ المفضلة.',
   favoritesErrorUnknown: 'حدث خطأ. حاول مرة أخرى.',
   listingsEmpty: 'لا توجد إعلانات بعد',
+  listingsWelcomeBack: 'مرحبا بيك من جديد، {{name}}',
+  listingsWelcomeNew: 'مرحبا بيك في Vesta، {{name}}',
   favoritesFilterAll: 'الكل',
   favoritesFilterBuy: 'شراء',
   favoritesFilterRent: 'كراء',
@@ -146,6 +148,7 @@ export default {
   authWelcomeSubtitle: 'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.',
   authSignUpSubtitle:
     'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.',
+  authSignUpProverb: '«الدار دارك»',
   authContinueAsGuest: 'كمّل كضيف',
   loading: 'جارٍ التحميل…',
   homePriceExample: 'مثال على السعر: {{price}}',

@@ -119,6 +119,8 @@ export default {
   favoritesErrorNotSignedIn: 'Sign in to save favorites.',
   favoritesErrorUnknown: 'Something went wrong. Please try again.',
   listingsEmpty: 'No listings yet',
+  listingsWelcomeBack: 'Welcome back, {{name}}',
+  listingsWelcomeNew: 'Welcome to Vesta, {{name}}',
   favoritesFilterAll: 'All',
   favoritesFilterBuy: 'Buy',
   favoritesFilterRent: 'Rent',
@@ -150,6 +152,7 @@ export default {
     'Sign in to contact owners, save favorites and publish your own place.',
   authSignUpSubtitle:
     'Create your account to save favorites, publish your own place and send messages to owners.',
+  authSignUpProverb: '“Make yourself at home.”',
   authContinueAsGuest: 'Continue as guest',
   loading: 'Loading…',
   homePriceExample: 'Example price: {{price}}',

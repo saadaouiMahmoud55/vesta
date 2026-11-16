@@ -117,6 +117,8 @@ favorites.error.permission,You are not allowed to do this.,Tu n'as pas le droit 
 favorites.error.not.signed.in,Sign in to save favorites.,Connecte-toi pour enregistrer des favoris.,سجّل الدخول لحفظ المفضلة.,Favorites,
 favorites.error.unknown,Something went wrong. Please try again.,Une erreur est survenue. Réessaie.,حدث خطأ. حاول مرة أخرى.,Favorites,
 listings.empty,No listings yet,Aucune annonce pour l'instant,لا توجد إعلانات بعد,Listings,
+listings.welcome.back,"Welcome back, {name}","Bon retour, {name}","مرحبا بيك من جديد، {name}",Listings,Explore header after a login
+listings.welcome.new,"Welcome to Vesta, {name}","Bienvenue sur Vesta, {name}","مرحبا بيك في Vesta، {name}",Listings,Explore header after sign up; Vesta stays Latin
 favorites.filter.all,All,Tous,الكل,Favorites,
 favorites.filter.buy,Buy,Acheter,شراء,Favorites,
 favorites.filter.rent,Rent,Louer,كراء,Favorites,
@@ -143,6 +145,7 @@ auth.error.too.many.requests,"Too many attempts, please try again in a few minut
 auth.welcome.title,Welcome to Vesta,Bienvenue sur Vesta,مرحبا بيك في Vesta,Auth,
 auth.welcome.subtitle,"Sign in to contact owners, save favorites and publish your own place.","Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.","ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.",Auth,
 auth.sign.up.subtitle,"Create your account to save favorites, publish your own place and send messages to owners.","Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.","أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.",Auth,
+auth.sign.up.proverb,"“Make yourself at home.”","« Ici, vous êtes chez vous. »","«الدار دارك»",Auth,Tunisian welcome saying shown under the title
 auth.continue_as_guest,Continue as guest,Continuer en tant qu'invité,كمّل كضيف,Auth,
 loading,Loading…,Chargement…,جارٍ التحميل…,Common,React Native only so far
 home.price.example,Example price: {price},Exemple de prix : {price},مثال على السعر: {price},Home,React Native only so far

@@ -367,6 +367,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingsEmpty => 'لا توجد إعلانات بعد';
 
   @override
+  String listingsWelcomeBack(String name) {
+    return 'مرحبا بيك من جديد، $name';
+  }
+
+  @override
+  String listingsWelcomeNew(String name) {
+    return 'مرحبا بيك في Vesta، $name';
+  }
+
+  @override
   String get favoritesFilterAll => 'الكل';
 
   @override
@@ -447,6 +457,9 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get authSignUpSubtitle =>
       'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.';
+
+  @override
+  String get authSignUpProverb => '«الدار دارك»';
 
   @override
   String get authContinueAsGuest => 'كمّل كضيف';
