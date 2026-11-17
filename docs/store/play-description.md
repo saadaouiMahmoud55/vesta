@@ -2,7 +2,7 @@
 
 Texts for the Play Console (VST-61, VST-60). They only describe features that exist in the Flutter app. Add a line here and in the console if a feature (booking, reviews) is merged before the freeze.
 
-The listings in the app are sample content ("Démo" in the title): no owner agreement was available for real listings. The texts say so on purpose.
+The listings in the app are demo content ("Démo" in the title). They use real information and photos shared with the owners' verbal agreement for academic use (see docs/content/sources.md). The texts say it is a demo on purpose.
 
 Limits: short description 80 characters, full description 4000.
 
@@ -16,7 +16,7 @@ Buy, rent or find a stay in Tunisia. Academic project with sample listings.
 
 Vesta is an app to buy, rent or find a place to stay in Tunisia, in Arabic, French and English, with prices in TND.
 
-This is an academic project (ISET Tozeur). The listings shown in the app are sample content, marked "Démo", and do not describe real properties. Please do not contact anyone about them as if they were real offers.
+This is an academic project (ISET Tozeur). The listings shown in the app are demo content, marked "Démo". They use information shared by their owners for academic use and are not current offers. Please do not contact anyone about them as if they were.
 
 What you can do:
 • Browse listings and search by city, price, offer type (buy, rent, stay) and property type
@@ -38,7 +38,7 @@ Acheter, louer ou séjourner en Tunisie. Projet académique, annonces d'exemple.
 
 Vesta est une application pour acheter, louer ou trouver un séjour en Tunisie, en arabe, français et anglais, avec les prix en TND.
 
-Il s'agit d'un projet académique (ISET Tozeur). Les annonces affichées dans l'application sont des exemples, marquées « Démo », et ne décrivent pas de vrais biens. Merci de ne contacter personne à leur sujet comme s'il s'agissait de vraies offres.
+Il s'agit d'un projet académique (ISET Tozeur). Les annonces affichées dans l'application sont des annonces de démonstration, marquées « Démo ». Elles utilisent des informations fournies par leurs propriétaires pour un usage académique et ne sont pas des offres en cours. Merci de ne contacter personne à leur sujet comme s'il s'agissait d'offres réelles.
 
 Ce que vous pouvez faire :
 • Parcourir les annonces et chercher par ville, prix, type d'offre (acheter, louer, séjour) et type de bien
@@ -54,13 +54,13 @@ Vesta n'envoie pas de notifications quand l'application est fermée. Les alertes
 
 **الوصف القصير**
 
-اشترِ أو استأجر أو احجز إقامة في تونس. مشروع أكاديمي بإعلانات تجريبية.
+اشترِ أو استأجر أو ابحث عن إقامة في تونس. مشروع أكاديمي بإعلانات تجريبية.
 
 **الوصف الكامل**
 
 فيستا تطبيق للشراء أو الكراء أو إيجاد إقامة في تونس، بالعربية والفرنسية والإنجليزية، والأسعار بالدينار التونسي.
 
-هذا مشروع أكاديمي (المعهد العالي للدراسات التكنولوجية بتوزر). الإعلانات المعروضة في التطبيق هي أمثلة موسومة بكلمة «Démo» ولا تصف عقارات حقيقية. يرجى عدم الاتصال بأي شخص بخصوصها كأنها عروض حقيقية.
+هذا مشروع أكاديمي (المعهد العالي للدراسات التكنولوجية بتوزر). الإعلانات المعروضة في التطبيق هي إعلانات تجريبية موسومة بكلمة «Démo». تستعمل معلومات قدمها أصحابها لغرض أكاديمي وليست عروضًا حالية. يرجى عدم الاتصال بأي شخص بخصوصها كأنها كذلك.
 
 ما يمكنك فعله:
 • تصفح الإعلانات والبحث حسب المدينة والسعر ونوع العرض (شراء، كراء، إقامة) ونوع العقار
