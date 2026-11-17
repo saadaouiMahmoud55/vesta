@@ -263,9 +263,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileNameLabel => 'الاسم';
 
   @override
-  String get profilePhoneLabel => 'رقم الهاتف';
-
-  @override
   String get profileEmailLabel => 'البريد الإلكتروني';
 
   @override
@@ -316,9 +313,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileErrorNameRequired => 'أدخل اسمك';
-
-  @override
-  String get profileErrorPhoneInvalid => 'أدخل رقم هاتف تونسي صحيح';
 
   @override
   String get profileErrorNoNetwork => 'ما فماش اتصال، عاود جرّب';
@@ -908,4 +902,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String contactMessageStay(String title) {
     return 'عسلامة، مهتم بالإقامة في $title على Vesta';
   }
+
+  @override
+  String get profilePhoneLabel => 'رقم الهاتف';
+
+  @override
+  String get profileErrorPhoneInvalid =>
+      'أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام)';
+
+  @override
+  String get profilePasswordLabel => 'كلمة السر الحالية';
+
+  @override
+  String get profileEmailSent =>
+      'بعثنالك إيميل تأكيد على العنوان الجديد. الإيميل يتبدّل كي تأكّد.';
+
+  @override
+  String get profileErrorEmailInvalid => 'أدخل عنوان إيميل صحيح';
+
+  @override
+  String get profileErrorEmailInUse => 'هذا الإيميل مستعمل في حساب آخر';
+
+  @override
+  String get profileErrorWrongPassword => 'كلمة السر غالطة';
+
+  @override
+  String get profileErrorPasswordRequired => 'أدخل كلمة السر الحالية';
 }

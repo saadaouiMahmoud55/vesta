@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../lib/features/profile/profile_controller.dart';
-import '../lib/features/profile/profile_messages.dart';
-import '../lib/features/profile/user_repository.dart';
-import '../lib/l10n/generated/app_localizations_en.dart';
+import 'package:flutterapp/features/profile/profile_controller.dart';
+import 'package:flutterapp/features/profile/profile_messages.dart';
+import 'package:flutterapp/features/profile/user_repository.dart';
+import 'package:flutterapp/l10n/generated/app_localizations_en.dart';
 
 void main() {
   group('validatePhone', () {
@@ -29,5 +29,34 @@ void main() {
       profileErrorMessage(l10n, ProfileError.phoneInvalid),
       l10n.profileErrorPhoneInvalid,
     );
+  });
+
+  group('email change validation', () {
+    test('invalid emails are rejected', () {
+      expect(validateEmail(''), ProfileError.emailInvalid);
+      expect(validateEmail('abc'), ProfileError.emailInvalid);
+      expect(validateEmail('a@b'), ProfileError.emailInvalid);
+    });
+
+    test('a valid email passes', () {
+      expect(validateEmail('nom@exemple.com'), isNull);
+    });
+
+    test('an empty password is rejected', () {
+      expect(validatePassword(''), ProfileError.passwordRequired);
+      expect(validatePassword('secret1'), isNull);
+    });
+
+    test('email errors have translated messages', () {
+      final l10n = AppLocalizationsEn();
+      for (final e in [
+        ProfileError.emailInvalid,
+        ProfileError.emailInUse,
+        ProfileError.wrongPassword,
+        ProfileError.passwordRequired,
+      ]) {
+        expect(profileErrorMessage(l10n, e), isNotEmpty);
+      }
+    });
   });
 }

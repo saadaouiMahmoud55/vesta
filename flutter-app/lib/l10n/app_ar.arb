@@ -84,7 +84,6 @@
   "photoErrorReadFailed": "ما نجمناش نقراو الصورة",
   "profileEditTitle": "عدّل حسابي",
   "profileNameLabel": "الاسم",
-  "profilePhoneLabel": "رقم الهاتف",
   "profileEmailLabel": "البريد الإلكتروني",
   "profileSaveButton": "احفظ",
   "profileChangePhoto": "بدّل الصورة",
@@ -102,7 +101,6 @@
   "profileCancel": "إلغاء",
   "profileListingDeleted": "تم حذف الإعلان",
   "profileErrorNameRequired": "أدخل اسمك",
-  "profileErrorPhoneInvalid": "أدخل رقم هاتف تونسي صحيح",
   "profileErrorNoNetwork": "ما فماش اتصال، عاود جرّب",
   "profileErrorPermission": "ما عندكش الصلاحية باش تعمل هذا",
   "profileErrorNotSignedIn": "سجّل الدخول قبل",
@@ -339,5 +337,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePhoneLabel": "رقم الهاتف",
+  "profileErrorPhoneInvalid": "أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام)",
+  "profilePasswordLabel": "كلمة السر الحالية",
+  "profileEmailSent": "بعثنالك إيميل تأكيد على العنوان الجديد. الإيميل يتبدّل كي تأكّد.",
+  "profileErrorEmailInvalid": "أدخل عنوان إيميل صحيح",
+  "profileErrorEmailInUse": "هذا الإيميل مستعمل في حساب آخر",
+  "profileErrorWrongPassword": "كلمة السر غالطة",
+  "profileErrorPasswordRequired": "أدخل كلمة السر الحالية"
 }

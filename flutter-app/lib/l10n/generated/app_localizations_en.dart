@@ -267,9 +267,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileNameLabel => 'Name';
 
   @override
-  String get profilePhoneLabel => 'Phone number';
-
-  @override
   String get profileEmailLabel => 'Email';
 
   @override
@@ -320,9 +317,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileErrorNameRequired => 'Name is required';
-
-  @override
-  String get profileErrorPhoneInvalid => 'Enter a valid Tunisian phone number';
 
   @override
   String get profileErrorNoNetwork => 'No connection. Please try again.';
@@ -918,4 +912,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String contactMessageStay(String title) {
     return 'Hello, I am interested in staying at $title on Vesta';
   }
+
+  @override
+  String get profilePhoneLabel => 'Phone number';
+
+  @override
+  String get profileErrorPhoneInvalid =>
+      'Enter a valid Tunisian number (+216 and 8 digits)';
+
+  @override
+  String get profilePasswordLabel => 'Current password';
+
+  @override
+  String get profileEmailSent =>
+      'We sent a confirmation email to your new address. Your email changes after you confirm it.';
+
+  @override
+  String get profileErrorEmailInvalid => 'Enter a valid email address';
+
+  @override
+  String get profileErrorEmailInUse =>
+      'This email is already used by another account';
+
+  @override
+  String get profileErrorWrongPassword => 'Wrong password';
+
+  @override
+  String get profileErrorPasswordRequired => 'Enter your current password';
 }

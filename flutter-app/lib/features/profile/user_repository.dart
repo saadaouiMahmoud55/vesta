@@ -8,6 +8,10 @@ enum ProfileError {
   notSignedIn,
   nameRequired,
   phoneInvalid,
+  emailInvalid,
+  emailInUse,
+  wrongPassword,
+  passwordRequired,
   noNetwork,
   permissionDenied,
   unknown,
@@ -120,6 +124,28 @@ class UserRepository {
     }
   }
 
+  /// Changes the sign-in email: asks Firebase to re-check the password, then
+  /// sends a confirmation mail to the NEW address. The email only changes
+  /// after the user clicks the link in that mail.
+  Future<void> changeEmail({
+    required String newEmail,
+    required String password,
+  }) async {
+    final user = _auth.currentUser;
+    final current = user?.email;
+    if (user == null || current == null) {
+      throw const ProfileFailure(ProfileError.notSignedIn);
+    }
+    try {
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: current, password: password),
+      );
+      await user.verifyBeforeUpdateEmail(newEmail.trim());
+    } on FirebaseException catch (e) {
+      throw ProfileFailure(_mapCode(e.code));
+    }
+  }
+
   ProfileError _mapCode(String code) {
     switch (code) {
       case 'unavailable':
@@ -127,6 +153,14 @@ class UserRepository {
         return ProfileError.noNetwork;
       case 'permission-denied':
         return ProfileError.permissionDenied;
+      case 'invalid-email':
+        return ProfileError.emailInvalid;
+      case 'email-already-in-use':
+        return ProfileError.emailInUse;
+      case 'wrong-password':
+      case 'invalid-credential':
+      case 'requires-recent-login':
+        return ProfileError.wrongPassword;
       default:
         return ProfileError.unknown;
     }

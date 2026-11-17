@@ -289,4 +289,10 @@ contact.message.sale,"Hello, I am interested in buying {title} on Vesta","Bonjou
 contact.message.rent,"Hello, I am interested in renting {title} on Vesta","Bonjour, je suis intéressé par la location de {title} sur Vesta","عسلامة، مهتم بكراء {title} على Vesta",Contact,
 contact.message.stay,"Hello, I am interested in staying at {title} on Vesta","Bonjour, je suis intéressé par un séjour à {title} sur Vesta","عسلامة، مهتم بالإقامة في {title} على Vesta",Contact,
 profile.phone.label,Phone number,Numéro de téléphone,رقم الهاتف,Profile,
-profile.error.phoneInvalid,Enter a valid Tunisian number (+216 and 8 digits),Entrez un numéro tunisien valide (+216 et 8 chiffres),أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام),Profile,
+profile.error.phone.invalid,Enter a valid Tunisian number (+216 and 8 digits),Entrez un numéro tunisien valide (+216 et 8 chiffres),أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام),Profile,
+profile.password.label,Current password,Mot de passe actuel,كلمة السر الحالية,Profile,needed to change the email
+profile.email.sent,We sent a confirmation email to your new address. Your email changes after you confirm it.,Nous avons envoyé un e-mail de confirmation à votre nouvelle adresse. Votre e-mail changera après confirmation.,بعثنالك إيميل تأكيد على العنوان الجديد. الإيميل يتبدّل كي تأكّد.,Profile,
+profile.error.email.invalid,Enter a valid email address,Entrez une adresse e-mail valide,أدخل عنوان إيميل صحيح,Profile,
+profile.error.email.in.use,This email is already used by another account,Cet e-mail est déjà utilisé par un autre compte,هذا الإيميل مستعمل في حساب آخر,Profile,
+profile.error.wrong.password,Wrong password,Mot de passe incorrect,كلمة السر غالطة,Profile,
+profile.error.password.required,Enter your current password,Entrez votre mot de passe actuel,أدخل كلمة السر الحالية,Profile,

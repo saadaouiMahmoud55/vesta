@@ -38,6 +38,16 @@ ProfileError? validatePhone(String? value) {
   return isValidTunisianPhone(text) ? null : ProfileError.phoneInvalid;
 }
 
+ProfileError? validateEmail(String? value) {
+  final text = (value ?? '').trim();
+  return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(text)
+      ? null
+      : ProfileError.emailInvalid;
+}
+
+ProfileError? validatePassword(String? value) =>
+    (value ?? '').isEmpty ? ProfileError.passwordRequired : null;
+
 class ProfileFormState {
   const ProfileFormState({this.isLoading = false, this.error, this.photoError});
 
@@ -88,6 +98,21 @@ class ProfileController extends Notifier<ProfileFormState> {
         removePhoto: removePhoto,
         phone: phone,
       ),
+    );
+  }
+
+  /// Returns true when the confirmation mail was sent to the new address.
+  Future<bool> changeEmail({
+    required String newEmail,
+    required String password,
+  }) {
+    final invalid = validateEmail(newEmail) ?? validatePassword(password);
+    if (invalid != null) {
+      state = ProfileFormState(error: invalid);
+      return Future.value(false);
+    }
+    return _run(
+      () => _users.changeEmail(newEmail: newEmail, password: password),
     );
   }
 

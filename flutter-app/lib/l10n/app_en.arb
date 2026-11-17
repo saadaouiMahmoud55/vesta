@@ -84,7 +84,6 @@
   "photoErrorReadFailed": "Could not read this photo",
   "profileEditTitle": "Edit profile",
   "profileNameLabel": "Name",
-  "profilePhoneLabel": "Phone number",
   "profileEmailLabel": "Email",
   "profileSaveButton": "Save",
   "profileChangePhoto": "Change photo",
@@ -102,7 +101,6 @@
   "profileCancel": "Cancel",
   "profileListingDeleted": "Listing deleted",
   "profileErrorNameRequired": "Name is required",
-  "profileErrorPhoneInvalid": "Enter a valid Tunisian phone number",
   "profileErrorNoNetwork": "No connection. Please try again.",
   "profileErrorPermission": "You are not allowed to do this",
   "profileErrorNotSignedIn": "Please sign in",
@@ -339,5 +337,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePhoneLabel": "Phone number",
+  "profileErrorPhoneInvalid": "Enter a valid Tunisian number (+216 and 8 digits)",
+  "profilePasswordLabel": "Current password",
+  "profileEmailSent": "We sent a confirmation email to your new address. Your email changes after you confirm it.",
+  "profileErrorEmailInvalid": "Enter a valid email address",
+  "profileErrorEmailInUse": "This email is already used by another account",
+  "profileErrorWrongPassword": "Wrong password",
+  "profileErrorPasswordRequired": "Enter your current password"
 }

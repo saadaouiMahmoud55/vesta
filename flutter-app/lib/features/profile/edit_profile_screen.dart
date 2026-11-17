@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +10,7 @@ import '../../core/widgets/app_avatar.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_top_bar.dart';
+import '../../core/widgets/password_text_field.dart';
 import '../../core/widgets/photo_viewer.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'profile_controller.dart';
@@ -32,12 +34,22 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final TextEditingController _phoneController;
   String? _phoneError;
   bool _phoneLoaded = false; // true once the saved phone is read
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final String _originalEmail;
+  String? _emailError;
+  String? _passwordError;
+
+  bool get _emailChanged => _emailController.text.trim() != _originalEmail;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.profile.displayName);
     _phoneController = TextEditingController();
+    _originalEmail = FirebaseAuth.instance.currentUser?.email ?? '';
+    _emailController = TextEditingController(text: _originalEmail);
+    _passwordController = TextEditingController();
     ref.read(userRepositoryProvider).loadPhone().then((phone) {
       if (!mounted) return;
       setState(() {
@@ -57,6 +69,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -112,26 +126,54 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final l10n = AppLocalizations.of(context);
     final error = validateDisplayName(_nameController.text);
     final phoneError = validatePhone(_phoneController.text);
+    final emailChanged = _emailChanged;
+    final emailError = emailChanged
+        ? validateEmail(_emailController.text)
+        : null;
+    final passwordError = emailChanged
+        ? validatePassword(_passwordController.text)
+        : null;
     setState(() {
       _nameError = error == null ? null : profileErrorMessage(l10n, error);
       _phoneError = phoneError == null
           ? null
           : profileErrorMessage(l10n, phoneError);
+      _emailError = emailError == null
+          ? null
+          : profileErrorMessage(l10n, emailError);
+      _passwordError = passwordError == null
+          ? null
+          : profileErrorMessage(l10n, passwordError);
     });
-    if (error != null || phoneError != null) return;
+    if (error != null ||
+        phoneError != null ||
+        emailError != null ||
+        passwordError != null) {
+      return;
+    }
 
-    final saved = await ref
-        .read(profileControllerProvider.notifier)
-        .save(
-          displayName: _nameController.text,
-          photoBase64: _newPhotoBase64,
-          removePhoto: _removePhoto,
-          phone: _phoneLoaded ? _phoneController.text : null,
-        );
+    final controller = ref.read(profileControllerProvider.notifier);
+    final saved = await controller.save(
+      displayName: _nameController.text,
+      photoBase64: _newPhotoBase64,
+      removePhoto: _removePhoto,
+      phone: _phoneLoaded ? _phoneController.text : null,
+    );
     if (!saved || !mounted) return;
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.profileSaved)));
+    if (emailChanged) {
+      final sent = await controller.changeEmail(
+        newEmail: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (!sent || !mounted) return; // the error is shown under the form
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(emailChanged ? l10n.profileEmailSent : l10n.profileSaved),
+      ),
+    );
     Navigator.of(context).pop();
   }
 
@@ -211,6 +253,30 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 if (_phoneError != null) setState(() => _phoneError = null);
               },
             ),
+            const SizedBox(height: AppSpacing.lg),
+            AppTextField(
+              label: l10n.profileEmailLabel,
+              controller: _emailController,
+              enabled: !state.isLoading,
+              textInputAction: TextInputAction.done,
+              ltr: true,
+              errorText: _emailError,
+              onChanged: (_) => setState(() => _emailError = null),
+            ),
+            if (_emailChanged) ...[
+              const SizedBox(height: AppSpacing.lg),
+              PasswordTextField(
+                label: l10n.profilePasswordLabel,
+                controller: _passwordController,
+                errorText: _passwordError,
+                textInputAction: TextInputAction.done,
+                onChanged: (_) {
+                  if (_passwordError != null) {
+                    setState(() => _passwordError = null);
+                  }
+                },
+              ),
+            ],
             if (errorText != null) ...[
               const SizedBox(height: AppSpacing.lg),
               Text(errorText, style: const TextStyle(color: AppColors.error)),
