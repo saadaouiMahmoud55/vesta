@@ -1,0 +1,105 @@
+# Vesta : plan des diapositives de la soutenance (VST-68)
+
+Plan texte des 13 diapositives, avec les notes de l'orateur. Les diapositives elles-mêmes sont dans l'artefact « Vesta : soutenance finale » ; ce fichier garde le contenu dans le dépôt, pour le modifier ou l'exporter. Durée visée : 10 minutes. État de `develop` au 17 novembre ; avant la soutenance, mettre à jour la diapositive 8 si une pull request React Native est fusionnée.
+
+## 1. Couverture
+
+**Vesta** : acheter, louer, vendre et séjourner en Tunisie, en arabe, français et anglais.
+Mini-projet, ISET Tozeur, novembre 2026. Manar Degachi, Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
+
+*Notes :* dire d'abord ce qu'est Vesta, puis comment c'est construit, puis ce qui marche et ce qui manque. Rester honnête sur React Native et sur les limites.
+
+## 2. Une seule application pour trois façons d'habiter
+
+- **Vente** : acheter ou vendre. Maisons, villas, appartements, terrains, locaux. Prix en TND, sans unité.
+- **Location** : prix par mois ou par an, caution, date de disponibilité, meublé ou non.
+- **Séjour** : riads, maisons d'hôtes, prix par nuit, voyageurs, équipements, règles de la maison.
+
+Les trois offres viennent de deux champs existants, `listingType` et `rentPeriod`.
+
+*Notes :* chaque offre a ses champs et la couleur de son badge. Une seule fonction, `offerTypeOf`, décide de l'offre dans les deux applications.
+
+## 3. Deux applications, un seul back-end
+
+- **Flutter** : l'application complète, en test fermé sur Google Play.
+- **React Native** : la version réduite, en démonstration académique.
+- **Firebase** : Authentication et Firestore (offre gratuite), plus OpenStreetMap pour la carte.
+
+*Notes :* Flutter est l'application complète, React Native est volontairement réduite. Les deux se connectent au même projet Firebase.
+
+## 4. Un écran ne parle jamais à Firebase
+
+Écran → Contrôleur → Dépôt → Firebase. Même découpage dans les neuf modules : Auth, Recherche, Détails, Publier, Carte, Chat, Favoris, Profil, Notifications. Modèle C4 dans `docs/c4`.
+
+*Notes :* cette règle rend les contrôleurs testables sans Firebase. Le modèle de données et les règles sont dans `docs/data-model.md` et `firebase/firestore.rules`.
+
+## 5. L'offre gratuite a décidé de nos contournements
+
+| Besoin | Notre choix | Pourquoi |
+| --- | --- | --- |
+| Photos | base64 dans Firestore, 10 au maximum | Storage demande l'offre payante |
+| Carte | OpenStreetMap | aucune clé ni facturation |
+| Notifications | alertes dans l'application, compteur de non lus | le push demande des Cloud Functions |
+| Numéro de téléphone | document privé, comptes connectés seulement | les annonces sont publiques aux invités |
+
+*Notes :* les règles Firestore ne savent pas compter des documents : les photos ont des identifiants fixes `p0` à `p9`.
+
+## 6. Flutter couvre tout le MVP
+
+Inscription et connexion, navigation en invité, recherche et filtres, détails et photos, publier, modifier, supprimer, carte et « ma position », chat, Appeler et WhatsApp, favoris, profil et photo, alertes et messages non lus, statut de l'annonce, suppression du compte, onboarding et paramètres.
+
+Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord du propriétaire.
+
+*Notes :* montrer la démonstration en direct ici, dans l'ordre du script `docs/demo/demo-script.md`.
+
+## 7. Un thème, trois langues, deux sens de lecture
+
+- Une seule palette : les couleurs du thème Figma, avec un contrôle automatique.
+- Une seule source de textes : un fichier maître génère les textes Flutter et React Native en arabe tunisien (droite à gauche), français et anglais ; la CI vérifie qu'aucune langue ne manque.
+- Les prix et les numéros restent de gauche à droite, même en arabe.
+
+*Notes :* changer la langue en direct dans les Paramètres. Les couleurs viennent de `AppColors` et de `theme.ts`.
+
+## 8. React Native : une version réduite, dont l'état est clair
+
+- **Fait :** inscription et connexion, liste des annonces, formulaire de publication, carte et géolocalisation, alertes et messages non lus.
+- **En revue :** recherche et filtres (#105), détails (#123), chat (#102), Appeler et WhatsApp (#103).
+- **Pas fait :** profil, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
+
+*Notes :* état de `develop` au 17 novembre. Si une pull request a été fusionnée depuis, la passer dans « Fait ».
+
+## 9. Chaque changement est contrôlé avant de rejoindre develop
+
+- 166 tests Flutter réussis, analyse sans alerte.
+- 55 tests React Native réussis, 12 suites.
+- 60 cas de test manuels sur téléphone réel.
+- Règles Firestore testées avec l'émulateur ; contrôle des couleurs et des traductions à chaque pull request ; relecture avant la fusion.
+
+Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, des filtres qui se réinitialisaient et un œil de mot de passe faux.
+
+## 10. Sur Google Play, avec du contenu de démonstration
+
+- **Test fermé :** version 1.0.0 publiée par Mahmoud. Projet académique, pas de production. Fiche en trois langues.
+- **Aucune vraie annonce :** aucun propriétaire ne nous a donné d'accord écrit. Annonces « Démo », numéro de l'équipe, sans badge vérifié.
+
+*Notes :* nous préférons des annonces de démonstration claires à de vraies annonces publiées sans autorisation.
+
+## 11. Ce qui manque, et ce que nous ferions ensuite
+
+- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes, numéro de contact lisible par un compte anonyme, chat et contact React Native non fusionnés, relecture native de l'arabe à finir.
+- **Travaux futurs :** notifications push et Storage, règle de sécurité pour le contact, recherche côté serveur, réservations, avis, assistant IA, mode sombre.
+
+*Notes :* la plupart des limites viennent d'un seul choix, rester sur l'offre gratuite de Firebase. Détail dans `docs/report/limits-and-future-work.md`.
+
+## 12. Quatre personnes, un dépôt, des relectures
+
+- **Manar :** cheffe de groupe. Firebase, règles, thème, chat, carte, intégration.
+- **Eya :** annonces, recherche et publication, contenu de démonstration, relectures.
+- **Ahmed :** qualité, UI kit, traductions, authentification et navigation React Native.
+- **Mahmoud :** favoris, profil, contact, tests des règles, build Google Play.
+
+Jira par sprints, une branche et une pull request par tâche, une relecture avant chaque fusion, une fiche de questions-réponses sur le module d'un autre.
+
+## 13. Conclusion
+
+Une application qui marche de bout en bout, des limites connues et écrites. Flutter est complet et testé sur téléphone ; React Native est réduit, avec la même architecture. Rapport, plan de test et fiches de questions-réponses sont dans le dépôt. Merci. Questions ?
