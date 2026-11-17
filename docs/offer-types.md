@@ -67,7 +67,7 @@ The phone is **not** in the listing document. Listings are readable by guests (n
 
 1. **Publish:** the first step is "What do you want to do?" with three choices: Sell / Rent out / Offer a stay. The next fields depend on the choice. Changing the choice clears the fields that no longer apply.
 2. **Cards:** photo, title, city, price with its unit, ribbon with the offer type.
-3. **Search:** three tabs **Buy / Rent / Stay** are the first filter. Price slider unit follows the tab. Only `status = available` listings appear in search, map and home.
+3. **Search:** three tabs **Buy / Rent / Stay** are the first filter. Price slider unit follows the tab. Only `available` and `reserved` listings appear in search and map (a `reserved` listing keeps its ribbon). The home list only skips `hidden` listings and shows sold, rented and unavailable ones greyed out.
 4. **Map:** pins use the offer type color. Tap shows a mini card.
 5. **Details:** the "key facts" row depends on the type (section 3). Contact buttons sit under the price.
 6. **Statuses:** the owner changes the status in "My listings". `sold` and `rented` stay visible to people who favorited or chatted about the listing, with a ribbon, and disappear from search.
