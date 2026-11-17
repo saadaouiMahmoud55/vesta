@@ -4,7 +4,7 @@ Rédigé à partir de ce qui est fusionné dans `develop` le 16 nov. (modificati
 
 ## Avant la démo (dimanche soir)
 
-- Construire l'APK debug depuis la version finale de `develop` et l'installer sur deux téléphones. Vérifier que la connexion fonctionne sur les deux. La clé API est limitée par nom de package et SHA-1, et le SHA-1 appartient au keystore qui a signé l'APK (le PC qui l'a construit), pas au téléphone. Il faut donc construire l'APK de démo sur un PC dont le SHA-1 debug est déjà dans la clé, et installer ce même APK sur les deux téléphones.
+- Construire l'APK debug depuis la version finale de `develop` et l'installer sur deux téléphones. Vérifier que la connexion fonctionne sur les deux. La clé API Android n'a actuellement aucune restriction d'application, donc n'importe quel APK peut se connecter. Installer quand même le même APK sur les deux téléphones. Si la restriction par nom de package et SHA-1 est remise avant la démo, le SHA-1 appartient au keystore qui a signé l'APK (le PC qui l'a construit), pas au téléphone : construire alors l'APK sur un PC dont le SHA-1 est déjà dans la clé.
 - Créer deux comptes de test : **Propriétaire** et **Client**. Le Propriétaire a 2 ou 3 annonces (une vente, une location, un séjour) avec de vraies photos et une position exacte.
 - Mettre un téléphone en arabe et l'autre en français, pour que le passage de droite à gauche soit visible.
 - Charger les téléphones, couper les notifications des autres applications, se connecter à un réseau stable. Garder un second réseau (partage de connexion) prêt.
@@ -42,7 +42,7 @@ Les dire nous-mêmes avant que le jury ne les demande. La liste complète est da
 
 ## Si quelque chose échoue pendant la démo
 
-- **La connexion échoue sur un téléphone :** le SHA-1 de cette version manque dans la clé API. Les deux téléphones utilisent le même APK, donc changer de téléphone n'aide pas. Lancer l'enregistrement d'écran de l'étape de connexion et continuer. Ensuite, lancer `gradlew signingReport` sur le PC qui a construit l'APK et ajouter le SHA-1 à la clé.
+- **La connexion échoue sur un téléphone :** vérifier d'abord le réseau (passer sur le partage de connexion) et réessayer avec l'autre compte de test. Si la restriction d'application de la clé API a été remise, le SHA-1 de cette version manque peut-être : lancer l'enregistrement d'écran de l'étape de connexion et continuer, puis lancer `gradlew signingReport` sur le PC qui a construit l'APK et ajouter le SHA-1 à la clé.
 - **Réseau lent ou absent :** passer sur le partage de connexion. Si c'est encore lent, lancer l'enregistrement d'écran de cette étape.
 - **Une photo ou une annonce ne se charge pas :** passer à l'annonce suivante ; ne pas réessayer plus d'une fois sur scène.
 - **L'application plante :** la rouvrir, se reconnecter et continuer à l'étape suivante.
