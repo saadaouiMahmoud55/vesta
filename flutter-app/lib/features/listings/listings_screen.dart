@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/router/app_router.dart';
+import '../../core/widgets/fade_in_up.dart';
 import '../auth/auth_controller.dart';
 import '../profile/profile_controller.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -63,10 +64,14 @@ class ListingsScreen extends ConsumerWidget {
                 itemBuilder: (_, index) {
                   if (index == 0) return const _WelcomeHeader();
                   final listing = items[index - 1];
-                  return ListingCard(
-                    listing: listing,
-                    onTap: () => context.push(
-                      AppRoutes.listingDetailPath(listing.id),
+                  return FadeInUp(
+                    // The header is item 0: stagger the first cards only.
+                    delay: Duration(milliseconds: index <= 4 ? index * 60 : 0),
+                    child: ListingCard(
+                      listing: listing,
+                      onTap: () => context.push(
+                        AppRoutes.listingDetailPath(listing.id),
+                      ),
                     ),
                   );
                 },

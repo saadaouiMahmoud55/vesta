@@ -1833,6 +1833,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello, I am interested in staying at {title} on Vesta'**
   String contactMessageStay(String title);
+
+  /// No description provided for @profilePhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get profilePhoneLabel;
+
+  /// No description provided for @profileErrorPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Tunisian number (+216 and 8 digits)'**
+  String get profileErrorPhoneInvalid;
+
+  /// No description provided for @profilePasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get profilePasswordLabel;
+
+  /// No description provided for @profileEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a confirmation email to your new address. Your email changes after you confirm it.'**
+  String get profileEmailSent;
+
+  /// No description provided for @profileErrorEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get profileErrorEmailInvalid;
+
+  /// No description provided for @profileErrorEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already used by another account'**
+  String get profileErrorEmailInUse;
+
+  /// No description provided for @profileErrorWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong password'**
+  String get profileErrorWrongPassword;
+
+  /// No description provided for @profileErrorPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get profileErrorPasswordRequired;
 }
 
 class _AppLocalizationsDelegate

@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../core/utils/phone_utils.dart';
+
 /// Errors the UI can show. Screens turn them into translated messages.
 enum ProfileError {
   notSignedIn,
   nameRequired,
+  phoneInvalid,
+  emailInvalid,
+  emailInUse,
+  wrongPassword,
+  passwordRequired,
   noNetwork,
   permissionDenied,
   unknown,
@@ -51,6 +58,23 @@ class UserRepository {
         .map((doc) => doc.exists ? UserProfile.fromDoc(doc) : null);
   }
 
+  /// Phone saved in users/{uid}/private/contact (null if none).
+  Future<String?> loadPhone() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+    try {
+      final doc = await _db
+          .collection('users')
+          .doc(user.uid)
+          .collection('private')
+          .doc('contact')
+          .get();
+      return doc.data()?['phone'] as String?;
+    } on FirebaseException {
+      return null;
+    }
+  }
+
   /// Updates name and, if given, photo. The photo is a compressed base64
   /// string (about 480 px, under 120 KB), no Firebase Storage.
   /// [removePhoto] deletes the photo field (the rules accept a profile
@@ -59,12 +83,20 @@ class UserRepository {
     required String displayName,
     String? photoBase64,
     bool removePhoto = false,
+    String? phone, // null = do not touch, empty = remove
   }) async {
     final user = _auth.currentUser;
     if (user == null) throw const ProfileFailure(ProfileError.notSignedIn);
 
     final name = displayName.trim();
     if (name.isEmpty) throw const ProfileFailure(ProfileError.nameRequired);
+    final phoneText = phone?.trim();
+    final normalizedPhone = (phoneText == null || phoneText.isEmpty)
+        ? null
+        : normalizeTunisianPhone(phoneText);
+    if (phoneText != null && phoneText.isNotEmpty && normalizedPhone == null) {
+      throw const ProfileFailure(ProfileError.phoneInvalid);
+    }
 
     try {
       await _db.collection('users').doc(user.uid).update({
@@ -76,6 +108,39 @@ class UserRepository {
       });
       // Same name in Auth, like AuthRepository.signUp does.
       await user.updateDisplayName(name);
+      if (phoneText != null) {
+        await _db
+            .collection('users')
+            .doc(user.uid)
+            .collection('private')
+            .doc('contact')
+            .set({
+              if (user.email != null) 'email': user.email,
+              'phone': normalizedPhone ?? FieldValue.delete(),
+            }, SetOptions(merge: true));
+      }
+    } on FirebaseException catch (e) {
+      throw ProfileFailure(_mapCode(e.code));
+    }
+  }
+
+  /// Changes the sign-in email: asks Firebase to re-check the password, then
+  /// sends a confirmation mail to the NEW address. The email only changes
+  /// after the user clicks the link in that mail.
+  Future<void> changeEmail({
+    required String newEmail,
+    required String password,
+  }) async {
+    final user = _auth.currentUser;
+    final current = user?.email;
+    if (user == null || current == null) {
+      throw const ProfileFailure(ProfileError.notSignedIn);
+    }
+    try {
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: current, password: password),
+      );
+      await user.verifyBeforeUpdateEmail(newEmail.trim());
     } on FirebaseException catch (e) {
       throw ProfileFailure(_mapCode(e.code));
     }
@@ -88,6 +153,14 @@ class UserRepository {
         return ProfileError.noNetwork;
       case 'permission-denied':
         return ProfileError.permissionDenied;
+      case 'invalid-email':
+        return ProfileError.emailInvalid;
+      case 'email-already-in-use':
+        return ProfileError.emailInUse;
+      case 'wrong-password':
+      case 'invalid-credential':
+      case 'requires-recent-login':
+        return ProfileError.wrongPassword;
       default:
         return ProfileError.unknown;
     }

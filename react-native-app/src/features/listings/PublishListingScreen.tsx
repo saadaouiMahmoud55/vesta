@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
+  Text,
   View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -17,15 +18,22 @@ import { MainStackParamList } from '../../navigation/MainStack';
 import { ListingType, RentPeriod } from '../../data/models/listingCategory';
 import {
   addUniquePhotos,
+  amenityKeys,
+  checkInTimes,
+  checkOutTimes,
   FieldError,
+  houseRuleKeys,
   listingTypes,
+  maxAmenities,
   maxListingPhotos,
   normalizeTunisianPhone,
   parseNumber,
   propertyTypes,
   rentPeriods,
+  toggleKey,
   validateCity,
   validateDescription,
+  validateGuests,
   validateOptionalNumber,
   validatePhone,
   validatePrice,
@@ -64,6 +72,24 @@ const propertyKeys: Record<(typeof propertyTypes)[number], string> = {
   riad: 'propertyRiad',
   guest_house: 'propertyGuestHouse',
 };
+const amenityLabelKeys: Record<(typeof amenityKeys)[number], string> = {
+  wifi: 'amenityWifi',
+  ac: 'amenityAc',
+  heating: 'amenityHeating',
+  kitchen: 'amenityKitchen',
+  parking: 'amenityParking',
+  pool: 'amenityPool',
+  breakfast: 'amenityBreakfast',
+  washing_machine: 'amenityWashingMachine',
+  tv: 'amenityTv',
+  garden: 'amenityGarden',
+};
+const houseRuleLabelKeys: Record<(typeof houseRuleKeys)[number], string> = {
+  no_smoking: 'ruleNoSmoking',
+  no_pets: 'ruleNoPets',
+  no_parties: 'ruleNoParties',
+  quiet_hours: 'ruleQuietHours',
+};
 
 type Errors = Record<string, FieldError>;
 
@@ -100,6 +126,88 @@ function Chips<T extends string>({
   );
 }
 
+/** Several chips can be on at the same time (amenities, house rules). */
+function MultiChips({
+  values,
+  keys,
+  selected,
+  onToggle,
+}: {
+  values: readonly string[];
+  keys: Readonly<Record<string, string>>;
+  selected: readonly string[];
+  onToggle: (value: string) => void;
+}): React.JSX.Element {
+  return (
+    <View style={styles.chips}>
+      {values.map(value => {
+        const on = selected.includes(value);
+        return (
+          <Pressable
+            key={value}
+            accessibilityRole="button"
+            accessibilityState={{ selected: on }}
+            onPress={() => onToggle(value)}
+            style={[styles.chip, on ? styles.chipOn : null]}
+          >
+            <AppText
+              translationKey={keys[value]}
+              style={[styles.chipText, on ? styles.chipTextOn : null]}
+            />
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+/** One time (`HH:mm`) or "Not set". Times are digits: always left-to-right. */
+function TimeChips({
+  times,
+  selected,
+  onSelect,
+}: {
+  times: readonly string[];
+  selected: string | null;
+  onSelect: (value: string | null) => void;
+}): React.JSX.Element {
+  return (
+    <View style={styles.chips}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => onSelect(null)}
+        style={[styles.chip, selected === null ? styles.chipOn : null]}
+      >
+        <AppText
+          translationKey="publishTimeNotSet"
+          style={[
+            styles.chipText,
+            selected === null ? styles.chipTextOn : null,
+          ]}
+        />
+      </Pressable>
+      {times.map(time => (
+        <Pressable
+          key={time}
+          accessibilityRole="button"
+          onPress={() => onSelect(time)}
+          style={[styles.chip, selected === time ? styles.chipOn : null]}
+        >
+          <Text
+            style={[
+              styles.chipText,
+              styles.ltr,
+              selected === time ? styles.chipTextOn : null,
+            ]}
+          >
+            {time}
+          </Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
 export function PublishListingScreen({
   navigation,
 }: Props): React.JSX.Element {
@@ -110,9 +218,14 @@ export function PublishListingScreen({
   const [rentPeriod, setRentPeriod] = useState<RentPeriod | null>(null);
   const [propertyType, setPropertyType] = useState<string>('apartment');
   const [city, setCity] = useState('');
+  const [guests, setGuests] = useState('');
   const [bedrooms, setBedrooms] = useState('');
   const [bathrooms, setBathrooms] = useState('');
   const [area, setArea] = useState('');
+  const [amenities, setAmenities] = useState<string[]>([]);
+  const [checkIn, setCheckIn] = useState<string | null>(null);
+  const [checkOut, setCheckOut] = useState<string | null>(null);
+  const [houseRules, setHouseRules] = useState<string[]>([]);
   const [phone, setPhone] = useState('');
   const [whatsapp, setWhatsapp] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);
@@ -148,6 +261,7 @@ export function PublishListingScreen({
       price: validatePrice(price),
       rentPeriod: validateRentPeriod(listingType, rentPeriod),
       city: validateCity(city),
+      guests: validateGuests(guests),
       bedrooms: validateRooms(bedrooms),
       bathrooms: validateRooms(bathrooms),
       area: validateOptionalNumber(area),
@@ -175,6 +289,11 @@ export function PublishListingScreen({
           bedrooms: optional(bedrooms),
           bathrooms: optional(bathrooms),
           areaSqm: optional(area),
+          maxGuests: optional(guests),
+          amenities,
+          checkIn,
+          checkOut,
+          houseRules,
           contactPhone: normalizeTunisianPhone(phone) ?? '',
           whatsappEnabled: whatsapp,
         },
@@ -258,6 +377,13 @@ export function PublishListingScreen({
         onChangeText={setCity}
       />
       <AppTextField
+        labelKey="publishFieldGuests"
+        errorKey={errors.guests ?? undefined}
+        value={guests}
+        onChangeText={setGuests}
+        keyboardType="number-pad"
+      />
+      <AppTextField
         labelKey="publishFieldBedrooms"
         errorKey={errors.bedrooms ?? undefined}
         value={bedrooms}
@@ -278,6 +404,41 @@ export function PublishListingScreen({
         onChangeText={setArea}
         keyboardType="decimal-pad"
       />
+
+      <View style={styles.row}>
+        <AppText translationKey="publishAmenitiesTitle" style={styles.section} />
+        <Text style={[styles.counter, styles.ltr]}>
+          {amenities.length} / {maxAmenities}
+        </Text>
+      </View>
+      <MultiChips
+        values={amenityKeys}
+        keys={amenityLabelKeys}
+        selected={amenities}
+        onToggle={key =>
+          setAmenities(previous =>
+            toggleKey(amenityKeys, previous, key, maxAmenities),
+          )
+        }
+      />
+      <AppText translationKey="publishCheckIn" />
+      <TimeChips times={checkInTimes} selected={checkIn} onSelect={setCheckIn} />
+      <AppText translationKey="publishCheckOut" />
+      <TimeChips
+        times={checkOutTimes}
+        selected={checkOut}
+        onSelect={setCheckOut}
+      />
+      <AppText translationKey="publishRulesTitle" style={styles.section} />
+      <MultiChips
+        values={houseRuleKeys}
+        keys={houseRuleLabelKeys}
+        selected={houseRules}
+        onToggle={key =>
+          setHouseRules(previous => toggleKey(houseRuleKeys, previous, key))
+        }
+      />
+
       <AppTextField
         labelKey="publishFieldPhone"
         errorKey={errors.phone ?? undefined}
@@ -359,6 +520,8 @@ const styles = StyleSheet.create({
   },
   chipText: { color: theme.colors.navy },
   chipTextOn: { color: theme.colors.white },
+  ltr: { writingDirection: 'ltr' },
+  counter: { color: theme.colors.navy, fontSize: theme.fontSizes.small },
   row: {
     alignItems: 'center',
     flexDirection: 'row',

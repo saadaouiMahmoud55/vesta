@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
 import { HomeScreen } from '../features/listings/HomeScreen';
+import { SearchScreen } from '../features/search/SearchScreen';
 import { MapScreen } from '../features/map/MapScreen';
 import { PlaceholderScreen } from './PlaceholderScreen';
 import { theme } from '../core/theme';
@@ -17,7 +18,6 @@ export type MainTabsParamList = {
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
 // To plug a real screen, replace the component of its tab below.
-const SearchTab = () => <PlaceholderScreen titleKey="tabSearch" />;
 const FavoritesTab = () => <PlaceholderScreen titleKey="tabFavorites" />;
 const ProfileTab = () => <PlaceholderScreen titleKey="tabProfile" />;
 
@@ -40,7 +40,7 @@ export function MainTabs(): React.JSX.Element {
       />
       <Tab.Screen
         name="Search"
-        component={SearchTab}
+        component={SearchScreen}
         options={{ title: t('tabSearch') }}
       />
       <Tab.Screen
