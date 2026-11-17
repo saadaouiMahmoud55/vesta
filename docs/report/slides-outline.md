@@ -62,16 +62,16 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 
 ## 8. React Native : une version réduite, dont l'état est clair
 
-- **Fait :** inscription et connexion, liste des annonces, formulaire de publication, carte et géolocalisation, alertes et messages non lus.
-- **En revue :** recherche et filtres (#105), détails (#123), chat (#102), Appeler et WhatsApp (#103).
-- **Pas fait :** profil, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
+- **Fait :** inscription et connexion, recherche et filtres, liste et détails avec galerie de photos, formulaire de publication avec équipements, carte et géolocalisation, alertes et messages non lus.
+- **En revue :** chat (#102) et Appeler / WhatsApp (#103), non fusionnés avant le gel.
+- **Pas fait :** favoris et profil (onglets vides), navigation en invité, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
 
-*Notes :* état de `develop` au 17 novembre. Si une pull request a été fusionnée depuis, la passer dans « Fait ».
+*Notes :* état de `develop` au 17 novembre au soir.
 
 ## 9. Chaque changement est contrôlé avant de rejoindre develop
 
 - 166 tests Flutter réussis, analyse sans alerte.
-- 55 tests React Native réussis, 12 suites.
+- 68 tests React Native réussis (dernier contrôle, avant les dernières fusions).
 - 60 cas de test manuels sur téléphone réel.
 - Règles Firestore testées avec l'émulateur ; contrôle des couleurs et des traductions à chaque pull request ; relecture avant la fusion.
 
@@ -80,9 +80,9 @@ Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, 
 ## 10. Sur Google Play, avec du contenu de démonstration
 
 - **Test fermé :** version 1.0.0 publiée par Mahmoud. Projet académique, pas de production. Fiche en trois langues.
-- **Aucune vraie annonce :** aucun propriétaire ne nous a donné d'accord écrit. Annonces « Démo », numéro de l'équipe, sans badge vérifié.
+- **15 annonces « Démo » réelles :** informations et photos réelles, avec l'accord oral des propriétaires (usage académique, notés dans `docs/content/sources.md`). Aucun accord écrit, pas de badge vérifié.
 
-*Notes :* nous préférons des annonces de démonstration claires à de vraies annonces publiées sans autorisation.
+*Notes :* dire clairement que l'accord est oral et que les propriétaires ont demandé à ne pas être nommés. Un lancement réel demanderait un accord écrit.
 
 ## 11. Ce qui manque, et ce que nous ferions ensuite
 

@@ -45,18 +45,18 @@ L'application Flutter couvre l'ensemble du MVP. L'application React Native est v
 | --- | --- | --- |
 | Inscription, connexion, session conservée, déconnexion | Fait | Fait |
 | Navigation en invité (annonces visibles sans compte) | Fait | Non fait |
-| Recherche et filtres (ville, prix, type d'offre, type de bien) | Fait | En revue (#105) |
+| Recherche et filtres (ville, prix, type d'offre, type de bien) | Fait | Fait |
 | Liste des annonces | Fait | Fait |
-| Détails d'une annonce, photos, équipements | Fait | En revue (#123) |
-| Publier une annonce avec photos | Fait | Fait (formulaire avec équipements, règles, horaires) |
+| Détails d'une annonce, photos, équipements | Fait | Fait |
+| Publier une annonce avec photos | Fait | Fait (équipements, règles, horaires ; testé sur téléphone) |
 | Modifier et supprimer une annonce, Mes annonces | Fait | Non fait |
 | Statut d'une annonce (disponible, réservé, loué, vendu) | Fait (partie 1) | Non fait |
 | Carte et géolocalisation | Fait | Fait |
-| Chat entre acheteur et propriétaire | Fait | En revue (#102) |
+| Chat entre acheteur et propriétaire | Fait | En revue (#102, non fusionnée) |
 | Alertes de messages et badge de messages non lus | Fait | Fait |
-| Contact : Appeler et WhatsApp | Fait | En revue (#103) |
-| Favoris | Fait | Écran écrit, pas encore branché dans l'onglet |
-| Profil : nom, photo (changer, supprimer, agrandir) | Fait | Non fait |
+| Contact : Appeler et WhatsApp | Fait | En revue (#103, non fusionnée) |
+| Favoris | Fait | Écran écrit, onglet encore vide |
+| Profil : nom, photo, téléphone, e-mail | Fait | Non fait (onglet vide) |
 | Paramètres, choix de la langue, onboarding, centre de notifications | Fait | Langue par défaut seulement |
 | Suppression du compte | Fait | Non fait |
 | Arabe tunisien (droite à gauche), français, anglais | Fait | Fait |
@@ -70,16 +70,16 @@ Chaque changement passe par une pull request vers `develop`, relue avant d'être
 | Niveau de test | Résultat |
 | --- | --- |
 | Flutter, tests automatiques | 166 tests réussis le 16 novembre (widgets, contrôleurs, dépôts, localisation) |
-| React Native, tests automatiques | `tsc` et `eslint` sans erreur, 55 tests réussis (12 suites) au dernier contrôle de la carte |
+| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 68 tests réussis dans la PR des équipements (#122), à refaire sur `develop` après les dernières fusions |
 | Règles Firestore | Tests avec l'émulateur Firebase dans `firebase/tests/` (authentification et règles des annonces, photos, contact, conversations) |
-| Plan de test manuel | 60 cas communs aux deux applications, joués sur téléphone réel (`docs/test-plan.md`) ; la partie B est en cours de relecture (pull request #117) |
+| Plan de test manuel | 60 cas communs aux deux applications, joués sur téléphone réel (`docs/test-plan.md`) ; la partie B est fusionnée (#117) : seuls les cas réellement testés sont en « Pass », les autres restent « Not tested » ; les résultats React Native (#127) sont en relecture |
 | Téléphones réels | Samsung de Manar, Redmi d'Eya et téléphones des autres membres, en arabe, français et anglais |
 
-Les tests sur téléphone ont trouvé de vrais défauts, corrigés avant le gel : un prix absurde accepté par le formulaire et par les règles (VST-104), la réinitialisation des filtres de recherche (VST-124), l'icône « œil » du mot de passe (#118, en revue).
+Les tests sur téléphone ont trouvé de vrais défauts, corrigés avant le gel : un prix absurde accepté par le formulaire et par les règles (VST-104), la réinitialisation des filtres de recherche (VST-124), l'icône « œil » du mot de passe (#118).
 
 **Google Play.** La version 1.0.0 (build 1) est publiée en test fermé par Mahmoud depuis un compte développeur. Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. L'application est un projet académique : elle n'est pas publiée en production.
 
-**Contenu.** Nous n'avons l'accord écrit d'aucun propriétaire : l'application ne contient donc aucune vraie annonce, même sur Google Play. Les annonces visibles sont des annonces de démonstration (titre commençant par « Démo », numéro de l'équipe, sans badge « vérifié »), publiées par Eya. Un lancement réel demanderait l'accord de chaque propriétaire et des photos libres de droits.
+**Contenu.** Les 15 annonces visibles (5 séjours, 5 locations, 5 ventes) sont marquées « Démo » dans le titre et n'ont pas de badge « vérifié ». Elles utilisent des informations et des photos réelles, avec l'accord oral par téléphone des propriétaires, pour un usage académique seulement ; ils ont demandé à ne pas être nommés. Eya a recueilli ces accords le 17 novembre et ils sont notés dans `docs/content/sources.md`. Nous n'avons aucun accord écrit : un lancement réel demanderait l'accord écrit de chaque propriétaire.
 
 ## 5. Limites connues et travaux futurs
 
@@ -93,8 +93,8 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 - **Contact :** le numéro du propriétaire est lisible par tout compte connecté, y compris un compte Firebase anonyme. La règle qui l'interdit n'est pas fusionnée.
 - **Comptes :** la suppression d'un compte garde les messages du chat pour l'autre personne ; le signalement et le blocage ne sont pas faits ; il n'y a pas de Cloud Functions pour nettoyer côté serveur.
 - **Langues :** une relecture native de l'arabe et du français, et une vérification de la mise en page de droite à gauche sur plus d'appareils, n'ont pas été terminées. Les noms saisis par les utilisateurs ne sont pas translittérés.
-- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) et le contact (#103) restent dans des pull requests ouvertes, non fusionnées avant le gel du code et non testées sur téléphones réels.
-- **Contenu :** aucune vraie annonce, uniquement du contenu de démonstration.
+- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) et le contact (#103) restent dans des pull requests ouvertes, non fusionnées avant le gel du code et non testées sur deux téléphones. Les onglets Favoris et Profil sont vides.
+- **Contenu :** annonces réelles de démonstration, avec accord oral seulement (pas d'accord écrit).
 
 **Travaux futurs, par ordre de valeur**
 
@@ -103,7 +103,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 3. Recherche côté serveur avec filtres et pagination, et annonces séparées par type (ventes, locations, séjours) comme l'a suggéré notre professeur.
 4. Réservations, avis, assistant IA et tableau de bord du propriétaire, dans les deux applications.
 5. Statut des annonces, partie 2 (VST-136) : rubans de couleur, statut « masqué » visible seulement par le propriétaire, nombre de favoris sur les cartes.
-6. Modifier l'e-mail et le téléphone du profil (VST-128), connexion avec Google et Apple, signalement et blocage.
+6. Synchroniser l'e-mail du profil dans `private/contact` après un changement, connexion avec Google et Apple, signalement et blocage.
 7. Mode sombre, détection hors ligne avant la publication, relecture native de l'arabe, plus de tests sur téléphones réels.
 
 ## 6. Organisation, difficultés et conclusion
