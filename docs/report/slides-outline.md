@@ -71,7 +71,7 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 ## 9. Chaque changement est contrôlé avant de rejoindre develop
 
 - 166 tests Flutter réussis, analyse sans alerte.
-- 68 tests React Native réussis (dernier contrôle, avant les dernières fusions).
+- 84 tests React Native réussis sur develop.
 - 60 cas de test manuels sur téléphone réel.
 - Règles Firestore testées avec l'émulateur ; contrôle des couleurs et des traductions à chaque pull request ; relecture avant la fusion.
 

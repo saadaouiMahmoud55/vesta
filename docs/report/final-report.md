@@ -35,7 +35,7 @@ Les deux applications ont la même structure de modules (Auth, Recherche, Détai
 | Langues | Un fichier maître `docs/translations.csv` et un script qui génère les fichiers Flutter (.arb) et React Native (.ts) | Une seule source pour l'arabe tunisien (droite à gauche), le français et l'anglais, vérifiée par la CI. |
 | Design | Seules les couleurs du thème Figma (`AppColors`, `theme.ts`), contrôle automatique `check-colors` | Le même rendu dans les deux applications. |
 
-**Sécurité.** Les règles Firestore sont testées avec l'émulateur (`firebase/tests/`). Les annonces sont lisibles par tous, écrites seulement par leur propriétaire ; le badge « vérifié » ne peut pas être mis par un client ; les conversations ne sont lisibles que par leurs deux participants. Les clés API Firebase sont restreintes aux API nécessaires, et les fichiers de configuration privés ne sont jamais dans Git.
+**Sécurité.** Les règles Firestore sont testées avec l'émulateur (`firebase/tests/`). Les annonces sont lisibles par tous, écrites seulement par leur propriétaire ; le badge « vérifié » ne peut pas être mis par un client ; les conversations ne sont lisibles que par leurs deux participants. Les clés API Firebase sont restreintes aux API nécessaires ; la restriction d'application de la clé Android est temporairement désactivée pour la démo et les tests (voir les limites) et sera remise après les tests. Les fichiers de configuration privés ne sont jamais dans Git.
 
 ## 3. État des fonctionnalités au 17 novembre
 
@@ -70,7 +70,7 @@ Chaque changement passe par une pull request vers `develop`, relue avant d'être
 | Niveau de test | Résultat |
 | --- | --- |
 | Flutter, tests automatiques | 166 tests réussis le 16 novembre (widgets, contrôleurs, dépôts, localisation) |
-| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 68 tests réussis dans la PR des équipements (#122), à refaire sur `develop` après les dernières fusions |
+| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 84 tests réussis sur `develop` après les fusions du 17 novembre |
 | Règles Firestore | Tests avec l'émulateur Firebase dans `firebase/tests/` (authentification et règles des annonces, photos, contact, conversations) |
 | Plan de test manuel | 60 cas communs aux deux applications, joués sur téléphone réel (`docs/test-plan.md`) ; la partie B est fusionnée (#117) : seuls les cas réellement testés sont en « Pass », les autres restent « Not tested » ; les résultats React Native (#127) sont en relecture |
 | Téléphones réels | Samsung de Manar, Redmi d'Eya et téléphones des autres membres, en arabe, français et anglais |
@@ -112,7 +112,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 
 | Chiffre | Valeur au 17 novembre |
 | --- | --- |
-| Commits sur `develop` | environ 400 |
+| Commits sur `develop` | plus de 450 |
 | Pull requests fusionnées | plus de 100 |
 | Code Flutter (Dart, hors fichiers générés) | environ 10 800 lignes |
 | Code React Native (TypeScript) | environ 4 700 lignes |
