@@ -121,7 +121,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 **Difficultés rencontrées et ce que nous en avons retenu**
 
 - **L'offre gratuite de Firebase** nous a obligés à inventer des contournements (photos en base64, alertes locales). Nous avons noté chaque contournement comme une limite, pas comme une réussite.
-- **La clé API Android restreinte** (sécurité) a bloqué la connexion sur une version signée avec une clé non listée : l'application affichait une erreur générique. Chaque clé de signature, y compris celle de Google Play, a besoin de sa ligne dans la restriction.
+- **La clé API Android restreinte** (sécurité) a bloqué la connexion sur une version signée avec une clé non listée : l'application affichait une erreur générique. Chaque clé de signature, y compris celle de Google Play, a besoin de sa ligne dans la restriction. Pour la démo et les tests, la restriction d'application est actuellement sur « Aucune » ; elle sera remise après les tests.
 - **Les traductions générées** créaient des conflits à chaque fusion. Le fichier maître et le script, avec une vérification en CI, ont réglé le problème.
 - **Expo Go** impose la version exacte du SDK : l'application React Native ne se lance que sur un téléphone avec la bonne version d'Expo Go.
 - **Le contenu réel** : sans accord écrit des propriétaires, nous avons choisi des annonces de démonstration plutôt que de publier de vraies annonces sans autorisation.
