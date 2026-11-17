@@ -742,6 +742,12 @@ abstract class AppLocalizations {
   /// **'Could not read this photo'**
   String get profilePhotoErrorRead;
 
+  /// No description provided for @profileRemovePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get profileRemovePhoto;
+
   /// No description provided for @favoritesEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -801,6 +807,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No listings yet'**
   String get listingsEmpty;
+
+  /// No description provided for @listingsWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}'**
+  String listingsWelcomeBack(String name);
+
+  /// No description provided for @listingsWelcomeNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Vesta, {name}'**
+  String listingsWelcomeNew(String name);
 
   /// No description provided for @favoritesFilterAll.
   ///
@@ -951,6 +969,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in to contact owners, save favorites and publish your own place.'**
   String get authWelcomeSubtitle;
+
+  /// No description provided for @authSignUpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account to save favorites, publish your own place and send messages to owners.'**
+  String get authSignUpSubtitle;
+
+  /// No description provided for @authSignUpProverb.
+  ///
+  /// In en, this message translates to:
+  /// **'“Make yourself at home.”'**
+  String get authSignUpProverb;
 
   /// No description provided for @authContinueAsGuest.
   ///
@@ -1803,6 +1833,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello, I am interested in staying at {title} on Vesta'**
   String contactMessageStay(String title);
+
+  /// No description provided for @profilePhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get profilePhoneLabel;
+
+  /// No description provided for @profileErrorPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Tunisian number (+216 and 8 digits)'**
+  String get profileErrorPhoneInvalid;
+
+  /// No description provided for @profilePasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get profilePasswordLabel;
+
+  /// No description provided for @profileEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a confirmation email to your new address. Your email changes after you confirm it.'**
+  String get profileEmailSent;
+
+  /// No description provided for @profileErrorEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get profileErrorEmailInvalid;
+
+  /// No description provided for @profileErrorEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already used by another account'**
+  String get profileErrorEmailInUse;
+
+  /// No description provided for @profileErrorWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong password'**
+  String get profileErrorWrongPassword;
+
+  /// No description provided for @profileErrorPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get profileErrorPasswordRequired;
 }
 
 class _AppLocalizationsDelegate

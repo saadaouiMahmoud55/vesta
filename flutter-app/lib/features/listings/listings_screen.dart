@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/router/app_router.dart';
+import '../auth/auth_controller.dart';
+import '../profile/profile_controller.dart';
 import '../../l10n/generated/app_localizations.dart';
+import 'explore_welcome.dart';
 import 'listing.dart';
 import 'listing_card.dart';
 import 'listing_repository.dart';
@@ -54,14 +57,19 @@ class ListingsScreen extends ConsumerWidget {
             : ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(16),
-                itemCount: items.length,
+                // Item 0 is the welcome header (signed-in users only).
+                itemCount: items.length + 1,
                 separatorBuilder: (_, _) => const SizedBox(height: 12),
-                itemBuilder: (_, index) => ListingCard(
-                  listing: items[index],
-                  onTap: () => context.push(
-                    AppRoutes.listingDetailPath(items[index].id),
-                  ),
-                ),
+                itemBuilder: (_, index) {
+                  if (index == 0) return const _WelcomeHeader();
+                  final listing = items[index - 1];
+                  return ListingCard(
+                    listing: listing,
+                    onTap: () => context.push(
+                      AppRoutes.listingDetailPath(listing.id),
+                    ),
+                  );
+                },
               ),
       ),
     );
@@ -72,5 +80,27 @@ class ListingsScreen extends ConsumerWidget {
       return l10n.favoritesErrorNoNetwork;
     }
     return l10n.favoritesErrorUnknown;
+  }
+}
+
+/// Logo and "Welcome back, name" for a signed-in user; nothing for a guest.
+class _WelcomeHeader extends ConsumerWidget {
+  const _WelcomeHeader();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).value;
+    if (user == null) return const SizedBox.shrink();
+    final profile = ref.watch(myProfileProvider).value;
+    final name = (profile?.displayName ?? '').trim().isNotEmpty
+        ? profile!.displayName
+        : (user.displayName ?? '');
+    return ExploreWelcome(
+      name: name,
+      isNew: isFirstSignIn(
+        user.metadata.creationTime,
+        user.metadata.lastSignInTime,
+      ),
+    );
   }
 }

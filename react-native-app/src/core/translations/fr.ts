@@ -109,6 +109,7 @@ export default {
   profileErrorUnknown: 'Une erreur est survenue. Veuillez réessayer.',
   profilePhotoErrorTooLarge: 'Cette photo est trop lourde',
   profilePhotoErrorRead: 'Impossible de lire cette photo',
+  profileRemovePhoto: 'Supprimer la photo',
   favoritesEmptyTitle: 'Aucun favori pour le moment',
   favoritesEmptyBody: 'Touchez le cœur sur une annonce pour la retrouver ici.',
   favoritesUnavailable: "Cette annonce n'est plus disponible",
@@ -120,6 +121,8 @@ export default {
   favoritesErrorNotSignedIn: 'Connecte-toi pour enregistrer des favoris.',
   favoritesErrorUnknown: 'Une erreur est survenue. Réessaie.',
   listingsEmpty: "Aucune annonce pour l'instant",
+  listingsWelcomeBack: 'Bon retour, {{name}}',
+  listingsWelcomeNew: 'Bienvenue sur Vesta, {{name}}',
   favoritesFilterAll: 'Tous',
   favoritesFilterBuy: 'Acheter',
   favoritesFilterRent: 'Louer',
@@ -149,6 +152,9 @@ export default {
   authWelcomeTitle: 'Bienvenue sur Vesta',
   authWelcomeSubtitle:
     'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.',
+  authSignUpSubtitle:
+    'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.',
+  authSignUpProverb: '« Ici, vous êtes chez vous. »',
   authContinueAsGuest: "Continuer en tant qu'invité",
   loading: 'Chargement…',
   homePriceExample: 'Exemple de prix : {{price}}',
@@ -304,4 +310,14 @@ export default {
     'Bonjour, je suis intéressé par la location de {{title}} sur Vesta',
   contactMessageStay:
     'Bonjour, je suis intéressé par un séjour à {{title}} sur Vesta',
+  profilePhoneLabel: 'Numéro de téléphone',
+  profileErrorPhoneInvalid:
+    'Entrez un numéro tunisien valide (+216 et 8 chiffres)',
+  profilePasswordLabel: 'Mot de passe actuel',
+  profileEmailSent:
+    'Nous avons envoyé un e-mail de confirmation à votre nouvelle adresse. Votre e-mail changera après confirmation.',
+  profileErrorEmailInvalid: 'Entrez une adresse e-mail valide',
+  profileErrorEmailInUse: 'Cet e-mail est déjà utilisé par un autre compte',
+  profileErrorWrongPassword: 'Mot de passe incorrect',
+  profileErrorPasswordRequired: 'Entrez votre mot de passe actuel',
 };

@@ -107,6 +107,7 @@
   "profileErrorUnknown": "صار مشكل، عاود جرّب",
   "profilePhotoErrorTooLarge": "الصورة هذي كبيرة برشا",
   "profilePhotoErrorRead": "ما نجمناش نقراو الصورة",
+  "profileRemovePhoto": "امسح الصورة",
   "favoritesEmptyTitle": "لا توجد مفضلة بعد",
   "favoritesEmptyBody": "اضغط على القلب في أي إعلان لحفظه هنا.",
   "favoritesUnavailable": "هذا الإعلان لم يعد متاحًا",
@@ -117,6 +118,22 @@
   "favoritesErrorNotSignedIn": "سجّل الدخول لحفظ المفضلة.",
   "favoritesErrorUnknown": "حدث خطأ. حاول مرة أخرى.",
   "listingsEmpty": "لا توجد إعلانات بعد",
+  "listingsWelcomeBack": "مرحبا بيك من جديد، {name}",
+  "@listingsWelcomeBack": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "listingsWelcomeNew": "مرحبا بيك في Vesta، {name}",
+  "@listingsWelcomeNew": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "favoritesFilterAll": "الكل",
   "favoritesFilterBuy": "شراء",
   "favoritesFilterRent": "كراء",
@@ -142,6 +159,8 @@
   "authErrorTooManyRequests": "برشا محاولات، عاود جرّب بعد شوية دقايق",
   "authWelcomeTitle": "مرحبا بيك في Vesta",
   "authWelcomeSubtitle": "ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.",
+  "authSignUpSubtitle": "أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.",
+  "authSignUpProverb": "«الدار دارك»",
   "authContinueAsGuest": "كمّل كضيف",
   "loading": "جارٍ التحميل…",
   "homePriceExample": "مثال على السعر: {price}",
@@ -318,5 +337,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profilePhoneLabel": "رقم الهاتف",
+  "profileErrorPhoneInvalid": "أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام)",
+  "profilePasswordLabel": "كلمة السر الحالية",
+  "profileEmailSent": "بعثنالك إيميل تأكيد على العنوان الجديد. الإيميل يتبدّل كي تأكّد.",
+  "profileErrorEmailInvalid": "أدخل عنوان إيميل صحيح",
+  "profileErrorEmailInUse": "هذا الإيميل مستعمل في حساب آخر",
+  "profileErrorWrongPassword": "كلمة السر غالطة",
+  "profileErrorPasswordRequired": "أدخل كلمة السر الحالية"
 }

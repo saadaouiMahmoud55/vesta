@@ -2,6 +2,10 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
   serverTimestamp,
   writeBatch,
 } from 'firebase/firestore';
@@ -17,9 +21,29 @@ import {
   maxListingPhotos,
   NewListing,
 } from '../models/newListing';
+import { photosFromDocs } from '../models/photoList';
 
 /** Only place that reads the `listings` collection and its photos. */
 export class ListingsRepository {
+  /** Newest listings first, hidden ones left out. One small read, no index (same as Flutter). */
+  async getLatestListings(max = 100): Promise<Listing[]> {
+    try {
+      const snapshot = await getDocs(
+        query(collection(db, 'listings'), orderBy('createdAt', 'desc'), limit(max)),
+      );
+      return snapshot.docs
+        .map(item => listingFromData(item.id, item.data()))
+        .filter(listing => listing.status !== 'hidden');
+    } catch (error) {
+      throw new FavoritesFailure(mapFavoritesCode(errorCodeOf(error)));
+    }
+  }
+
+  /** One listing, or null when it does not exist or cannot be read (hidden). */
+  getListing(id: string): Promise<Listing | null> {
+    return this.getOrNull(id);
+  }
+
   /** Same order as `ids`; null means deleted or not readable (hidden). */
   getListingsByIds(ids: string[]): Promise<(Listing | null)[]> {
     return Promise.all(ids.map(id => this.getOrNull(id)));
@@ -74,6 +98,27 @@ export class ListingsRepository {
       const code = errorCodeOf(error);
       if (code === 'permission-denied') {
         return null;
+      }
+      throw new FavoritesFailure(mapFavoritesCode(code));
+    }
+  }
+
+  /** All the photos of a listing as base64, sorted by id (p0 = cover first). */
+  async getPhotos(listingId: string): Promise<string[]> {
+    try {
+      const snapshot = await getDocs(
+        collection(db, 'listings', listingId, 'photos'),
+      );
+      return photosFromDocs(
+        snapshot.docs.map(item => ({
+          id: item.id,
+          base64: item.data().base64,
+        })),
+      );
+    } catch (error) {
+      const code = errorCodeOf(error);
+      if (code === 'permission-denied') {
+        return [];
       }
       throw new FavoritesFailure(mapFavoritesCode(code));
     }
