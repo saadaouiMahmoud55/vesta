@@ -248,6 +248,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               controller: _phoneController,
               enabled: !state.isLoading && _phoneLoaded,
               textInputAction: TextInputAction.done,
+              ltr: true,
               errorText: _phoneError,
               onChanged: (_) {
                 if (_phoneError != null) setState(() => _phoneError = null);
