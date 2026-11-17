@@ -101,7 +101,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 1. Notifications push réelles (FCM) et Firebase Storage pour les photos, avec l'offre payante.
 2. Règle `notAnonymous()` pour protéger le numéro de contact, avec ses tests d'émulateur.
 3. Recherche côté serveur avec filtres et pagination, et annonces séparées par type (ventes, locations, séjours) comme l'a suggéré notre professeur.
-4. Réservations, avis, assistant IA et tableau de bord du propriétaire, dans les deux applications.
+4. Réservations, avis, assistant IA et tableau de bord du propriétaire, dans les deux applications. La réservation Flutter est en partie faite sur une branche non fusionnée (VST-92) : calcul des nuits et du prix avec tests, textes en trois langues et écran de demande ; il manque la structure `bookings` et `blockedNights` et les règles Firestore.
 5. Statut des annonces, partie 2 (VST-136) : rubans de couleur, statut « masqué » visible seulement par le propriétaire, nombre de favoris sur les cartes.
 6. Synchroniser l'e-mail du profil dans `private/contact` après un changement, connexion avec Google et Apple, signalement et blocage.
 7. Mode sombre, détection hors ligne avant la publication, relecture native de l'arabe, plus de tests sur téléphones réels.

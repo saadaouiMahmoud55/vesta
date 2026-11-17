@@ -49,6 +49,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - **Vraies notifications push** (Firebase Cloud Messaging) à la place des alertes dans l'application et locales.
 - **Détection hors ligne** avant la publication, avec un message clair.
 - **Demandes de réservation, avis et assistant IA**, dans les deux applications.
+- **Réservation Flutter** (VST-92) : une branche `feature/VST-92-flutter-booking`, non fusionnée, contient le calcul des nuits et du prix (avec tests), 17 textes en arabe, français et anglais, et l'écran de demande (sans Firestore). Il manque la structure de données (`bookings`, `blockedNights`), les règles Firestore avec leurs tests et leur déploiement.
 - **Signaler et bloquer des utilisateurs**, page de confidentialité et case des conditions à l'inscription.
 - **Prise en charge du web pour les photos** (ajouter le script `pica` et lire des octets au lieu d'un chemin de fichier).
 - **Relecture native de l'arabe** de tous les textes, alignée sur le glossaire tunisien.
