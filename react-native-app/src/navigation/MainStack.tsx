@@ -65,7 +65,7 @@ export function MainStack(): React.JSX.Element {
         component={PublishListingScreen}
         options={{ headerShown: true, title: t('publishTitle') }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="ListingDetails"
         component={ListingDetailScreen}
         options={{ headerShown: true, title: '' }}
