@@ -29,12 +29,12 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - La suppression d'un compte conserve les messages du chat pour l'autre personne.
 - Le numéro de téléphone du propriétaire (`listings/{id}/contact/info`) est lisible avec la règle `signedIn()` : un compte Firebase anonyme compte comme connecté et peut donc le lire. La règle `notAnonymous()` (PR #44, fermée, jamais fusionnée) n'est pas dans `develop`.
 - Le signalement et le blocage d'utilisateurs, ainsi que la page de confidentialité, n'ont pas été terminés (voir le handover d'Eya).
-- La clé API Android est limitée à nos applications par nom de package et SHA-1. Chaque nouveau développeur ou nouvelle clé de signature doit avoir sa propre ligne, et un changement prend environ 5 minutes.
+- La clé API Android n'a actuellement aucune restriction d'application (« Aucune »), pour que la démo et les tests sur téléphone ne soient pas bloqués. La restriction par nom de package et SHA-1 est décrite dans `firebase/README.md` et sera remise après les tests : chaque clé de signature (debug, upload, Google Play) aura alors sa propre ligne, et un changement prend environ 5 minutes.
 - L'application n'a pas de Cloud Functions (offre gratuite) : la suppression de compte et le nettoyage s'exécutent depuis l'application.
 
 **Application React Native**
 
-- C'est un MVP réduit de l'application Flutter : connexion, navigation, recherche et une partie des annonces (la carte, PR #91, seulement si elle est fusionnée avant le gel du code). Les alertes de messages et le badge de messages non lus de l'application React Native (PR #111) sont présents. Le chat React Native (VST-45, PR #102) et les boutons de contact (VST-80, PR #103) sont dans des PR ouvertes, non fusionnées avant le gel et non testées sur téléphones réels. Pas d'assistant IA, de réservations ni d'avis. Les annonces (VST-39) n'ont pas été terminées.
+- C'est un MVP réduit de l'application Flutter : connexion, navigation, recherche et une partie des annonces (la carte, PR #91, est fusionnée). Les alertes de messages et le badge de messages non lus de l'application React Native (PR #111) sont présents. Le chat React Native (VST-45, PR #102) et les boutons de contact (VST-80, PR #103) sont dans des PR ouvertes, non fusionnées avant le gel et non testées sur téléphones réels. Pas d'assistant IA, de réservations ni d'avis. Les annonces (VST-39) n'ont pas été terminées.
 
 **Contenu**
 
