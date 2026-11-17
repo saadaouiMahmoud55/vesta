@@ -58,28 +58,6 @@ export class ListingsRepository {
     }
   }
 
-  /**
-   * Newest listings first, for the search. Hidden listings are skipped: the
-   * rules let everybody read them, so the app must filter them. Sorting only
-   * on createdAt needs no Firestore index (same as Flutter).
-   */
-  async getLatestListings(max = 20): Promise<Listing[]> {
-    try {
-      const snapshot = await getDocs(
-        query(
-          collection(db, 'listings'),
-          orderBy('createdAt', 'desc'),
-          limit(max),
-        ),
-      );
-      return snapshot.docs
-        .filter(item => item.data().status !== 'hidden')
-        .map(item => listingFromData(item.id, item.data()));
-    } catch (error) {
-      throw new FavoritesFailure(mapFavoritesCode(errorCodeOf(error)));
-    }
-  }
-
   createListing = createListing;
 
   /** Cover photo (id p0) as base64, or null. */

@@ -19,6 +19,8 @@ const make = (over: Partial<Listing>): Listing => ({
   city: 'Tunis',
   status: 'available',
   photoCount: 1,
+  latitude: null,
+  longitude: null,
   ...over,
 });
 
