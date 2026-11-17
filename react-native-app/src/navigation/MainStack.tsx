@@ -6,6 +6,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ChatListScreen } from '../features/chat/ChatListScreen';
 import { ChatScreen } from '../features/chat/ChatScreen';
+import { ListingDetailScreen } from '../features/listings/ListingDetailScreen';
 import { PublishListingScreen } from '../features/listings/PublishListingScreen';
 import { MainTabs } from './MainTabs';
 
@@ -14,6 +15,7 @@ export type MainStackParamList = {
   ChatList: undefined;
   ChatRoom: { conversationId: string };
   PublishListing: undefined;
+  ListingDetails: { listingId: string };
 };
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -30,10 +32,17 @@ function ChatListRoute({
 }
 
 function ChatRoomRoute({
+  navigation,
   route,
 }: NativeStackScreenProps<MainStackParamList, 'ChatRoom'>): React.JSX.Element {
-  // onOpenListing stays empty: the listing details screen does not exist yet.
-  return <ChatScreen conversationId={route.params.conversationId} />;
+  return (
+    <ChatScreen
+      conversationId={route.params.conversationId}
+      onOpenListing={listingId =>
+        navigation.navigate('ListingDetails', { listingId })
+      }
+    />
+  );
 }
 
 export function MainStack(): React.JSX.Element {
@@ -55,6 +64,11 @@ export function MainStack(): React.JSX.Element {
         name="PublishListing"
         component={PublishListingScreen}
         options={{ headerShown: true, title: t('publishTitle') }}
+      />
+      <Stack.Screen
+        name="ListingDetails"
+        component={ListingDetailScreen}
+        options={{ title: '' }}
       />
     </Stack.Navigator>
   );

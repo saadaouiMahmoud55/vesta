@@ -108,6 +108,7 @@ export default {
   profileErrorUnknown: 'Something went wrong. Please try again.',
   profilePhotoErrorTooLarge: 'This photo is too large',
   profilePhotoErrorRead: 'Could not read this photo',
+  profileRemovePhoto: 'Remove photo',
   favoritesEmptyTitle: 'No favorites yet',
   favoritesEmptyBody: 'Tap the heart on a listing to save it here.',
   favoritesUnavailable: 'This listing is no longer available',
@@ -118,6 +119,8 @@ export default {
   favoritesErrorNotSignedIn: 'Sign in to save favorites.',
   favoritesErrorUnknown: 'Something went wrong. Please try again.',
   listingsEmpty: 'No listings yet',
+  listingsWelcomeBack: 'Welcome back, {{name}}',
+  listingsWelcomeNew: 'Welcome to Vesta, {{name}}',
   favoritesFilterAll: 'All',
   favoritesFilterBuy: 'Buy',
   favoritesFilterRent: 'Rent',
@@ -147,6 +150,9 @@ export default {
   authWelcomeTitle: 'Welcome to Vesta',
   authWelcomeSubtitle:
     'Sign in to contact owners, save favorites and publish your own place.',
+  authSignUpSubtitle:
+    'Create your account to save favorites, publish your own place and send messages to owners.',
+  authSignUpProverb: '“Make yourself at home.”',
   authContinueAsGuest: 'Continue as guest',
   loading: 'Loading…',
   homePriceExample: 'Example price: {{price}}',
@@ -294,4 +300,13 @@ export default {
   contactMessageSale: 'Hello, I am interested in buying {{title}} on Vesta',
   contactMessageRent: 'Hello, I am interested in renting {{title}} on Vesta',
   contactMessageStay: 'Hello, I am interested in staying at {{title}} on Vesta',
+  profilePhoneLabel: 'Phone number',
+  profileErrorPhoneInvalid: 'Enter a valid Tunisian number (+216 and 8 digits)',
+  profilePasswordLabel: 'Current password',
+  profileEmailSent:
+    'We sent a confirmation email to your new address. Your email changes after you confirm it.',
+  profileErrorEmailInvalid: 'Enter a valid email address',
+  profileErrorEmailInUse: 'This email is already used by another account',
+  profileErrorWrongPassword: 'Wrong password',
+  profileErrorPasswordRequired: 'Enter your current password',
 };

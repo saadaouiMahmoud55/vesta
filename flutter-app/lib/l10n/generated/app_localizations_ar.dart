@@ -333,6 +333,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profilePhotoErrorRead => 'ما نجمناش نقراو الصورة';
 
   @override
+  String get profileRemovePhoto => 'امسح الصورة';
+
+  @override
   String get favoritesEmptyTitle => 'لا توجد مفضلة بعد';
 
   @override
@@ -362,6 +365,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get listingsEmpty => 'لا توجد إعلانات بعد';
+
+  @override
+  String listingsWelcomeBack(String name) {
+    return 'مرحبا بيك من جديد، $name';
+  }
+
+  @override
+  String listingsWelcomeNew(String name) {
+    return 'مرحبا بيك في Vesta، $name';
+  }
 
   @override
   String get favoritesFilterAll => 'الكل';
@@ -440,6 +453,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get authWelcomeSubtitle =>
       'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.';
+
+  @override
+  String get authSignUpSubtitle =>
+      'أنشئ حسابك باش تحفظ المفضلة وتنشر إعلانك وتبعث رسائل للمالكين.';
+
+  @override
+  String get authSignUpProverb => '«الدار دارك»';
 
   @override
   String get authContinueAsGuest => 'كمّل كضيف';
@@ -882,4 +902,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String contactMessageStay(String title) {
     return 'عسلامة، مهتم بالإقامة في $title على Vesta';
   }
+
+  @override
+  String get profilePhoneLabel => 'رقم الهاتف';
+
+  @override
+  String get profileErrorPhoneInvalid =>
+      'أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام)';
+
+  @override
+  String get profilePasswordLabel => 'كلمة السر الحالية';
+
+  @override
+  String get profileEmailSent =>
+      'بعثنالك إيميل تأكيد على العنوان الجديد. الإيميل يتبدّل كي تأكّد.';
+
+  @override
+  String get profileErrorEmailInvalid => 'أدخل عنوان إيميل صحيح';
+
+  @override
+  String get profileErrorEmailInUse => 'هذا الإيميل مستعمل في حساب آخر';
+
+  @override
+  String get profileErrorWrongPassword => 'كلمة السر غالطة';
+
+  @override
+  String get profileErrorPasswordRequired => 'أدخل كلمة السر الحالية';
 }

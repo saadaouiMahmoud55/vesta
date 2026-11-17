@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../core/utils/phone_utils.dart';
 import '../auth/auth_controller.dart';
 import '../listings/listing_controller.dart';
 import '../listings/listing_repository.dart';
@@ -29,6 +30,23 @@ final myListingsProvider = StreamProvider<List<Listing>>((ref) {
 /// Name validation, used by the edit form.
 ProfileError? validateDisplayName(String? value) =>
     (value ?? '').trim().isEmpty ? ProfileError.nameRequired : null;
+
+/// Phone is optional, but if given it must be a Tunisian number.
+ProfileError? validatePhone(String? value) {
+  final text = (value ?? '').trim();
+  if (text.isEmpty) return null;
+  return isValidTunisianPhone(text) ? null : ProfileError.phoneInvalid;
+}
+
+ProfileError? validateEmail(String? value) {
+  final text = (value ?? '').trim();
+  return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(text)
+      ? null
+      : ProfileError.emailInvalid;
+}
+
+ProfileError? validatePassword(String? value) =>
+    (value ?? '').isEmpty ? ProfileError.passwordRequired : null;
 
 class ProfileFormState {
   const ProfileFormState({this.isLoading = false, this.error, this.photoError});
@@ -62,8 +80,13 @@ class ProfileController extends Notifier<ProfileFormState> {
   }
 
   /// Returns true when the profile was saved.
-  Future<bool> save({required String displayName, String? photoBase64}) async {
-    final invalid = validateDisplayName(displayName);
+  Future<bool> save({
+    required String displayName,
+    String? photoBase64,
+    bool removePhoto = false,
+    String? phone,
+  }) async {
+    final invalid = validateDisplayName(displayName) ?? validatePhone(phone);
     if (invalid != null) {
       state = ProfileFormState(error: invalid);
       return false;
@@ -72,7 +95,24 @@ class ProfileController extends Notifier<ProfileFormState> {
       () => _users.updateProfile(
         displayName: displayName,
         photoBase64: photoBase64,
+        removePhoto: removePhoto,
+        phone: phone,
       ),
+    );
+  }
+
+  /// Returns true when the confirmation mail was sent to the new address.
+  Future<bool> changeEmail({
+    required String newEmail,
+    required String password,
+  }) {
+    final invalid = validateEmail(newEmail) ?? validatePassword(password);
+    if (invalid != null) {
+      state = ProfileFormState(error: invalid);
+      return Future.value(false);
+    }
+    return _run(
+      () => _users.changeEmail(newEmail: newEmail, password: password),
     );
   }
 

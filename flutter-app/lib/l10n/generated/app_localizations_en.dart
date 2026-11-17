@@ -337,6 +337,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profilePhotoErrorRead => 'Could not read this photo';
 
   @override
+  String get profileRemovePhoto => 'Remove photo';
+
+  @override
   String get favoritesEmptyTitle => 'No favorites yet';
 
   @override
@@ -367,6 +370,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get listingsEmpty => 'No listings yet';
+
+  @override
+  String listingsWelcomeBack(String name) {
+    return 'Welcome back, $name';
+  }
+
+  @override
+  String listingsWelcomeNew(String name) {
+    return 'Welcome to Vesta, $name';
+  }
 
   @override
   String get favoritesFilterAll => 'All';
@@ -446,6 +459,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authWelcomeSubtitle =>
       'Sign in to contact owners, save favorites and publish your own place.';
+
+  @override
+  String get authSignUpSubtitle =>
+      'Create your account to save favorites, publish your own place and send messages to owners.';
+
+  @override
+  String get authSignUpProverb => '“Make yourself at home.”';
 
   @override
   String get authContinueAsGuest => 'Continue as guest';
@@ -892,4 +912,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String contactMessageStay(String title) {
     return 'Hello, I am interested in staying at $title on Vesta';
   }
+
+  @override
+  String get profilePhoneLabel => 'Phone number';
+
+  @override
+  String get profileErrorPhoneInvalid =>
+      'Enter a valid Tunisian number (+216 and 8 digits)';
+
+  @override
+  String get profilePasswordLabel => 'Current password';
+
+  @override
+  String get profileEmailSent =>
+      'We sent a confirmation email to your new address. Your email changes after you confirm it.';
+
+  @override
+  String get profileErrorEmailInvalid => 'Enter a valid email address';
+
+  @override
+  String get profileErrorEmailInUse =>
+      'This email is already used by another account';
+
+  @override
+  String get profileErrorWrongPassword => 'Wrong password';
+
+  @override
+  String get profileErrorPasswordRequired => 'Enter your current password';
 }
