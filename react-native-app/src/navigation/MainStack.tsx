@@ -1,10 +1,15 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import { ListingDetailScreen } from '../features/listings/ListingDetailScreen';
 import { PublishListingScreen } from '../features/listings/PublishListingScreen';
 import { MainTabs } from './MainTabs';
 
-export type MainStackParamList = { Tabs: undefined; PublishListing: undefined };
+export type MainStackParamList = {
+  Tabs: undefined;
+  PublishListing: undefined;
+  ListingDetails: { listingId: string };
+};
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 export function MainStack(): React.JSX.Element {
@@ -20,6 +25,11 @@ export function MainStack(): React.JSX.Element {
         name="PublishListing"
         component={PublishListingScreen}
         options={{ title: t('publishTitle') }}
+      />
+      <Stack.Screen
+        name="ListingDetails"
+        component={ListingDetailScreen}
+        options={{ title: '' }}
       />
     </Stack.Navigator>
   );
