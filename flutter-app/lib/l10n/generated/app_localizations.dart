@@ -604,6 +604,12 @@ abstract class AppLocalizations {
   /// **'Name'**
   String get profileNameLabel;
 
+  /// No description provided for @profilePhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get profilePhoneLabel;
+
   /// No description provided for @profileEmailLabel.
   ///
   /// In en, this message translates to:
@@ -705,6 +711,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Name is required'**
   String get profileErrorNameRequired;
+
+  /// No description provided for @profileErrorPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Tunisian phone number'**
+  String get profileErrorPhoneInvalid;
 
   /// No description provided for @profileErrorNoNetwork.
   ///

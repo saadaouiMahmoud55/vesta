@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_dimens.dart';
+import '../../core/utils/phone_utils.dart';
 import '../../core/widgets/app_avatar.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
@@ -28,11 +29,24 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   String? _newPhotoBase64; // set only when the user picked a new photo
   bool _removePhoto = false; // the user asked to remove the current photo
   String? _nameError; // shown under the field
+  late final TextEditingController _phoneController;
+  String? _phoneError;
+  bool _phoneLoaded = false; // true once the saved phone is read
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.profile.displayName);
+    _phoneController = TextEditingController();
+    ref.read(userRepositoryProvider).loadPhone().then((phone) {
+      if (!mounted) return;
+      setState(() {
+        _phoneLoaded = true;
+        if (phone != null && _phoneController.text.isEmpty) {
+          _phoneController.text = formatPhone(phone);
+        }
+      });
+    });
     // Clear an old error left by another screen (after the first build).
     Future.microtask(() {
       if (mounted) ref.read(profileControllerProvider.notifier).clearError();
@@ -42,6 +56,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -69,8 +84,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
     if (source == null) return; // sheet dismissed
 
-    final photo =
-        await ref.read(profileControllerProvider.notifier).pickPhoto(source);
+    final photo = await ref
+        .read(profileControllerProvider.notifier)
+        .pickPhoto(source);
     if (photo != null && mounted) {
       setState(() {
         _newPhotoBase64 = photo;
@@ -95,15 +111,22 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   Future<void> _save() async {
     final l10n = AppLocalizations.of(context);
     final error = validateDisplayName(_nameController.text);
+    final phoneError = validatePhone(_phoneController.text);
     setState(() {
       _nameError = error == null ? null : profileErrorMessage(l10n, error);
+      _phoneError = phoneError == null
+          ? null
+          : profileErrorMessage(l10n, phoneError);
     });
-    if (error != null) return;
+    if (error != null || phoneError != null) return;
 
-    final saved = await ref.read(profileControllerProvider.notifier).save(
+    final saved = await ref
+        .read(profileControllerProvider.notifier)
+        .save(
           displayName: _nameController.text,
           photoBase64: _newPhotoBase64,
           removePhoto: _removePhoto,
+          phone: _phoneLoaded ? _phoneController.text : null,
         );
     if (!saved || !mounted) return;
 
@@ -174,6 +197,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               errorText: _nameError,
               onChanged: (_) {
                 if (_nameError != null) setState(() => _nameError = null);
+              },
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            AppTextField(
+              label: l10n.profilePhoneLabel,
+              hintText: '+216 20 123 456',
+              controller: _phoneController,
+              enabled: !state.isLoading && _phoneLoaded,
+              textInputAction: TextInputAction.done,
+              errorText: _phoneError,
+              onChanged: (_) {
+                if (_phoneError != null) setState(() => _phoneError = null);
               },
             ),
             if (errorText != null) ...[

@@ -267,6 +267,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileNameLabel => 'Name';
 
   @override
+  String get profilePhoneLabel => 'Phone number';
+
+  @override
   String get profileEmailLabel => 'Email';
 
   @override
@@ -317,6 +320,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileErrorNameRequired => 'Name is required';
+
+  @override
+  String get profileErrorPhoneInvalid => 'Enter a valid Tunisian phone number';
 
   @override
   String get profileErrorNoNetwork => 'No connection. Please try again.';

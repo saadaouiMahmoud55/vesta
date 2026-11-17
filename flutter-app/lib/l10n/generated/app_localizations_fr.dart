@@ -271,6 +271,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileNameLabel => 'Nom';
 
   @override
+  String get profilePhoneLabel => 'Numéro de téléphone';
+
+  @override
   String get profileEmailLabel => 'Email';
 
   @override
@@ -321,6 +324,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileErrorNameRequired => 'Le nom est obligatoire';
+
+  @override
+  String get profileErrorPhoneInvalid =>
+      'Saisissez un numéro de téléphone tunisien valide';
 
   @override
   String get profileErrorNoNetwork => 'Pas de connexion. Veuillez réessayer.';

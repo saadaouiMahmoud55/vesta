@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../core/utils/phone_utils.dart';
 import '../auth/auth_controller.dart';
 import '../listings/listing_controller.dart';
 import '../listings/listing_repository.dart';
@@ -29,6 +30,13 @@ final myListingsProvider = StreamProvider<List<Listing>>((ref) {
 /// Name validation, used by the edit form.
 ProfileError? validateDisplayName(String? value) =>
     (value ?? '').trim().isEmpty ? ProfileError.nameRequired : null;
+
+/// Phone is optional, but if given it must be a Tunisian number.
+ProfileError? validatePhone(String? value) {
+  final text = (value ?? '').trim();
+  if (text.isEmpty) return null;
+  return isValidTunisianPhone(text) ? null : ProfileError.phoneInvalid;
+}
 
 class ProfileFormState {
   const ProfileFormState({this.isLoading = false, this.error, this.photoError});
@@ -66,8 +74,9 @@ class ProfileController extends Notifier<ProfileFormState> {
     required String displayName,
     String? photoBase64,
     bool removePhoto = false,
+    String? phone,
   }) async {
-    final invalid = validateDisplayName(displayName);
+    final invalid = validateDisplayName(displayName) ?? validatePhone(phone);
     if (invalid != null) {
       state = ProfileFormState(error: invalid);
       return false;
@@ -77,6 +86,7 @@ class ProfileController extends Notifier<ProfileFormState> {
         displayName: displayName,
         photoBase64: photoBase64,
         removePhoto: removePhoto,
+        phone: phone,
       ),
     );
   }

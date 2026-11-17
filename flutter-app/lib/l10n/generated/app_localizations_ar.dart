@@ -263,6 +263,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileNameLabel => 'الاسم';
 
   @override
+  String get profilePhoneLabel => 'رقم الهاتف';
+
+  @override
   String get profileEmailLabel => 'البريد الإلكتروني';
 
   @override
@@ -313,6 +316,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileErrorNameRequired => 'أدخل اسمك';
+
+  @override
+  String get profileErrorPhoneInvalid => 'أدخل رقم هاتف تونسي صحيح';
 
   @override
   String get profileErrorNoNetwork => 'ما فماش اتصال، عاود جرّب';
