@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
 import { HomeScreen } from '../features/listings/HomeScreen';
 import { SearchScreen } from '../features/search/SearchScreen';
+import { MapScreen } from '../features/map/MapScreen';
 import { PlaceholderScreen } from './PlaceholderScreen';
 import { theme } from '../core/theme';
 import { useUnreadAlerts } from '../features/notifications/useUnreadAlerts';
@@ -17,7 +18,6 @@ export type MainTabsParamList = {
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
 // To plug a real screen, replace the component of its tab below.
-const MapTab = () => <PlaceholderScreen titleKey="tabMap" />;
 const FavoritesTab = () => <PlaceholderScreen titleKey="tabFavorites" />;
 const ProfileTab = () => <PlaceholderScreen titleKey="tabProfile" />;
 
@@ -45,7 +45,7 @@ export function MainTabs(): React.JSX.Element {
       />
       <Tab.Screen
         name="Map"
-        component={MapTab}
+        component={MapScreen}
         options={{ title: t('tabMap') }}
       />
       <Tab.Screen

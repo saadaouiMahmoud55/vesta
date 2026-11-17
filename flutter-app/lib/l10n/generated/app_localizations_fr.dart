@@ -342,6 +342,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profilePhotoErrorRead => 'Impossible de lire cette photo';
 
   @override
+  String get profileRemovePhoto => 'Supprimer la photo';
+
+  @override
   String get favoritesEmptyTitle => 'Aucun favori pour le moment';
 
   @override
@@ -373,6 +376,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get listingsEmpty => 'Aucune annonce pour l\'instant';
+
+  @override
+  String listingsWelcomeBack(String name) {
+    return 'Bon retour, $name';
+  }
+
+  @override
+  String listingsWelcomeNew(String name) {
+    return 'Bienvenue sur Vesta, $name';
+  }
 
   @override
   String get favoritesFilterAll => 'Tous';
@@ -452,6 +465,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get authWelcomeSubtitle =>
       'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.';
+
+  @override
+  String get authSignUpSubtitle =>
+      'Créez votre compte pour enregistrer vos favoris, publier votre bien et écrire aux propriétaires.';
+
+  @override
+  String get authSignUpProverb => '« Ici, vous êtes chez vous. »';
 
   @override
   String get authContinueAsGuest => 'Continuer en tant qu\'invité';

@@ -742,6 +742,12 @@ abstract class AppLocalizations {
   /// **'Could not read this photo'**
   String get profilePhotoErrorRead;
 
+  /// No description provided for @profileRemovePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get profileRemovePhoto;
+
   /// No description provided for @favoritesEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -801,6 +807,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No listings yet'**
   String get listingsEmpty;
+
+  /// No description provided for @listingsWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}'**
+  String listingsWelcomeBack(String name);
+
+  /// No description provided for @listingsWelcomeNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Vesta, {name}'**
+  String listingsWelcomeNew(String name);
 
   /// No description provided for @favoritesFilterAll.
   ///
@@ -951,6 +969,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in to contact owners, save favorites and publish your own place.'**
   String get authWelcomeSubtitle;
+
+  /// No description provided for @authSignUpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account to save favorites, publish your own place and send messages to owners.'**
+  String get authSignUpSubtitle;
+
+  /// No description provided for @authSignUpProverb.
+  ///
+  /// In en, this message translates to:
+  /// **'“Make yourself at home.”'**
+  String get authSignUpProverb;
 
   /// No description provided for @authContinueAsGuest.
   ///
