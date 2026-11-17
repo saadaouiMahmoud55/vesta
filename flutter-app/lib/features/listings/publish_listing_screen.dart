@@ -9,6 +9,9 @@ import 'package:latlong2/latlong.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/phone_utils.dart';
+import '../../core/widgets/app_button.dart';
+import '../../core/widgets/app_top_bar.dart';
+import '../../core/widgets/filter_tag.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'listing_card.dart';
 import 'listing_controller.dart';
@@ -541,25 +544,25 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
 
     if (_loadingEdit) {
       return Scaffold(
-        appBar: AppBar(title: Text(title)),
+        appBar: AppTopBar(title: title),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
     if (_editNotFound) {
       return Scaffold(
-        appBar: AppBar(title: Text(title)),
+        appBar: AppTopBar(title: title),
         body: Center(child: Text(l.listingDetailNotFound)),
       );
     }
     if (_editLoadFailed) {
       return Scaffold(
-        appBar: AppBar(title: Text(title)),
+        appBar: AppTopBar(title: title),
         body: Center(child: Text(l.publishEditLoadFailed)),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppTopBar(title: title),
       body: AbsorbPointer(
         absorbing: loading,
         child: Form(
@@ -725,16 +728,11 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                 runSpacing: 8,
                 children: [
                   for (final key in amenityKeys)
-                    FilterChip(
-                      avatar: Icon(amenityIcon(key), size: 18),
-                      label: Text(amenityLabel(l, key)),
+                    FilterTag(
+                      label: amenityLabel(l, key),
                       selected: _amenities.contains(key),
-                      onSelected: (on) => setState(() {
-                        if (on) {
-                          _amenities.add(key);
-                        } else {
-                          _amenities.remove(key);
-                        }
+                      onTap: () => setState(() {
+                        if (!_amenities.remove(key)) _amenities.add(key);
                       }),
                     ),
                 ],
@@ -765,16 +763,11 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                 runSpacing: 8,
                 children: [
                   for (final key in houseRuleKeys)
-                    FilterChip(
-                      avatar: Icon(houseRuleIcon(key), size: 18),
-                      label: Text(houseRuleLabel(l, key)),
+                    FilterTag(
+                      label: houseRuleLabel(l, key),
                       selected: _houseRules.contains(key),
-                      onSelected: (on) => setState(() {
-                        if (on) {
-                          _houseRules.add(key);
-                        } else {
-                          _houseRules.remove(key);
-                        }
+                      onTap: () => setState(() {
+                        if (!_houseRules.remove(key)) _houseRules.add(key);
                       }),
                     ),
                 ],
@@ -858,15 +851,10 @@ class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
                   ),
                 ),
               const SizedBox(height: 24),
-              FilledButton(
-                onPressed: loading ? null : _submit,
-                child: loading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(_isEditing ? l.publishEditSubmit : l.publishSubmit),
+              PrimaryButton(
+                label: _isEditing ? l.publishEditSubmit : l.publishSubmit,
+                loading: loading,
+                onPressed: _submit,
               ),
             ],
           ),
