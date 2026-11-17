@@ -20,6 +20,7 @@ import {
   maxListingPhotos,
   NewListing,
 } from '../models/newListing';
+import { photosFromDocs } from '../models/photoList';
 
 /** Only place that reads the `listings` collection and its photos. */
 export class ListingsRepository {
@@ -35,6 +36,11 @@ export class ListingsRepository {
     } catch (error) {
       throw new FavoritesFailure(mapFavoritesCode(errorCodeOf(error)));
     }
+  }
+
+  /** One listing, or null when it does not exist or cannot be read (hidden). */
+  getListing(id: string): Promise<Listing | null> {
+    return this.getOrNull(id);
   }
 
   /** Same order as `ids`; null means deleted or not readable (hidden). */
@@ -72,6 +78,27 @@ export class ListingsRepository {
       const code = errorCodeOf(error);
       if (code === 'permission-denied') {
         return null;
+      }
+      throw new FavoritesFailure(mapFavoritesCode(code));
+    }
+  }
+
+  /** All the photos of a listing as base64, sorted by id (p0 = cover first). */
+  async getPhotos(listingId: string): Promise<string[]> {
+    try {
+      const snapshot = await getDocs(
+        collection(db, 'listings', listingId, 'photos'),
+      );
+      return photosFromDocs(
+        snapshot.docs.map(item => ({
+          id: item.id,
+          base64: item.data().base64,
+        })),
+      );
+    } catch (error) {
+      const code = errorCodeOf(error);
+      if (code === 'permission-denied') {
+        return [];
       }
       throw new FavoritesFailure(mapFavoritesCode(code));
     }
