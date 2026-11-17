@@ -40,11 +40,6 @@ export function HomeScreen(): React.JSX.Element {
           />
         ))}
       </View>
-      {/* Temporary: opens the chat until the real entry point exists. */}
-      <PrimaryButton
-        labelKey="chatTitle"
-        onPress={() => navigation.navigate('ChatList')}
-      />
       <PrimaryButton
         labelKey="publishButton"
         onPress={() => navigation.navigate('PublishListing')}
