@@ -310,4 +310,14 @@ export default {
     'Bonjour, je suis intéressé par la location de {{title}} sur Vesta',
   contactMessageStay:
     'Bonjour, je suis intéressé par un séjour à {{title}} sur Vesta',
+  profilePhoneLabel: 'Numéro de téléphone',
+  profileErrorPhoneInvalid:
+    'Entrez un numéro tunisien valide (+216 et 8 chiffres)',
+  profilePasswordLabel: 'Mot de passe actuel',
+  profileEmailSent:
+    'Nous avons envoyé un e-mail de confirmation à votre nouvelle adresse. Votre e-mail changera après confirmation.',
+  profileErrorEmailInvalid: 'Entrez une adresse e-mail valide',
+  profileErrorEmailInUse: 'Cet e-mail est déjà utilisé par un autre compte',
+  profileErrorWrongPassword: 'Mot de passe incorrect',
+  profileErrorPasswordRequired: 'Entrez votre mot de passe actuel',
 };

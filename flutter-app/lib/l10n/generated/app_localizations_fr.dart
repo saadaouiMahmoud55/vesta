@@ -926,4 +926,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String contactMessageStay(String title) {
     return 'Bonjour, je suis intéressé par un séjour à $title sur Vesta';
   }
+
+  @override
+  String get profilePhoneLabel => 'Numéro de téléphone';
+
+  @override
+  String get profileErrorPhoneInvalid =>
+      'Entrez un numéro tunisien valide (+216 et 8 chiffres)';
+
+  @override
+  String get profilePasswordLabel => 'Mot de passe actuel';
+
+  @override
+  String get profileEmailSent =>
+      'Nous avons envoyé un e-mail de confirmation à votre nouvelle adresse. Votre e-mail changera après confirmation.';
+
+  @override
+  String get profileErrorEmailInvalid => 'Entrez une adresse e-mail valide';
+
+  @override
+  String get profileErrorEmailInUse =>
+      'Cet e-mail est déjà utilisé par un autre compte';
+
+  @override
+  String get profileErrorWrongPassword => 'Mot de passe incorrect';
+
+  @override
+  String get profileErrorPasswordRequired => 'Entrez votre mot de passe actuel';
 }
