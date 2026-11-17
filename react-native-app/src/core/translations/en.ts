@@ -300,4 +300,13 @@ export default {
   contactMessageSale: 'Hello, I am interested in buying {{title}} on Vesta',
   contactMessageRent: 'Hello, I am interested in renting {{title}} on Vesta',
   contactMessageStay: 'Hello, I am interested in staying at {{title}} on Vesta',
+  profilePhoneLabel: 'Phone number',
+  profileErrorPhoneInvalid: 'Enter a valid Tunisian number (+216 and 8 digits)',
+  profilePasswordLabel: 'Current password',
+  profileEmailSent:
+    'We sent a confirmation email to your new address. Your email changes after you confirm it.',
+  profileErrorEmailInvalid: 'Enter a valid email address',
+  profileErrorEmailInUse: 'This email is already used by another account',
+  profileErrorWrongPassword: 'Wrong password',
+  profileErrorPasswordRequired: 'Enter your current password',
 };

@@ -295,4 +295,13 @@ export default {
   contactMessageSale: 'عسلامة، مهتم بشراء {{title}} على Vesta',
   contactMessageRent: 'عسلامة، مهتم بكراء {{title}} على Vesta',
   contactMessageStay: 'عسلامة، مهتم بالإقامة في {{title}} على Vesta',
+  profilePhoneLabel: 'رقم الهاتف',
+  profileErrorPhoneInvalid: 'أدخل رقم هاتف تونسي صحيح (+216 و8 أرقام)',
+  profilePasswordLabel: 'كلمة السر الحالية',
+  profileEmailSent:
+    'بعثنالك إيميل تأكيد على العنوان الجديد. الإيميل يتبدّل كي تأكّد.',
+  profileErrorEmailInvalid: 'أدخل عنوان إيميل صحيح',
+  profileErrorEmailInUse: 'هذا الإيميل مستعمل في حساب آخر',
+  profileErrorWrongPassword: 'كلمة السر غالطة',
+  profileErrorPasswordRequired: 'أدخل كلمة السر الحالية',
 };
