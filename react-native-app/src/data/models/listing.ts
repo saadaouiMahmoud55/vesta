@@ -15,10 +15,33 @@ export type Listing = {
   photoCount: number;
   latitude: number | null;
   longitude: number | null;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  areaSqm: number | null;
+  maxGuests: number | null;
+  /** Keys of `amenityKeys` (newListing.ts). */
+  amenities: string[];
+  /** `HH:mm` or null. */
+  checkIn: string | null;
+  checkOut: string | null;
+  /** Keys of `houseRuleKeys` (newListing.ts). */
+  houseRules: string[];
 };
 
 const text = (value: unknown, fallback = ''): string =>
   typeof value === 'string' ? value : fallback;
+
+const numberOrNull = (value: unknown): number | null =>
+  typeof value === 'number' ? value : null;
+
+const textOrNull = (value: unknown): string | null =>
+  typeof value === 'string' ? value : null;
+
+/** A list of strings from Firestore. Anything else gives an empty list. */
+const stringList = (value: unknown): string[] =>
+  Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === 'string')
+    : [];
 
 /** Same defaults as Listing.fromDoc in Flutter. */
 export function listingFromData(
@@ -44,6 +67,14 @@ export function listingFromData(
     photoCount: typeof data.photoCount === 'number' ? data.photoCount : 0,
     latitude: typeof data.latitude === 'number' ? data.latitude : null,
     longitude: typeof data.longitude === 'number' ? data.longitude : null,
+    bedrooms: numberOrNull(data.bedrooms),
+    bathrooms: numberOrNull(data.bathrooms),
+    areaSqm: numberOrNull(data.areaSqm),
+    maxGuests: numberOrNull(data.maxGuests),
+    amenities: stringList(data.amenities),
+    checkIn: textOrNull(data.checkIn),
+    checkOut: textOrNull(data.checkOut),
+    houseRules: stringList(data.houseRules),
   };
 }
 
