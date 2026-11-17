@@ -23,7 +23,6 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 - Les noms saisis par les utilisateurs (nom du profil) restent dans les lettres saisies. L'application ne translittère pas entre l'alphabet latin et l'arabe.
 - Une relecture des textes arabes et français par des locuteurs natifs, et une vérification de l'affichage de droite à gauche sur davantage d'appareils, n'ont pas été terminées.
-- L'écran « Modifier le profil » en arabe (droite à gauche) n'a pas été vérifié sur téléphone avant le gel du code. Les autres écrans de la passe de design 2 (favoris, profil, publier, contact) ont été vérifiés en arabe, français et anglais.
 
 **Comptes et sécurité**
 
