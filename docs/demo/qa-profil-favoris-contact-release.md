@@ -39,15 +39,11 @@ Oui. En modification, il reste obligatoire si l'annonce avait déjà un numéro.
 Test fermé Alpha, accès à la production approuvé, production « Inactif ». Google annonce de quelques heures à sept jours d'examen, parfois plus ; il ne donne pas de date. Manar décide de publier et fait la release avec la clé d'upload.
 
 **Pourquoi publier du contenu de démonstration est un sujet ?**
-Nous n'avons l'accord écrit d'aucun propriétaire. L'application ne contient que des annonces de démonstration, avec le numéro de l'équipe. Sur le Play Store public, tout le monde les verrait : c'est une décision de Manar.
+Nos 15 annonces utilisent des informations et des photos réelles, avec l'accord oral des propriétaires (voir docs/content/sources.md), mais nous n'avons aucun accord écrit.
 
 ## Limites à dire nous-mêmes
 
-- Compte anonyme : peut lire le numéro (règle `notAnonymous()` pas dans `develop`).
-- Photos en base64 dans Firestore, pas dans Storage.
-- Pas d'alerte quand l'application est fermée (pas de push serveur).
-- Modifier l'e-mail et le téléphone dans le profil (VST-128) est un travail futur. Le nom et la photo sont faits.
-- Pas de test sur un téléphone réel de mon côté pour le contact : Appeler et WhatsApp s'ouvrent seulement sur un téléphone, et j'ai testé sur Chrome.
+VST-128 est fusionnée (#126). Limite restante : l'e-mail stocké dans private/contact garde l'ancienne valeur après un changement d'e-mail.
 
 ## À confirmer avec Manar avant la démo
 
