@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../auth/auth_controller.dart';
 
 import '../../core/router/app_router.dart';
+import '../../core/widgets/fade_in_up.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../listings/listing_card.dart';
 import '../listings/listing_repository.dart';
@@ -114,10 +115,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       padding: const EdgeInsets.all(16),
                       itemCount: items.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 12),
-                      itemBuilder: (_, index) => ListingCard(
-                        listing: items[index],
-                        onTap: () => context.push(
-                          AppRoutes.listingDetailPath(items[index].id),
+                      itemBuilder: (_, index) => FadeInUp(
+                        delay: Duration(milliseconds: index < 4 ? index * 60 : 0),
+                        child: ListingCard(
+                          listing: items[index],
+                          onTap: () => context.push(
+                            AppRoutes.listingDetailPath(items[index].id),
+                          ),
                         ),
                       ),
                     ),
