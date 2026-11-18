@@ -15,6 +15,7 @@ import { errorCodeOf } from './authErrors';
 import { FavoritesFailure, mapFavoritesCode } from './favoritesErrors';
 import { ListingFailure, toListingFailure } from './listingErrors';
 import { Listing, listingFromData } from '../models/listing';
+import { ListingContact, contactFromData } from '../models/listingContact';
 import {
   listingDocumentData,
   maxListingPhotos,
@@ -74,6 +75,25 @@ export class ListingsRepository {
       );
       const base64 = snapshot.data()?.base64;
       return typeof base64 === 'string' ? base64 : null;
+    } catch (error) {
+      const code = errorCodeOf(error);
+      if (code === 'permission-denied') {
+        return null;
+      }
+      throw new FavoritesFailure(mapFavoritesCode(code));
+    }
+  }
+
+  /**
+   * Private contact of a listing (contact/info). Call it only for a signed-in
+   * user: a guest must not even try (rules). Null when the owner gave no number.
+   */
+  async getContact(listingId: string): Promise<ListingContact | null> {
+    try {
+      const snapshot = await getDoc(
+        doc(db, 'listings', listingId, 'contact', 'info'),
+      );
+      return contactFromData(snapshot.data());
     } catch (error) {
       const code = errorCodeOf(error);
       if (code === 'permission-denied') {

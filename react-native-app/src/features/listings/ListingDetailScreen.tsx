@@ -9,6 +9,7 @@ import { PriceText } from '../../core/ui/PriceText';
 import { isUnavailable } from '../../data/models/listing';
 import { offerTypeOf } from '../../data/models/offerType';
 import { MainStackParamList } from '../../navigation/MainStack';
+import { ContactButtons } from './ContactButtons';
 import { PhotoGallery } from './PhotoGallery';
 import { useListingDetail } from './useListingDetail';
 
@@ -59,6 +60,7 @@ export function ListingDetailScreen({ route }: Props): React.JSX.Element {
         />
         <Text style={styles.title}>{listing.title}</Text>
         <Text style={styles.city}>{listing.city}</Text>
+        <ContactButtons listing={listing} onSignInPress={() => undefined} />
         <Text style={styles.description}>{listing.description}</Text>
       </View>
     </ScrollView>
