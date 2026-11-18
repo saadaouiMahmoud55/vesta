@@ -62,16 +62,16 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 
 ## 8. React Native : une version réduite, dont l'état est clair
 
-- **Fait :** inscription et connexion, recherche et filtres, liste et détails avec galerie de photos, formulaire de publication avec équipements, carte et géolocalisation, alertes et messages non lus.
-- **En revue :** chat (#102) et Appeler / WhatsApp (#103), non fusionnés avant le gel.
+- **Fait :** inscription et connexion, recherche et filtres, liste et détails avec galerie de photos, formulaire de publication avec équipements, carte et géolocalisation, alertes et messages non lus, chat (fusionné, non testé sur deux téléphones).
+- **En revue :** Appeler / WhatsApp (#103), non fusionné.
 - **Pas fait :** favoris et profil (onglets vides), navigation en invité, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
 
-*Notes :* état de `develop` au 17 novembre au soir.
+*Notes :* état de `develop` au 18 novembre.
 
 ## 9. Chaque changement est contrôlé avant de rejoindre develop
 
 - 166 tests Flutter réussis, analyse sans alerte.
-- 68 tests React Native réussis (dernier contrôle, avant les dernières fusions).
+- 98 tests React Native réussis (16 suites), lancés le 18 novembre sur `develop`.
 - 60 cas de test manuels sur téléphone réel.
 - Règles Firestore testées avec l'émulateur ; contrôle des couleurs et des traductions à chaque pull request ; relecture avant la fusion.
 
@@ -86,7 +86,7 @@ Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, 
 
 ## 11. Ce qui manque, et ce que nous ferions ensuite
 
-- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes, numéro de contact lisible par un compte anonyme, chat et contact React Native non fusionnés, relecture native de l'arabe à finir.
+- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes, numéro de contact lisible par un compte anonyme, contact React Native non fusionné et chat React Native non testé sur deux téléphones, relecture native de l'arabe à finir.
 - **Travaux futurs :** notifications push et Storage, règle de sécurité pour le contact, recherche côté serveur, réservations, avis, assistant IA, mode sombre.
 
 *Notes :* la plupart des limites viennent d'un seul choix, rester sur l'offre gratuite de Firebase. Détail dans `docs/report/limits-and-future-work.md`.
