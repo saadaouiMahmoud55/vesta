@@ -21,6 +21,14 @@ const make = (over: Partial<Listing>): Listing => ({
   photoCount: 1,
   latitude: null,
   longitude: null,
+  bedrooms: null,
+  bathrooms: null,
+  areaSqm: null,
+  maxGuests: null,
+  checkIn: null,
+  checkOut: null,
+  amenities: [],
+  houseRules: [],
   ...over,
 });
 

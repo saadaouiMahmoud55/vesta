@@ -100,6 +100,11 @@ export function HomeScreen(): React.JSX.Element {
         labelKey="publishButton"
         onPress={() => navigation.navigate('PublishListing')}
       />
+      {/* Temporary: opens the chat list until the chat has its own tab. */}
+      <PrimaryButton
+        labelKey="chatTitle"
+        onPress={() => navigation.navigate('ChatList')}
+      />
       {/* Temporary: the profile and settings screens will own Log out. */}
       <PrimaryButton labelKey="authLogoutButton" onPress={() => signOut()} />
     </View>
