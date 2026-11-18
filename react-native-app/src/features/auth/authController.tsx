@@ -18,6 +18,8 @@ import { AuthError, AuthFailure } from '../../data/repositories/authErrors';
 type AuthContextValue = {
   /** True when a user is signed in (and no sign up is still in progress). */
   isSignedIn: boolean;
+  /** Uid of the signed-in user, null for a guest. */
+  uid: string | null;
   /** True until Firebase has told if a session was kept (app start). */
   initializing: boolean;
   isLoading: boolean;
@@ -103,6 +105,7 @@ export function AuthProvider({
       // While a sign up runs, Firebase already has the user but the profile
       // is not saved yet: stay on the auth screens until it is done.
       isSignedIn: user !== null && !isSigningUp,
+      uid: user !== null && !isSigningUp ? user.uid : null,
       initializing,
       isLoading,
       error,
