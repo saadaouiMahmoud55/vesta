@@ -1,5 +1,25 @@
 # Vesta : rapport final du mini-projet
 
+**Institut Supérieur des Études Technologiques de Tozeur**
+Mini-projet : application mobile de services immobiliers, année universitaire 2026-2027
+Encadrant : M. Wahid Hamdi
+Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui
+Remise : 24 novembre 2026
+
+## Sommaire
+
+1. Contexte, objectifs et équipe
+2. Architecture et choix techniques
+3. État des fonctionnalités
+4. Qualité, tests et publication
+5. Limites connues et travaux futurs
+6. Organisation, difficultés et conclusion
+7. Annexe A : cahier des charges
+8. Annexe B : technologies et outils
+9. Annexe C : diagrammes de conception
+10. Annexe D : glossaire
+11. Annexe E : webographie
+
 Rapport final (VST-57), état de `develop` au 18 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
 
 Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (publiée en test interne sur Google Play) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
@@ -128,3 +148,81 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 - **Le temps** : réservations, avis, assistant IA et tableau de bord ont été coupés avant le gel du code pour finir, tester et corriger ce qui existe. Une fonctionnalité plus petite mais testée sur téléphone vaut mieux qu'une grande qui plante.
 
 **Conclusion.** Vesta fonctionne de bout en bout dans sa version Flutter : on crée un compte ou on navigue en invité, on cherche, on voit les annonces sur une liste et sur une carte, on contacte un propriétaire par chat, appel ou WhatsApp, on publie et on gère ses annonces, dans trois langues dont l'arabe de droite à gauche. La version React Native montre la même architecture sur un périmètre plus petit. Les limites sont connues, documentées et alignées avec le plan de travaux futurs.
+
+## Annexe A : cahier des charges
+
+Les histoires d'utilisateur complètes sont dans `docs/user-stories.md` (en anglais) ; le tableau suivant les résume.
+
+**Exigences fonctionnelles**
+
+| Domaine | Exigence |
+| --- | --- |
+| Authentification | Créer un compte, se connecter, rester connecté, se déconnecter, naviguer en invité |
+| Recherche | Chercher et filtrer par type d'offre, ville, prix et type de bien |
+| Annonces | Voir les détails, les photos et les équipements ; publier, modifier et supprimer sa propre annonce ; changer son statut |
+| Carte | Voir les annonces sur une carte (OpenStreetMap) et se localiser |
+| Contact | Écrire au propriétaire par chat, l'appeler ou lui écrire sur WhatsApp |
+| Favoris | Garder des annonces en favori et les retrouver |
+| Profil | Modifier son nom, sa photo, son téléphone et son e-mail ; voir ses annonces ; supprimer son compte |
+| Alertes | Recevoir une alerte dans l'application pour un nouveau message, avec un compteur de messages non lus |
+| Offres | Trois types d'offre : vente, location, séjour, avec leurs propres champs |
+
+**Exigences non fonctionnelles**
+
+| Exigence | Réalisation |
+| --- | --- |
+| Langues et sens de lecture | Arabe tunisien (droite à gauche), français, anglais |
+| Coût | Offre gratuite de Firebase, sans Cloud Functions ni Storage |
+| Cohérence visuelle | Palette unique contrôlée automatiquement (`check-colors`) |
+| Qualité | Analyse statique, tests automatiques, plan de test manuel de 60 cas |
+| Sécurité | Règles Firestore testées avec l'émulateur, clés API restreintes, aucun secret dans Git |
+| Maintenabilité | Architecture en couches (écran, contrôleur, dépôt, Firebase), identique dans les deux applications |
+
+## Annexe B : technologies et outils
+
+| Rôle | Outil |
+| --- | --- |
+| Application principale | Flutter et Dart, Riverpod (état), go\_router (navigation) |
+| Application de démonstration | React Native avec Expo, TypeScript |
+| Back-end | Firebase Authentication et Cloud Firestore |
+| Carte | OpenStreetMap (flutter\_map pour Flutter, react-native-maps pour React Native) |
+| Traductions | Fichier maître `docs/translations.csv` et script de génération |
+| Gestion de projet | Jira (méthode Scrum, sprints), GitHub (branches, pull requests) |
+| Intégration continue | GitHub Actions : contrôle des couleurs et des traductions |
+| Diagrammes | Mermaid (sources `.mmd` dans le dépôt) |
+| Publication | Google Play Console |
+
+## Annexe C : diagrammes de conception
+
+Les diagrammes sont dans le dépôt, en français, avec leurs sources Mermaid :
+- **Modèle C4** (niveaux 1 à 4 : contexte, conteneurs, composants, classes) : `docs/c4/`.
+- **UML et schémas** : `docs/uml/` (cas d'utilisation, séquences de connexion, de publication et d'envoi de message, modèle de données Firestore, architecture en couches, flux Git et CI, planning).
+
+Ces diagrammes viennent de la pull request #135 ; tant qu'elle n'est pas fusionnée, ils ne sont pas dans `develop`.
+
+## Annexe D : glossaire
+
+| Terme | Définition |
+| --- | --- |
+| Firestore | Base de données de documents en temps réel de Firebase |
+| Règles Firestore | Règles qui décident qui peut lire ou écrire chaque document |
+| Base64 | Codage d'une image en texte, utilisé ici pour stocker les photos dans Firestore |
+| Riverpod | Bibliothèque Flutter de gestion d'état |
+| RTL | « Right to left » : mise en page de droite à gauche, pour l'arabe |
+| Pull request | Demande de fusion d'une branche, relue avant d'entrer dans `develop` |
+| Scrum, sprint | Méthode de travail par périodes courtes d'environ deux semaines |
+| CI | Intégration continue : contrôles automatiques à chaque pull request |
+| FCM | Firebase Cloud Messaging, service de notifications push (non utilisé : offre gratuite) |
+| AAB | Android App Bundle, le format envoyé à Google Play |
+
+## Annexe E : webographie
+
+- Flutter : <https://docs.flutter.dev>
+- Riverpod : <https://riverpod.dev>
+- React Native : <https://reactnative.dev>
+- Expo : <https://docs.expo.dev>
+- Firebase (Authentication, Firestore et règles) : <https://firebase.google.com/docs>
+- OpenStreetMap : <https://www.openstreetmap.org>
+- Mermaid : <https://mermaid.js.org>
+- Guide Scrum : <https://scrumguides.org>
+- Google Play Console : <https://support.google.com/googleplay/android-developer>
