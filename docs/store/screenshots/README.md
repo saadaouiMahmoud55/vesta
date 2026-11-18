@@ -4,7 +4,7 @@ Screenshots of the Flutter app for the Play Store listing and the project report
 ## How they were made
 - Taken by Ahmed Bouguerra on 18 Nov 2026.
 - Flutter app running on Chrome (`flutter run -d chrome`), device toolbar about 360x780. Image size is 356-362 x 777-782 px.
-- Data: the "Demo" listings (for example "Demo - Villa avec jardin, Tabarka", TND 300 / night). The test listings are not used.
+- Data: the "Demo" listings (for example "Demo - Appartement S+3, La marsa", TND 520,000). The test listings are not used.
 - Prices in TND.
 
 ## Files
@@ -18,5 +18,5 @@ Screenshots of the Flutter app for the Play Store listing and the project report
 | 04 Map | 04-map-en.png | 04-map-fr.png | 04-map-ar.png |
 
 ## Known points
-- Titles are shown as saved in Firestore (the Demo listing title has a space before the comma).
-- The Arabic login button uses a Darija word ("باش"), while the other Arabic texts are in standard Arabic.
+- The description of the Demo listings still has extra spaces before some commas (Firestore data, not part of this fix).
+- The contact sign-in button is now in standard Arabic. Other Arabic texts still use Tunisian Darija (the word "باش"), for example some subtitles and hints. Known limit.
