@@ -311,7 +311,7 @@
   "commonOffline": "ما عندكش إنترنت. ممكن شوية محتوى ما يظهرش.",
   "contactCall": "اتصل",
   "contactWhatsapp": "واتساب",
-  "contactSignInToSee": "سجّل الدخول باش تشوف رقم التواصل",
+  "contactSignInToSee": "سجّل الدخول لترى رقم التواصل",
   "contactNoWhatsapp": "واتساب موش مثبّت على التليفون هذا",
   "contactCallError": "ما نجمناش نحلّو تطبيق الهاتف",
   "contactMessageSale": "عسلامة، مهتم بشراء {title} على Vesta",
