@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Image, ScrollView, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppText } from '../../core/components/AppText';
 import { AppTextField } from '../../core/components/AppTextField';
@@ -48,7 +48,16 @@ export function LoginScreen({ navigation }: Props): React.JSX.Element {
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
-      <AppText translationKey="loginTitle" style={styles.title} />
+      <Image
+        source={require("../../../assets/logo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <AppText translationKey="loginWelcomeTitle" style={styles.title} />
+      <AppText
+        translationKey="loginWelcomeSubtitle"
+        style={styles.subtitle}
+      />
       <AppTextField
         labelKey="authEmailLabel"
         errorKey={
@@ -107,6 +116,12 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.title,
     fontWeight: '700',
     marginBottom: theme.spacing.md,
+    textAlign: 'center',
+  },
+  logo: { alignSelf: 'center', height: 120, width: 120 },
+  subtitle: {
+    color: theme.colors.grey,
+    fontSize: theme.fontSizes.small,
     textAlign: 'center',
   },
   formError: { color: theme.colors.error, textAlign: 'center' },

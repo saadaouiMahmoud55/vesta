@@ -10,6 +10,8 @@ export default {
   notificationsEmptyBody: 'New messages appear here until you read them.',
   chatTitle: 'Messages',
   loginTitle: 'Sign in',
+  loginWelcomeTitle: 'Welcome to Vesta',
+  loginWelcomeSubtitle: 'Sign in to contact owners, save favorites and publish your own place.',
   comingSoon: 'Coming soon',
   languageLabel: 'Language',
   authEmailLabel: 'Email',
