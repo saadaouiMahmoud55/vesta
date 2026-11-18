@@ -928,4 +928,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileErrorPasswordRequired => 'أدخل كلمة السر الحالية';
+
+  @override
+  String get loginWelcomeTitle => 'مرحبا بيك في Vesta';
+
+  @override
+  String get loginWelcomeSubtitle =>
+      'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.';
 }

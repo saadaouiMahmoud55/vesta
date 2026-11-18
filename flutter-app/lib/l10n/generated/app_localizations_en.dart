@@ -939,4 +939,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileErrorPasswordRequired => 'Enter your current password';
+
+  @override
+  String get loginWelcomeTitle => 'Welcome to Vesta';
+
+  @override
+  String get loginWelcomeSubtitle =>
+      'Sign in to contact owners, save favorites and publish your own place.';
 }
