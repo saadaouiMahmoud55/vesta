@@ -1,56 +1,56 @@
-# Vesta: User stories (MVP)
+# Vesta : user stories (MVP)
 
-Personas: **Buyer/Tenant** (searches and contacts) and **Owner/Agent** (publishes and replies).
+Personas : **Acheteur / locataire** (cherche et contacte) et **Propriétaire / agent** (publie et répond).
+Format : « En tant que ..., je veux ..., afin de ... ». Les besoins fonctionnels du rapport viennent de cette liste.
 
-## Authentication
-- As a visitor, I want to sign up with my email and password, so that I can publish and save listings.
-- As a registered user, I want to log in and stay logged in, so that I don't have to re-enter my details every time.
-- As a registered user, I want to log out, so that I can securely end my session.
+## Authentification
+- En tant que visiteur, je veux m'inscrire avec mon e-mail et un mot de passe, afin de pouvoir publier et enregistrer des annonces.
+- En tant qu'utilisateur inscrit, je veux me connecter et rester connecté, afin de ne pas ressaisir mes informations à chaque fois.
+- En tant qu'utilisateur inscrit, je veux me déconnecter, afin de terminer ma session en toute sécurité.
 
-## Search and filters
-- As a buyer, I want to filter listings by price, location and type, so that I only see relevant homes.
-- As a tenant, I want to switch between sale and rental listings, so that I only see what fits my need.
+## Recherche et filtres
+- En tant qu'acheteur, je veux filtrer les annonces par prix, lieu et type, afin de ne voir que les biens pertinents.
+- En tant que locataire, je veux passer des annonces de vente aux annonces de location, afin de ne voir que ce qui répond à mon besoin.
 
-## Listing details
-- As a buyer, I want to browse photos of a listing, so that I can judge the property.
-- As a tenant, I want to see price and description, so that I can compare properties.
+## Détails d'une annonce
+- En tant qu'acheteur, je veux parcourir les photos d'une annonce, afin de juger le bien.
+- En tant que locataire, je veux voir le prix et la description, afin de comparer les biens.
 
-## Publishing
-- As an owner, I want to publish a sale or rental listing with photos, so that buyers and tenants can find it.
-- As an agent, I want to set price, type and location, so that my listing appears in the right searches.
-- As an owner, I want to edit my own listing, so that I can keep its information up to date.
-- As an owner, I want to delete my own listing, so that I can remove a property I no longer want to publish.
+## Publication
+- En tant que propriétaire, je veux publier une annonce de vente ou de location avec des photos, afin que les acheteurs et les locataires la trouvent.
+- En tant qu'agent, je veux définir le prix, le type et le lieu, afin que mon annonce apparaisse dans les bonnes recherches.
+- En tant que propriétaire, je veux modifier ma propre annonce, afin de garder ses informations à jour.
+- En tant que propriétaire, je veux supprimer ma propre annonce, afin de retirer un bien que je ne veux plus publier.
 
-## Map and geolocation
-- As a buyer, I want to see listings on a map, so that I know where they are.
-- As a tenant, I want to see listings near my current location, so that I can find homes in my area.
+## Carte et géolocalisation
+- En tant qu'acheteur, je veux voir les annonces sur une carte, afin de savoir où elles se trouvent.
+- En tant que locataire, je veux voir les annonces près de ma position, afin de trouver des logements dans ma zone.
 
 ## Chat
-- As a buyer, I want to message the owner, so that I can ask questions about the property.
-- As an owner, I want to see all my conversations in one place, so that I can reply quickly.
+- En tant qu'acheteur, je veux écrire au propriétaire, afin de poser mes questions sur le bien.
+- En tant que propriétaire, je veux voir toutes mes conversations au même endroit, afin de répondre rapidement.
 
-## Favorites
-- As a buyer, I want to save listings to favorites, so that I can find them again later.
-- As a tenant, I want to remove a listing from favorites, so that my list stays clean.
+## Favoris
+- En tant qu'acheteur, je veux enregistrer des annonces en favoris, afin de les retrouver plus tard.
+- En tant que locataire, je veux retirer une annonce des favoris, afin que ma liste reste propre.
 
-## Profile
-- As a user, I want to edit my name and photo, so that others can recognize me.
-- As an owner, I want to see my own published listings, so that I can keep track of them.
+## Profil
+- En tant qu'utilisateur, je veux modifier mon nom et ma photo, afin que les autres me reconnaissent.
+- En tant que propriétaire, je veux voir mes propres annonces publiées, afin de les suivre.
 
-## Message alerts (in-app notifications)
-- As a user, I want to receive a notification when I get a new message, so that I don't miss a buyer or an owner.
+## Alertes de messages (notifications dans l'application)
+- En tant qu'utilisateur, je veux recevoir une notification quand je reçois un nouveau message, afin de ne pas manquer un acheteur ou un propriétaire.
 
-
-## Offer types: sale, rent, stay (VST-100, see `docs/offer-types.md`)
-- As a buyer, I want a "Buy" tab with prices in TND, so that I only compare homes for sale.
-- As a tenant, I want a "Rent" tab with the monthly price, deposit and furnished info, so that I know my real cost.
-- As a traveller, I want a "Stay" tab with the price per night, guests, amenities and house rules, so that I can choose a guest house or Airbnb.
-- As a seller, I want to choose "Sell" when publishing and only see the fields that matter for a sale, so that publishing is quick.
-- As a landlord, I want to choose "Rent out" and add the deposit, the available date and whether it is furnished, so that tenants know the conditions before they call.
-- As a host, I want to choose "Offer a stay" and add amenities, check-in time and house rules, so that guests know what to expect.
-- As a user, I want to call or send a WhatsApp message to the owner in one tap, so that I can reach him the Tunisian way.
-- As an owner, I want to mark a listing as sold, rented or unavailable, so that nobody contacts me for something that is gone.
-- As a user, I want the map pins to show the offer type by color, so that I understand the map at a glance.
-- As a guest (no account), I want to browse listings and details, so that I can decide to sign up later.
-- As a user, I want to report a suspicious listing or block a user, so that I am protected from scams.
-- As a user, I want to delete my account and my data from the app, so that I control my information.
+## Types d'offre : vente, location, séjour (VST-100, voir `docs/offer-types.md`)
+- En tant qu'acheteur, je veux un onglet « Acheter » avec les prix en TND, afin de ne comparer que les biens à vendre.
+- En tant que locataire, je veux un onglet « Louer » avec le loyer mensuel, la caution et l'information meublé, afin de connaître mon coût réel.
+- En tant que voyageur, je veux un onglet « Séjourner » avec le prix par nuit, les voyageurs, les équipements et les règles de la maison, afin de choisir une maison d'hôtes ou un logement type Airbnb.
+- En tant que vendeur, je veux choisir « Vendre » à la publication et ne voir que les champs utiles pour une vente, afin que publier soit rapide.
+- En tant que bailleur, je veux choisir « Louer » et ajouter la caution, la date de disponibilité et le caractère meublé, afin que les locataires connaissent les conditions avant d'appeler.
+- En tant qu'hôte, je veux choisir « Proposer un séjour » et ajouter les équipements, l'heure d'arrivée et les règles de la maison, afin que les voyageurs sachent à quoi s'attendre.
+- En tant qu'utilisateur, je veux appeler ou écrire sur WhatsApp au propriétaire en un geste, afin de le joindre à la manière tunisienne.
+- En tant que propriétaire, je veux marquer une annonce comme vendue, louée ou indisponible, afin que personne ne me contacte pour un bien parti.
+- En tant qu'utilisateur, je veux que les repères de la carte montrent le type d'offre par la couleur, afin de comprendre la carte d'un coup d'œil.
+- En tant qu'invité (sans compte), je veux parcourir les annonces et leurs détails, afin de décider de m'inscrire plus tard.
+- En tant qu'utilisateur, je veux signaler une annonce suspecte ou bloquer un utilisateur, afin d'être protégé des arnaques. *(Non réalisé : voir les travaux futurs du rapport.)*
+- En tant qu'utilisateur, je veux supprimer mon compte et mes données depuis l'application, afin de contrôler mes informations.

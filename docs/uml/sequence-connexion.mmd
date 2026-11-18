@@ -1,0 +1,29 @@
+%% Diagramme de séquence : connexion d'un utilisateur
+sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant S as LoginScreen
+  participant C as AuthController
+  participant R as AuthRepository
+  participant F as Firebase Auth
+  U->>S: Saisit l'e-mail et le mot de passe, appuie sur Se connecter
+  S->>C: logIn(email, motDePasse)
+  C->>C: Contrôle les champs (e-mail valide, 8 caractères au moins)
+  alt Champs invalides
+    C-->>S: Erreur de saisie (traduite par l'écran)
+    S-->>U: Message à côté du champ
+  else Champs valides
+    C->>R: signIn(email, motDePasse)
+    R->>F: signInWithEmailAndPassword
+    alt Identifiants corrects
+      F-->>R: Utilisateur et session
+      R-->>C: Succès
+      C-->>S: État « connecté »
+      S-->>U: Écran d'accueil (session conservée)
+    else Mot de passe faux ou réseau absent
+      F-->>R: Code d'erreur
+      R-->>C: Échec (valeur d'erreur, pas de texte)
+      C-->>S: Erreur
+      S-->>U: Message dans la langue de l'application
+    end
+  end
