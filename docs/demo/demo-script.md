@@ -1,4 +1,4 @@
-# Script de démonstration Vesta (lun. 16 nov.)
+# Script de démonstration Vesta (mar. 17 nov.)
 
 Rédigé à partir de ce qui est fusionné dans `develop` le 16 nov. (modification d'annonce, suppression et agrandissement de la photo de profil, carte React Native). Si une pull request est fusionnée après cette date, vérifier l'étape correspondante avant la démo. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
 

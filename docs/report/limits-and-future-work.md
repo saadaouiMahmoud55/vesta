@@ -34,11 +34,11 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 **Application React Native**
 
-- C'est un MVP réduit de l'application Flutter : connexion, navigation, recherche et une partie des annonces (la carte, PR #91, est fusionnée). Les alertes de messages et le badge de messages non lus de l'application React Native (PR #111) sont présents. Le chat React Native (VST-45, PR #102) et les boutons de contact (VST-80, PR #103) sont dans des PR ouvertes, non fusionnées avant le gel et non testées sur téléphones réels. Pas d'assistant IA, de réservations ni d'avis. Les annonces (VST-39) n'ont pas été terminées.
+- C'est un MVP réduit de l'application Flutter : connexion, recherche et filtres, liste et détails des annonces avec galerie de photos, formulaire de publication (équipements, règles, horaires), carte, alertes de messages et badge de messages non lus. Le chat React Native (VST-45, PR #102) est fusionné mais n'a pas été testé sur deux téléphones (avec l'application Flutter). Les boutons de contact (VST-80, PR #103) sont dans une PR ouverte, non fusionnée. Les onglets Favoris et Profil sont encore des écrans vides, et la navigation en invité, Mes annonces, la suppression du compte, l'onboarding et les paramètres ne sont pas faits. Pas d'assistant IA, de réservations ni d'avis.
 
 **Contenu**
 
-- Nous n'avons l'accord écrit d'aucun propriétaire, donc il n'y a aucune vraie annonce, même sur Google Play. L'application contient uniquement du contenu de démonstration (annonces « Démo – … », avec le numéro de l'équipe et sans badge de vérification). Un lancement réel demanderait l'accord écrit de chaque propriétaire.
+- Les 15 annonces de démonstration (titre « Démo – … », sans badge de vérification) utilisent des informations et des photos réelles. Les propriétaires, qui ont demandé à ne pas être nommés, ont donné un accord oral par téléphone pour un usage académique ; Eya l'a recueilli et il est noté dans `docs/content/sources.md`. Nous n'avons aucun accord écrit. Un lancement réel demanderait l'accord écrit de chaque propriétaire.
 
 ## Travaux futurs
 
@@ -49,6 +49,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - **Vraies notifications push** (Firebase Cloud Messaging) à la place des alertes dans l'application et locales.
 - **Détection hors ligne** avant la publication, avec un message clair.
 - **Demandes de réservation, avis et assistant IA**, dans les deux applications.
+- **Réservation Flutter** (VST-92) : une branche `feature/VST-92-flutter-booking`, non fusionnée, contient le calcul des nuits et du prix (avec tests), 17 textes en arabe, français et anglais, et l'écran de demande (sans Firestore). Il manque la structure de données (`bookings`, `blockedNights`), les règles Firestore avec leurs tests et leur déploiement.
 - **Signaler et bloquer des utilisateurs**, page de confidentialité et case des conditions à l'inscription.
 - **Prise en charge du web pour les photos** (ajouter le script `pica` et lire des octets au lieu d'un chemin de fichier).
 - **Relecture native de l'arabe** de tous les textes, alignée sur le glossaire tunisien.
@@ -56,5 +57,5 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - **Changer le type d'offre d'une annonce existante** (vente, location ou séjour). Les statuts autorisés dépendent du type d'offre : un changement demande aussi une réinitialisation du statut et une modification des règles.
 - **Statut des annonces, partie 2** (VST-136) : rubans de couleur pour réservé, loué et vendu sur la page de détails, statut « masqué » visible seulement par le propriétaire (règle Firestore et tests de l'émulateur), et nombre de favoris sur chaque carte de « Mes annonces ». La partie 1 est fusionnée et testée sur téléphone.
 - **Protéger le numéro de contact des comptes anonymes** : règle `notAnonymous()` dans une PR séparée, avec tests des règles ; les règles sont déployées par Manar.
-- **Modifier l'e-mail et le téléphone dans le profil** (VST-128) : le nom et la photo sont déjà faits.
+- **E-mail du profil** (VST-128) : le nom, la photo, le téléphone et l'e-mail sont modifiables. Mais l'e-mail dans `users/{uid}/private/contact` garde l'ancienne valeur après la confirmation du changement ; il faut le synchroniser.
 - **Plus de tests sur téléphones réels**, avec différents appareils et versions d'Android.
