@@ -345,5 +345,7 @@
   "profileErrorEmailInvalid": "أدخل عنوان إيميل صحيح",
   "profileErrorEmailInUse": "هذا الإيميل مستعمل في حساب آخر",
   "profileErrorWrongPassword": "كلمة السر غالطة",
-  "profileErrorPasswordRequired": "أدخل كلمة السر الحالية"
+  "profileErrorPasswordRequired": "أدخل كلمة السر الحالية",
+  "loginWelcomeTitle": "مرحبا بيك في Vesta",
+  "loginWelcomeSubtitle": "ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك."
 }

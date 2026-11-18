@@ -296,3 +296,5 @@ profile.error.email.invalid,Enter a valid email address,Entrez une adresse e-mai
 profile.error.email.in.use,This email is already used by another account,Cet e-mail est déjà utilisé par un autre compte,هذا الإيميل مستعمل في حساب آخر,Profile,
 profile.error.wrong.password,Wrong password,Mot de passe incorrect,كلمة السر غالطة,Profile,
 profile.error.password.required,Enter your current password,Entrez votre mot de passe actuel,أدخل كلمة السر الحالية,Profile,
+login.welcome.title,Welcome to Vesta,Bienvenue sur Vesta,مرحبا بيك في Vesta,Auth,
+login.welcome.subtitle,"Sign in to contact owners, save favorites and publish your own place.","Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.",ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.,Auth,

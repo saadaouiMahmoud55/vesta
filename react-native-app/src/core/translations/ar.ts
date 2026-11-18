@@ -10,8 +10,6 @@ export default {
   notificationsEmptyBody: 'الرسائل الجداد تظهر هوني حتى تقراهم.',
   chatTitle: 'الرسائل',
   loginTitle: 'تسجيل الدخول',
-  loginWelcomeTitle: 'مرحبا بيك في Vesta',
-  loginWelcomeSubtitle: 'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.',
   comingSoon: 'قريبا',
   languageLabel: 'اللغة',
   authEmailLabel: 'البريد الإلكتروني',
@@ -306,4 +304,6 @@ export default {
   profileErrorEmailInUse: 'هذا الإيميل مستعمل في حساب آخر',
   profileErrorWrongPassword: 'كلمة السر غالطة',
   profileErrorPasswordRequired: 'أدخل كلمة السر الحالية',
+  loginWelcomeTitle: 'مرحبا بيك في Vesta',
+  loginWelcomeSubtitle: 'ادخل باش تتصل بالمالكين، تحفظ المفضلة وتنشر عقارك.',
 };
