@@ -81,8 +81,8 @@ Même lecture que les autres diagrammes de niveau 3 (types entre crochets, lége
 - Le contrôleur s'appelle `SearchFiltersController` (et non `SearchController`) parce que Flutter Material a déjà une classe `SearchController` : le nom entrerait en conflit dans le code.
 - `SearchFilters` (fourchette de prix, lieu, type de bien, vente ou location) est un widget utilisé par `SearchScreen`. `SearchFiltersController` garde les filtres et interroge `ListingRepository`, partagé avec la carte et avec le module Annonces.
 - L'identifiant d'une conversation est `{listingId}_{buyerId}` et ses messages sont une sous-collection. `ChatController` sert les deux écrans du chat à travers `ChatRepository`.
-- Alerte de nouveau message (MVP) : il n'y a pas de push serveur, parce que les Cloud Functions ne sont pas disponibles dans l'offre gratuite de Firebase. `ChatRepository` écoute Firestore en temps réel, `ChatController` envoie chaque nouveau message à `NotificationService`, et `NotificationService` affiche un badge et une notification locale, application ouverte ou en arrière-plan.
-- Hors MVP : le vrai push FCM (application fermée). Il demande l'offre Blaze de Firebase ou un petit serveur externe. C'est un ticket futur (voir « Travaux futurs » ci-dessous).
+- Alerte de nouveau message (MVP) : il n'y a pas de push serveur, parce que les Cloud Functions ne sont pas disponibles dans l'offre gratuite de Firebase. `ChatRepository` écoute Firestore en temps réel et `ChatController` fournit le nombre de messages non lus. L'utilisateur voit un badge sur l'icône de notifications et, dans `NotificationsScreen` (le centre de notifications, VST-99), une « notification » est une conversation qui contient des messages non lus.
+- Hors MVP : les notifications locales et le vrai push FCM (application fermée). Il demande l'offre Blaze de Firebase ou un petit serveur externe. C'est un ticket futur (voir « Travaux futurs » ci-dessous).
 - `formatPrice`, la configuration et la couche de traduction sont des outils partagés utilisés par les écrans. Ils sont dessinés une seule fois, sans flèches.
 
 | Composant | Type | Responsabilité |
@@ -95,12 +95,12 @@ Même lecture que les autres diagrammes de niveau 3 (types entre crochets, lége
 | `LocationService` | service côté téléphone | Demande la permission GPS et obtient la position. |
 | `ChatListScreen` | écran Flutter | Liste mes conversations. |
 | `ChatScreen` | écran Flutter | Messages d'une conversation. |
-| `ChatController` | contrôleur Riverpod | Charge les conversations et les messages, envoie un message et passe chaque nouveau message à `NotificationService`. |
+| `ChatController` | contrôleur Riverpod | Charge les conversations et les messages, envoie un message et fournit le nombre de messages non lus. |
 | `ChatRepository` | dépôt | Lit et écrit `conversations` et `conversations/{id}/messages`, et écoute Firestore en temps réel. |
-| `NotificationService` | service côté téléphone | Affiche un badge et une notification locale pour un nouveau message (application ouverte ou en arrière-plan). |
+| `NotificationsScreen` | écran Flutter | Centre de notifications (VST-99) : liste les conversations qui ont des messages non lus, et le badge de la barre du haut. |
 | `ListingRepository` | dépôt | Lit la collection `listings` (recherche et carte). |
 | `formatPrice`, configuration, couche de traduction | outil partagé | Même format de prix, même centre de carte et mêmes textes dans chaque écran. |
 
 ### Travaux futurs
 
-- Vraies notifications push avec FCM, pour que l'alerte arrive aussi quand l'application est fermée. FCM est gratuit, mais envoyer un push à un autre utilisateur demande un serveur : l'offre Blaze de Firebase (Cloud Functions) ou un petit serveur externe. Hors MVP, à créer comme ticket Jira.
+- Notifications locales et vraies notifications push avec FCM, pour que l'alerte arrive aussi quand l'application est fermée. FCM est gratuit, mais envoyer un push à un autre utilisateur demande un serveur : l'offre Blaze de Firebase (Cloud Functions) ou un petit serveur externe. Hors MVP, à créer comme ticket Jira.

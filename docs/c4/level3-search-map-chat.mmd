@@ -23,7 +23,7 @@ flowchart TB
       ChatScreen["<b>ChatScreen</b><br/>[Composant : écran Flutter]<br/>Messages d'une conversation"]
       ChatC["<b>ChatController</b><br/>[Composant : contrôleur Riverpod]<br/>Charge les conversations et les messages, envoie un message"]
       ChatR["<b>ChatRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit et écrit conversations et messages, écoute Firestore en temps réel"]
-      Notif["<b>NotificationService</b><br/>[Composant : service côté téléphone]<br/>Affiche un badge et une notification locale pour chaque nouveau message (application ouverte ou en arrière-plan)"]
+      Notif["<b>NotificationsScreen</b><br/>[Composant : écran Flutter]<br/>Centre de notifications (VST-99) : les conversations avec des messages non lus, et le badge de la barre du haut"]
     end
     ListR["<b>ListingRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit la collection listings (recherche et carte)"]
     Shared["<b>Outils partagés</b><br/>[Composant : outil partagé]<br/>formatPrice (TND), configuration (centre de la carte : Tunis) et couche de traduction (en, fr, ar)"]
@@ -31,7 +31,6 @@ flowchart TB
 
   GPS["<b>GPS du téléphone</b><br/>[Système externe]<br/>Position et permission"]
   FStore["<b>Firestore</b><br/>[Système externe, offre gratuite Firebase]<br/>listings<br/>conversations<br/>conversations/{id}/messages"]
-  PhoneNotif["<b>Notifications du téléphone</b><br/>[Système externe]<br/>Notification locale et badge (pas de push serveur dans le MVP)"]
 
   Legend["<b>Légende</b><br/>Boîte bleue : [Composant : ...] partie de l'application Flutter<br/>Boîte beige : [Système externe] que nous ne construisons pas<br/>Flèche : qui appelle qui"]
 
@@ -47,12 +46,11 @@ flowchart TB
   MapC -->|"lire les annonces avec coordonnées"| ListR
   SearchC -->|"chercher des annonces"| ListR
   ChatC -->|"lire et écrire le chat, écoute en temps réel"| ChatR
-  ChatC -->|"nouveau message"| Notif
+  Notif -->|"charger les messages non lus"| ChatC
 
   Location -->|"permission GPS et position"| GPS
   ListR -->|"Firestore SDK"| FStore
   ChatR -->|"Firestore SDK"| FStore
-  Notif -->|"notification locale et badge"| PhoneNotif
 
   FStore ~~~ Legend
 
@@ -60,7 +58,7 @@ flowchart TB
   classDef external fill:#f1eee8,stroke:#8a8578,stroke-width:1.5px,color:#2a2a2a;
   classDef legend fill:#ffffff,stroke:#999999,stroke-width:1px,color:#333333;
   class SearchScreen,MapScreen,ChatListScreen,ChatScreen,Shared,Filters,SearchC,MapC,ChatC,Location,ListR,ChatR,Notif component;
-  class OSM,GPS,FStore,PhoneNotif external;
+  class OSM,GPS,FStore external;
   class Legend legend;
   style APP fill:#ffffff,stroke:#5b5bd6,stroke-width:1.5px,stroke-dasharray:6 4;
   style MAPM fill:#fbfbff,stroke:#b9b9ea,stroke-dasharray:3 3;

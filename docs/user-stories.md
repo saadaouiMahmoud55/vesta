@@ -38,8 +38,8 @@ Format : « En tant que ..., je veux ..., afin de ... ». Les besoins fonctionne
 - En tant qu'utilisateur, je veux modifier mon nom et ma photo, afin que les autres me reconnaissent.
 - En tant que propriétaire, je veux voir mes propres annonces publiées, afin de les suivre.
 
-## Alertes de messages (notifications dans l'application)
-- En tant qu'utilisateur, je veux recevoir une notification quand je reçois un nouveau message, afin de ne pas manquer un acheteur ou un propriétaire.
+## Alertes de messages (centre de notifications dans l'application)
+- En tant qu'utilisateur, je veux voir un badge de messages non lus et un centre de notifications, afin de ne pas manquer un acheteur ou un propriétaire. *(Pas de notification push : voir les travaux futurs du rapport.)*
 
 ## Types d'offre : vente, location, séjour (VST-100, voir `docs/offer-types.md`)
 - En tant qu'acheteur, je veux un onglet « Acheter » avec les prix en TND, afin de ne comparer que les biens à vendre.
