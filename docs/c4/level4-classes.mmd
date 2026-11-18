@@ -90,9 +90,9 @@ classDiagram
   FavoritesRepository ..> Favorite
   ConversationRepository ..> Conversation
   MessageRepository ..> Message
-  AppUser "1" --> "1" UserContact : private
-  AppUser "1" --> "*" Listing : owns
-  Listing "1" --> "0..5" Photo : has
-  AppUser "1" --> "*" Favorite : saves
-  Conversation "1" --> "*" Message : contains
-  note for PhotoRepository "Each add or delete is one batch write with the photoCount update on the listing"
+  AppUser "1" --> "1" UserContact : privé
+  AppUser "1" --> "*" Listing : possède
+  Listing "1" --> "0..10" Photo : a
+  AppUser "1" --> "*" Favorite : enregistre
+  Conversation "1" --> "*" Message : contient
+  note for PhotoRepository "Chaque ajout ou suppression est une écriture groupée avec la mise à jour de photoCount sur l'annonce"

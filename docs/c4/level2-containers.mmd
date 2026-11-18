@@ -1,23 +1,23 @@
-%% C4 level 2: containers (VST-69). No Firebase Storage (photos are base64 in Firestore), no FCM in the MVP, OpenStreetMap instead of Google Maps.
+%% C4 niveau 2 : conteneurs (VST-69). Pas de Firebase Storage (photos en base64 dans Firestore), pas de FCM dans le MVP, OpenStreetMap au lieu de Google Maps.
 flowchart TB
-  Buyer["<b>Buyer / tenant / traveller</b><br/>Can browse as a guest"]:::person
-  Owner["<b>Owner / agent</b>"]:::person
-  subgraph APPS["Vesta mobile app (two versions)"]
+  Buyer["<b>Acheteur / locataire / voyageur</b><br/>Peut naviguer en invité"]:::person
+  Owner["<b>Propriétaire / agent</b>"]:::person
+  subgraph APPS["Application mobile Vesta (deux versions)"]
     direction LR
-    Flutter["<b>Flutter app</b><br/>[Dart, Android, published on Google Play]"]:::ours
-    RN["<b>React Native app</b><br/>[TypeScript, academic demo]"]:::ours
+    Flutter["<b>Application Flutter</b><br/>[Dart, Android, test interne sur Google Play]"]:::ours
+    RN["<b>Application React Native</b><br/>[TypeScript, démonstration académique]"]:::ours
   end
-  subgraph FB["Firebase (shared backend)"]
+  subgraph FB["Firebase (back-end partagé)"]
     direction LR
-    Auth["<b>Firebase Auth</b><br/>[Accounts and sessions]"]:::ext
-    Store["<b>Firestore</b><br/>[Listings, photos as base64, favorites, messages]"]:::ext
+    Auth["<b>Firebase Auth</b><br/>[Comptes et sessions]"]:::ext
+    Store["<b>Firestore</b><br/>[Annonces, photos en base64, favoris, messages]"]:::ext
   end
-  OSM["<b>OpenStreetMap</b><br/>[Map tiles]"]:::ext
-  Buyer -->|"Searches, saves, contacts"| APPS
-  Owner -->|"Publishes listings"| APPS
-  APPS -->|"Signs users in"| Auth
-  APPS -->|"Reads and writes data"| Store
-  APPS -->|"Loads map tiles"| OSM
+  OSM["<b>OpenStreetMap</b><br/>[Tuiles de la carte]"]:::ext
+  Buyer -->|"Cherche, enregistre, contacte"| APPS
+  Owner -->|"Publie des annonces"| APPS
+  APPS -->|"Authentifie les utilisateurs"| Auth
+  APPS -->|"Lit et écrit les données"| Store
+  APPS -->|"Charge les tuiles de la carte"| OSM
   style APPS fill:#f7f7ff,stroke:#6a64d8,stroke-dasharray:5 4
   style FB fill:#faf8f5,stroke:#8a8178,stroke-dasharray:5 4
   classDef person fill:#e3f4ec,stroke:#2a9d6f,color:#14543b

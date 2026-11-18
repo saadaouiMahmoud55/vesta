@@ -1,16 +1,16 @@
-%% C4 level 1: system context (VST-69). Decisions: OpenStreetMap (no Google Maps), photos in Firestore (no Firebase Storage).
+%% C4 niveau 1 : contexte du système (VST-69). Choix : OpenStreetMap (pas Google Maps), photos dans Firestore (pas Firebase Storage).
 flowchart LR
-  Buyer["<b>Buyer / tenant / traveller</b><br/>Browses as a guest, signs in to save and contact"]:::person
-  Owner["<b>Owner / agent</b><br/>Publishes listings"]:::person
-  Vesta["<b>Vesta app</b><br/>Flutter + React Native"]:::ours
-  Firebase["<b>Firebase</b><br/>Sign-in and database (photos as base64)"]:::ext
-  OSM["<b>OpenStreetMap</b><br/>Map tiles"]:::ext
-  Play["<b>Google Play</b><br/>App distribution"]:::ext
-  Buyer -->|"Searches listings, saves favorites, contacts owners"| Vesta
-  Owner -->|"Publishes and manages listings"| Vesta
-  Vesta -->|"Signs in users, reads and writes data"| Firebase
-  Vesta -->|"Loads map tiles"| OSM
-  Vesta -.->|"Is distributed on"| Play
+  Buyer["<b>Acheteur / locataire / voyageur</b><br/>Navigue en invité, se connecte pour enregistrer et contacter"]:::person
+  Owner["<b>Propriétaire / agent</b><br/>Publie des annonces"]:::person
+  Vesta["<b>Application Vesta</b><br/>Flutter + React Native"]:::ours
+  Firebase["<b>Firebase</b><br/>Authentification et base de données (photos en base64)"]:::ext
+  OSM["<b>OpenStreetMap</b><br/>Tuiles de la carte"]:::ext
+  Play["<b>Google Play</b><br/>Distribution de l'application"]:::ext
+  Buyer -->|"Cherche des annonces, enregistre des favoris, contacte les propriétaires"| Vesta
+  Owner -->|"Publie et gère des annonces"| Vesta
+  Vesta -->|"Authentifie les utilisateurs, lit et écrit les données"| Firebase
+  Vesta -->|"Charge les tuiles de la carte"| OSM
+  Vesta -.->|"Est distribuée sur"| Play
   classDef person fill:#e3f4ec,stroke:#2a9d6f,color:#14543b
   classDef ours fill:#e8e8ff,stroke:#6a64d8,color:#2b2780
   classDef ext fill:#f1ede8,stroke:#8a8178,color:#3b3630

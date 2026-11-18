@@ -1,80 +1,81 @@
-# Vesta Firestore data model (v4)
+# Modèle de données Firestore de Vesta (v4)
 
-Single reference for the Firestore collections used by both apps (Flutter and React Native).
-Prices are stored as a number with a currency code. The currency code is read from the app config (TND) and is never hardcoded in the apps or in the rules.
+Référence unique des collections Firestore utilisées par les deux applications (Flutter et React Native).
+Les prix sont stockés sous forme de nombre avec un code de devise. Le code de devise est lu dans la configuration de l'application (TND) et n'est jamais écrit en dur dans les applications ni dans les règles.
 
-**v4 (VST-74, 27 Oct):** adds the fields of the three offer types (sale, rent, stay, see `docs/offer-types.md`), the `status` of a listing, two new property types (`land`, `commercial`), the listing contact in its own protected document, and public reading of listings for guest browsing (VST-72). **Every new field is optional**, so listings published before v4 stay valid and editable.
+**v4 (VST-74, 27 octobre) :** ajoute les champs des trois types d'offre (vente, location, séjour, voir `docs/offer-types.md`), le `status` d'une annonce, deux nouveaux types de bien (`land`, `commercial`), le contact de l'annonce dans un document protégé séparé, et la lecture publique des annonces pour la navigation en invité (VST-72). **Chaque nouveau champ est optionnel** : les annonces publiées avant la v4 restent valides et modifiables.
 
-| Collection | Document id | Fields (type) | Rules summary |
+| Collection | Identifiant du document | Champs (type) | Résumé des règles |
 |---|---|---|---|
-| `users` | Auth `uid` | `displayName` (string), `photoBase64` (string, optional, compressed, under 200 KB), `createdAt` (server timestamp) | Create/update/delete: the user only. Read: any signed-in user (public profile, shown in listings and chat). |
-| `users/{uid}/private/contact` | `contact` | `email` (string), `phone` (string, optional) | Read/write: the user only. |
-| `listings` | auto-id | `ownerId` (string), `title` (string), `description` (string), `price` (number, above 0), `currency` (string of 3 letters, from the app config, TND), `rentPeriod` (`"night"`, `"month"` or `"year"`, required only when `listingType` is `"rent"`), `listingType` (`"sale"` or `"rent"`), `propertyType` (string, see values below), `city` (string), `latitude` (number, optional), `longitude` (number, optional), `bedrooms` (number, optional), `bathrooms` (number, optional), `areaSqm` (number, optional, square meters), `photoCount` (int 0 to 10, kept in sync with the photos, see decisions), `createdAt` (server timestamp), `updatedAt` (server timestamp). **New in v4, all optional:** `status` (see below), `negotiable` (bool), `yearBuilt` (number, 1800 or more), `documentsNote` (string, max 200), `furnished` (bool), `depositMonths` (number, 0 or more), `availableFrom` (timestamp), `minMonths` (number, 1 or more), `maxGuests` (number, 1 or more), `beds` (number, 0 or more), `amenities` (list, max 10 keys), `checkIn` and `checkOut` (string `HH:mm`), `houseRules` (list, max 4 keys), `minNights` (number, 1 or more), `viewCount` (number, 0 or more), `verified` (bool) | **Read: anyone, signed in or not** (guest browsing, VST-72). Create: signed-in user with `ownerId == uid`, `verified` absent or false. Update: owner only; `ownerId`, `createdAt` and `verified` cannot change. Delete: owner only. Optional fields must have the right type when present. |
-| `listings/{id}/photos` | fixed ids `p0` to `p9` | `base64` (string, compressed, under 200 KB), `createdAt` (server timestamp) | Read: anyone (guest browsing). Create/update/delete: listing owner only. The 10 fixed ids enforce the maximum of 10 photos. The id gives the display order. Each add or delete is one batch write together with the `photoCount` update on the listing. |
-| `listings/{id}/contact` | fixed id `info` | `contactPhone` (string, `+216` then 8 digits, first digit 2, 3, 4, 5, 7 or 9), `whatsappEnabled` (bool, optional), `updatedAt` (timestamp, optional). No other field. | **Read: signed-in users only** (guests never get the number). Create/update/delete: listing owner only. |
-| `favorites` | `{uid}_{listingId}` | `userId` (string), `listingId` (string), `createdAt` (server timestamp) | Read/create/delete: the user only. |
-| `conversations` | `{listingId}_{buyerId}` | `participantIds` (array of exactly 2 uids), `listingId` (string), `lastMessage` (string), `lastMessageAt` (server timestamp), `unread` (map `uid -> number`, messages the user has not read yet; +1 for the other person at each send, reset to 0 when the user opens the chat) | Read/create/update: participants only. |
-| `conversations/{id}/messages` | auto-id | `senderId` (string), `text` (string), `createdAt` (server timestamp) | Read: participants (rules read the parent conversation). Create: participant with `senderId == uid`. No edit or delete. |
+| `users` | `uid` d'authentification | `displayName` (chaîne), `photoBase64` (chaîne, optionnelle, compressée, moins de 200 Ko), `createdAt` (horodatage serveur) | Création, modification, suppression : l'utilisateur seulement. Lecture : tout utilisateur connecté (profil public, affiché dans les annonces et le chat). |
+| `users/{uid}/private/contact` | `contact` | `email` (chaîne), `phone` (chaîne, optionnelle) | Lecture et écriture : l'utilisateur seulement. |
+| `listings` | identifiant automatique | `ownerId` (chaîne), `title` (chaîne), `description` (chaîne), `price` (nombre, supérieur à 0), `currency` (chaîne de 3 lettres, issue de la configuration, TND), `rentPeriod` (`"night"`, `"month"` ou `"year"`, obligatoire seulement si `listingType` vaut `"rent"`), `listingType` (`"sale"` ou `"rent"`), `propertyType` (chaîne, valeurs ci-dessous), `city` (chaîne), `latitude` (nombre, optionnel), `longitude` (nombre, optionnel), `bedrooms` (nombre, optionnel), `bathrooms` (nombre, optionnel), `areaSqm` (nombre, optionnel, mètres carrés), `photoCount` (entier de 0 à 10, synchronisé avec les photos, voir les décisions), `createdAt` (horodatage serveur), `updatedAt` (horodatage serveur). **Nouveaux en v4, tous optionnels :** `status` (voir plus bas), `negotiable` (booléen), `yearBuilt` (nombre, 1800 ou plus), `documentsNote` (chaîne, 200 caractères au maximum), `furnished` (booléen), `depositMonths` (nombre, 0 ou plus), `availableFrom` (horodatage), `minMonths` (nombre, 1 ou plus), `maxGuests` (nombre, 1 ou plus), `beds` (nombre, 0 ou plus), `amenities` (liste, 10 clés au maximum), `checkIn` et `checkOut` (chaîne `HH:mm`), `houseRules` (liste, 4 clés au maximum), `minNights` (nombre, 1 ou plus), `viewCount` (nombre, 0 ou plus), `verified` (booléen) | **Lecture : tout le monde, connecté ou non** (navigation en invité, VST-72). Création : utilisateur connecté avec `ownerId == uid`, `verified` absent ou faux. Modification : le propriétaire seulement ; `ownerId`, `createdAt` et `verified` ne peuvent pas changer. Suppression : le propriétaire seulement. Les champs optionnels doivent avoir le bon type quand ils sont présents. |
+| `listings/{id}/photos` | identifiants fixes `p0` à `p9` | `base64` (chaîne, compressée, moins de 200 Ko), `createdAt` (horodatage serveur) | Lecture : tout le monde (navigation en invité). Création, modification, suppression : le propriétaire de l'annonce seulement. Les 10 identifiants fixes imposent le maximum de 10 photos. L'identifiant donne l'ordre d'affichage. Chaque ajout ou suppression est une écriture groupée avec la mise à jour de `photoCount` sur l'annonce. |
+| `listings/{id}/contact` | identifiant fixe `info` | `contactPhone` (chaîne, `+216` puis 8 chiffres, premier chiffre 2, 3, 4, 5, 7 ou 9), `whatsappEnabled` (booléen, optionnel), `updatedAt` (horodatage, optionnel). Aucun autre champ. | **Lecture : utilisateurs connectés seulement** (un invité n'obtient jamais le numéro). Création, modification, suppression : le propriétaire de l'annonce seulement. |
+| `favorites` | `{uid}_{listingId}` | `userId` (chaîne), `listingId` (chaîne), `createdAt` (horodatage serveur) | Lecture, création, suppression : l'utilisateur seulement. |
+| `conversations` | `{listingId}_{buyerId}` | `participantIds` (tableau d'exactement 2 uid), `listingId` (chaîne), `lastMessage` (chaîne), `lastMessageAt` (horodatage serveur), `unread` (table `uid -> nombre`, messages que l'utilisateur n'a pas encore lus ; +1 pour l'autre personne à chaque envoi, remis à 0 quand l'utilisateur ouvre le chat) | Lecture, création, modification : les participants seulement. |
+| `conversations/{id}/messages` | identifiant automatique | `senderId` (chaîne), `text` (chaîne), `createdAt` (horodatage serveur) | Lecture : les participants (les règles lisent la conversation parente). Création : un participant avec `senderId == uid`. Ni modification ni suppression. |
 
-## Offer types (product view, no stored field)
+## Types d'offre (vue produit, aucun champ stocké)
 
-`sale` = `listingType` sale. `rent` = `listingType` rent with `rentPeriod` month or year. `stay` = `listingType` rent with `rentPeriod` night. Both apps use one helper `offerTypeOf(listing)`. Details: `docs/offer-types.md`.
+`sale` (vente) = `listingType` sale. `rent` (location) = `listingType` rent avec `rentPeriod` month ou year. `stay` (séjour) = `listingType` rent avec `rentPeriod` night. Les deux applications utilisent une seule fonction `offerTypeOf(listing)`. Détails : `docs/offer-types.md`.
 
-## `propertyType` values (final list)
+## Valeurs de `propertyType` (liste finale)
 
 `apartment`, `house`, `villa`, `studio`, `riad`, `guest_house`, `land`, `commercial`
 
-`land` and `commercial` are never rented by the night (refused by the rules). The same list is used everywhere: data model, rules, filters and mockups.
+`land` et `commercial` ne sont jamais loués à la nuit (refusé par les règles). La même liste sert partout : modèle de données, règles, filtres et maquettes.
 
-## `status` values
+## Valeurs de `status`
 
-| Offer type | Allowed `status` |
+| Type d'offre | `status` autorisés |
 |---|---|
-| sale | `available`, `reserved`, `sold`, `hidden` |
-| rent | `available`, `reserved`, `rented`, `hidden` |
-| stay | `available`, `unavailable`, `hidden` |
+| vente | `available`, `reserved`, `sold`, `hidden` |
+| location | `available`, `reserved`, `rented`, `hidden` |
+| séjour | `available`, `unavailable`, `hidden` |
 
-A missing `status` means `available` for the **rules**. **Queries cannot do that**: `where status == 'available'` does not return documents without the field. So **the apps always write `status: 'available'` when creating a listing**, and listings created before v4 (test data) must get the field once by hand in the Firebase console. Only the owner changes `status`.
+Un `status` absent veut dire `available` pour les **règles**. **Les requêtes ne peuvent pas le faire** : `where status == 'available'` ne renvoie pas les documents sans le champ. Donc **les applications écrivent toujours `status: 'available'` à la création d'une annonce**, et les annonces créées avant la v4 (données de test) doivent recevoir le champ une fois à la main dans la console Firebase. Seul le propriétaire change le `status`.
 
-## Amenity and house-rule keys
+## Clés des équipements et des règles de la maison
 
-`amenities`: `wifi`, `ac`, `heating`, `kitchen`, `parking`, `pool`, `breakfast`, `washing_machine`, `tv`, `garden`.
-`houseRules`: `no_smoking`, `no_pets`, `no_parties`, `quiet_hours`.
-The apps translate these keys (never store translated text).
+`amenities` : `wifi`, `ac`, `heating`, `kitchen`, `parking`, `pool`, `breakfast`, `washing_machine`, `tv`, `garden`.
+`houseRules` : `no_smoking`, `no_pets`, `no_parties`, `quiet_hours`.
+Les applications traduisent ces clés (on ne stocke jamais de texte traduit).
 
-## Decisions
+## Décisions
 
-- `messages` is a subcollection of `conversations` (simpler for realtime and rules).
-- `currency` is a string of 3 letters filled from the app config (TND). The rules only check that it is 3 letters.
-- Photos are stored as compressed base64 in `listings/{id}/photos` with fixed ids `p0` to `p9`, because rules cannot count documents (max 10, raised from 5 on 12 Nov). The field `order` is removed: the id gives the order.
-- Search fields (`listingType`, `rentPeriod`, `propertyType`, `status`, `price`, `city`, `createdAt`) are top-level fields of `listings`.
-- `latitude`, `longitude`, `bedrooms`, `bathrooms` and `areaSqm` are optional. The map only shows listings that have coordinates.
-- A conversation id is `{listingId}_{buyerId}`, so there is one conversation per buyer and per listing. `participantIds` always holds exactly 2 uids.
-- The user profile has a public part (`users/{uid}`: name and photo, readable by any signed-in user, so names and photos show in listings and chat) and a private part (`users/{uid}/private/contact`: email and phone, readable only by the user).
-- **The phone number of a listing is not stored in the listing document.** Listings are readable by guests, so a phone inside would be public. It lives in `listings/{id}/contact/info`, readable only by signed-in users. The apps read it only when the details screen is opened by a signed-in user. At publish time the apps write the listing and the contact in **one batch**.
-- `photoCount` stays in sync with the photos: adding or deleting a photo and updating `photoCount` on the listing are done in one batch write (one atomic write, never two separate ones).
-- `verified` (the "Verified" badge) is set only from the Firebase console by Manar. The rules refuse any client that sets it to true or changes it.
-- `viewCount` is for the owner dashboard (Sprint 3). Its rule only checks type and minimum for now; the "+1 per user per day" limit is added with the dashboard ticket (VST-98).
-- Deleting a listing: the app deletes its photos and its `contact/info` in the same batch (otherwise they stay orphaned).
-- `createdAt` and `updatedAt` are server timestamps.
+- `messages` est une sous-collection de `conversations` (plus simple pour le temps réel et les règles).
+- `currency` est une chaîne de 3 lettres remplie depuis la configuration (TND). Les règles vérifient seulement qu'il y a 3 lettres.
+- Les photos sont stockées en base64 compressé dans `listings/{id}/photos` avec des identifiants fixes `p0` à `p9`, parce que les règles ne savent pas compter des documents (10 au maximum, relevé de 5 le 12 novembre). Le champ `order` est supprimé : l'identifiant donne l'ordre.
+- Les champs de recherche (`listingType`, `rentPeriod`, `propertyType`, `status`, `price`, `city`, `createdAt`) sont des champs de premier niveau de `listings`.
+- `latitude`, `longitude`, `bedrooms`, `bathrooms` et `areaSqm` sont optionnels. La carte n'affiche que les annonces qui ont des coordonnées.
+- L'identifiant d'une conversation est `{listingId}_{buyerId}` : il y a une conversation par acheteur et par annonce. `participantIds` contient toujours exactement 2 uid.
+- Le profil utilisateur a une partie publique (`users/{uid}` : nom et photo, lisible par tout utilisateur connecté, pour afficher les noms et photos dans les annonces et le chat) et une partie privée (`users/{uid}/private/contact` : e-mail et téléphone, lisible seulement par l'utilisateur).
+- **Le numéro de téléphone d'une annonce n'est pas stocké dans le document de l'annonce.** Les annonces sont lisibles par les invités : un numéro à l'intérieur serait public. Il est dans `listings/{id}/contact/info`, lisible seulement par les utilisateurs connectés. Les applications ne le lisent que quand l'écran de détails est ouvert par un utilisateur connecté. À la publication, les applications écrivent l'annonce et le contact dans **un seul lot** (batch).
+- `photoCount` reste synchronisé avec les photos : ajouter ou supprimer une photo et mettre à jour `photoCount` sur l'annonce se font dans une seule écriture groupée (une écriture atomique, jamais deux séparées).
+- `verified` (le badge « Vérifié ») n'est posé que depuis la console Firebase, par Manar. Les règles refusent tout client qui le met à vrai ou le modifie.
+- `viewCount` sert au tableau de bord du propriétaire (Sprint 3). Sa règle vérifie seulement le type et le minimum pour l'instant ; la limite « +1 par utilisateur et par jour » viendra avec le ticket du tableau de bord (VST-98).
+- Suppression d'une annonce : l'application supprime ses photos et son `contact/info` dans le même lot (sinon ils restent orphelins).
+- `createdAt` et `updatedAt` sont des horodatages serveur.
 
-## Indexes (`firebase/firestore.indexes.json`)
+## Index (`firebase/firestore.indexes.json`)
 
-All are on collection `listings`, with `status` first because every public query filters on `status == 'available'`.
+Tous portent sur la collection `listings`, avec `status` en premier, parce que chaque requête publique filtre sur `status == 'available'`.
 
-| Query | Index |
+| Requête | Index |
 |---|---|
-| Buy tab, sorted by price | `status`, `listingType`, `price` |
-| Buy tab, newest first | `status`, `listingType`, `createdAt` (descending) |
-| Rent or Stay tab (filter on `rentPeriod`), by price | `status`, `listingType`, `rentPeriod`, `price` |
-| Rent or Stay tab, newest first | `status`, `listingType`, `rentPeriod`, `createdAt` (descending) |
-| Property type filter | `status`, `propertyType`, `createdAt` (descending) |
-| City filter, newest first | `status`, `city`, `createdAt` (descending) |
-| City filter, by price | `status`, `city`, `price` |
-| My listings | `ownerId`, `createdAt` (descending) |
+| Onglet Acheter, trié par prix | `status`, `listingType`, `price` |
+| Onglet Acheter, le plus récent d'abord | `status`, `listingType`, `createdAt` (décroissant) |
+| Onglet Louer ou Séjourner (filtre sur `rentPeriod`), par prix | `status`, `listingType`, `rentPeriod`, `price` |
+| Onglet Louer ou Séjourner, le plus récent d'abord | `status`, `listingType`, `rentPeriod`, `createdAt` (décroissant) |
+| Filtre par type de bien | `status`, `propertyType`, `createdAt` (décroissant) |
+| Filtre par ville, le plus récent d'abord | `status`, `city`, `createdAt` (décroissant) |
+| Filtre par ville, par prix | `status`, `city`, `price` |
+| Mes annonces | `ownerId`, `createdAt` (décroissant) |
 
-The final list comes from the search queries (VST-40). Where Firestore cannot do a filter combination, the app filters the small remaining list on the phone.
+La liste finale vient des requêtes de recherche (VST-40). Quand Firestore ne sait pas faire une combinaison de filtres, l'application filtre sur le téléphone la petite liste restante.
 
-## Class diagram
+## Diagrammes
 
-See `docs/c4/level4-classes.png` (source: `docs/c4/level4-classes.mmd`).
+- Diagramme de classes : `docs/c4/level4-classes.png` (source : `docs/c4/level4-classes.mmd`).
+- Modèle de données (entités et relations) : `docs/uml/modele-de-donnees.png` (source : `docs/uml/modele-de-donnees.mmd`).

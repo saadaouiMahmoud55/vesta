@@ -1,0 +1,69 @@
+%% Modèle de données Firestore (entités et relations)
+erDiagram
+  USERS ||--o| CONTACT_PRIVE : "a un contact privé"
+  USERS ||--o{ LISTINGS : "publie"
+  USERS ||--o{ FAVORITES : "enregistre"
+  LISTINGS ||--o{ PHOTOS : "contient (10 au maximum)"
+  LISTINGS ||--o| LISTING_CONTACT : "a un contact protégé"
+  LISTINGS ||--o{ FAVORITES : "est enregistrée dans"
+  LISTINGS ||--o{ CONVERSATIONS : "fait l'objet de"
+  USERS ||--o{ CONVERSATIONS : "participe à (2 participants)"
+  CONVERSATIONS ||--o{ MESSAGES : "contient"
+
+  USERS {
+    string uid PK
+    string displayName
+    string photoBase64
+    timestamp createdAt
+  }
+  CONTACT_PRIVE {
+    string email
+    string phone
+  }
+  LISTINGS {
+    string id PK
+    string ownerId FK
+    string title
+    string description
+    number price
+    string currency
+    string listingType
+    string rentPeriod
+    string propertyType
+    string city
+    string status
+    number latitude
+    number longitude
+    int photoCount
+    timestamp createdAt
+  }
+  PHOTOS {
+    string id PK "p0 à p9"
+    string base64
+    timestamp createdAt
+  }
+  LISTING_CONTACT {
+    string id PK "info"
+    string contactPhone
+    bool whatsappEnabled
+  }
+  FAVORITES {
+    string id PK "uid_listingId"
+    string userId FK
+    string listingId FK
+    timestamp createdAt
+  }
+  CONVERSATIONS {
+    string id PK "listingId_buyerId"
+    array participantIds
+    string listingId FK
+    string lastMessage
+    timestamp lastMessageAt
+    map unread
+  }
+  MESSAGES {
+    string id PK
+    string senderId FK
+    string text
+    timestamp createdAt
+  }

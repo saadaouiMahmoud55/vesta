@@ -1,41 +1,41 @@
-%% C4 level 3: Auth and Profile components of the Flutter app (VST-27)
-%% Rule: Screen -> Controller -> Repository -> Firebase. A screen never talks to Firebase directly.
+%% C4 niveau 3 : composants Auth et Profil de l'application Flutter (VST-27)
+%% Règle : Écran -> Contrôleur -> Dépôt -> Firebase. Un écran ne parle jamais à Firebase directement.
 flowchart TB
-  subgraph APP["Vesta Flutter app: Auth and Profile modules"]
+  subgraph APP["Application Flutter Vesta : modules Auth et Profil"]
     direction TB
-    Login["<b>LoginScreen</b><br/>[Component: Flutter screen]<br/>Email and password form"]
-    SignUp["<b>SignUpScreen</b><br/>[Component: Flutter screen]<br/>Name, email and password form"]
-    Profile["<b>ProfileScreen</b><br/>[Component: Flutter screen]<br/>Shows the profile, language selector, log out"]
-    EditProfile["<b>EditProfileScreen</b><br/>[Component: Flutter screen]<br/>Form to change name, photo and phone"]
+    Login["<b>LoginScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire e-mail et mot de passe"]
+    SignUp["<b>SignUpScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire nom, e-mail et mot de passe"]
+    Profile["<b>ProfileScreen</b><br/>[Composant : écran Flutter]<br/>Affiche le profil, le choix de la langue, la déconnexion"]
+    EditProfile["<b>EditProfileScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire pour changer le nom, la photo et le téléphone"]
 
-    AuthC["<b>AuthController</b><br/>[Component: Riverpod controller]<br/>Sign-in state, input checks, sign up, log in, log out"]
-    ProfileC["<b>ProfileController</b><br/>[Component: Riverpod controller]<br/>Loads and saves the profile, loading and error states"]
+    AuthC["<b>AuthController</b><br/>[Composant : contrôleur Riverpod]<br/>État de connexion, contrôle des champs, inscription, connexion, déconnexion"]
+    ProfileC["<b>ProfileController</b><br/>[Composant : contrôleur Riverpod]<br/>Charge et enregistre le profil, états de chargement et d'erreur"]
 
-    Photo["<b>PhotoService</b><br/>[Component: Phone-side helper]<br/>Picks a photo, resizes it, JPEG under 200 KB (photoBase64)"]
+    Photo["<b>PhotoService</b><br/>[Composant : outil côté téléphone]<br/>Choisit une photo, la réduit, JPEG de moins de 200 Ko (photoBase64)"]
 
-    AuthR["<b>AuthRepository</b><br/>[Component: Repository]<br/>Wraps Firebase Auth: sign up, log in, log out, session"]
-    UserR["<b>UserRepository</b><br/>[Component: Repository]<br/>Reads and writes the users collection"]
+    AuthR["<b>AuthRepository</b><br/>[Composant : dépôt (repository)]<br/>Enveloppe Firebase Auth : inscription, connexion, déconnexion, session"]
+    UserR["<b>UserRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit et écrit la collection users"]
   end
 
-  subgraph FIREBASE["Firebase (shared backend)"]
+  subgraph FIREBASE["Firebase (back-end partagé)"]
     direction LR
-    FAuth["<b>Firebase Auth</b><br/>[External system]<br/>Accounts and sessions"]
-    FStore["<b>Firestore</b><br/>[External system]<br/>users/{uid}<br/>users/{uid}/private/contact"]
+    FAuth["<b>Firebase Auth</b><br/>[Système externe]<br/>Comptes et sessions"]
+    FStore["<b>Firestore</b><br/>[Système externe]<br/>users/{uid}<br/>users/{uid}/private/contact"]
   end
 
-  Legend["<b>Legend</b><br/>Blue box: [Component: ...] part of the Flutter app<br/>Beige box: [External system] we do not build<br/>Arrow: who calls whom"]
+  Legend["<b>Légende</b><br/>Boîte bleue : [Composant : ...] partie de l'application Flutter<br/>Boîte beige : [Système externe] que nous ne construisons pas<br/>Flèche : qui appelle qui"]
 
-  Login -->|"log in"| AuthC
-  SignUp -->|"sign up"| AuthC
-  Profile -->|"log out"| AuthC
-  Profile -->|"load profile"| ProfileC
-  EditProfile -->|"save profile"| ProfileC
-  EditProfile -->|"choose and compress photo"| Photo
+  Login -->|"connexion"| AuthC
+  SignUp -->|"inscription"| AuthC
+  Profile -->|"déconnexion"| AuthC
+  Profile -->|"charger le profil"| ProfileC
+  EditProfile -->|"enregistrer le profil"| ProfileC
+  EditProfile -->|"choisir et compresser la photo"| Photo
 
-  AuthC -->|"create profile after sign up"| UserR
-  AuthC -->|"sign up, log in, log out"| AuthR
-  ProfileC -->|"current user id"| AuthR
-  ProfileC -->|"read and update profile"| UserR
+  AuthC -->|"créer le profil après l'inscription"| UserR
+  AuthC -->|"inscription, connexion, déconnexion"| AuthR
+  ProfileC -->|"identifiant de l'utilisateur"| AuthR
+  ProfileC -->|"lire et modifier le profil"| UserR
 
   AuthR -->|"Firebase Auth SDK"| FAuth
   UserR -->|"Firestore SDK"| FStore

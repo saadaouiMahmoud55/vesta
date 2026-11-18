@@ -1,0 +1,47 @@
+%% Diagramme de cas d'utilisation de Vesta (MVP Flutter)
+flowchart LR
+  Invite(["Invité<br/>(sans compte)"]):::actor
+  Utilisateur(["Utilisateur connecté<br/>(acheteur, locataire, voyageur)"]):::actor
+  Proprietaire(["Propriétaire / agent<br/>(utilisateur connecté qui publie)"]):::actor
+  Firebase(["Firebase<br/>(système externe)"]):::ext
+
+  subgraph SYS["Application Vesta"]
+    UC1(["Parcourir les annonces"])
+    UC2(["Rechercher et filtrer"])
+    UC3(["Voir les détails et les photos"])
+    UC4(["Voir les annonces sur la carte"])
+    UC5(["S'inscrire / se connecter"])
+    UC6(["Appeler ou écrire sur WhatsApp"])
+    UC7(["Écrire au propriétaire (chat)"])
+    UC8(["Gérer les favoris"])
+    UC9(["Modifier son profil"])
+    UC10(["Changer la langue"])
+    UC11(["Supprimer son compte"])
+    UC12(["Publier une annonce avec photos"])
+    UC13(["Modifier ou supprimer son annonce"])
+    UC14(["Changer le statut de l'annonce"])
+    UC15(["Répondre aux messages"])
+  end
+
+  Invite --- UC1
+  Invite --- UC2
+  Invite --- UC3
+  Invite --- UC4
+  Invite --- UC5
+  Invite --- UC10
+  Utilisateur --- UC6
+  Utilisateur --- UC7
+  Utilisateur --- UC8
+  Utilisateur --- UC9
+  Utilisateur --- UC11
+  Proprietaire --- UC12
+  Proprietaire --- UC13
+  Proprietaire --- UC14
+  Proprietaire --- UC15
+  UC5 -.->|"inclut"| Firebase
+  UC12 -.->|"inclut"| Firebase
+  UC7 -.->|"inclut"| Firebase
+
+  classDef actor fill:#e3f4ec,stroke:#2a9d6f,color:#14543b
+  classDef ext fill:#f1ede8,stroke:#8a8178,color:#3b3630
+  style SYS fill:#f7f7ff,stroke:#6a64d8,stroke-dasharray:5 4

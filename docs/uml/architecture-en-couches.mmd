@@ -1,0 +1,29 @@
+%% Architecture en couches commune aux deux applications
+flowchart TB
+  subgraph APPS["Deux applications, la même structure"]
+    direction TB
+    subgraph L1["Couche présentation"]
+      Ecran["<b>Écrans</b><br/>Flutter : widgets<br/>React Native : composants"]
+    end
+    subgraph L2["Couche logique"]
+      Ctrl["<b>Contrôleurs</b><br/>Flutter : Riverpod<br/>React Native : hooks"]
+    end
+    subgraph L3["Couche données"]
+      Repo["<b>Dépôts (repositories)</b><br/>Seul endroit qui parle à Firebase"]
+    end
+    Ecran -->|"appelle"| Ctrl
+    Ctrl -->|"appelle"| Repo
+  end
+  subgraph FB["Firebase (offre gratuite)"]
+    direction LR
+    Auth["Authentication"]
+    Fs["Firestore + règles de sécurité"]
+  end
+  OSM["OpenStreetMap<br/>(tuiles de la carte)"]
+  Repo -->|"SDK Firebase"| Auth
+  Repo -->|"SDK Firebase"| Fs
+  Ecran -.->|"tuiles"| OSM
+  Regle["<b>Règle d'or</b> : un écran ne parle jamais à Firebase.<br/>Les contrôleurs se testent donc sans Firebase."]:::note
+  classDef note fill:#fff8e1,stroke:#d9a400,color:#5a4500
+  style APPS fill:#f7f7ff,stroke:#6a64d8,stroke-dasharray:5 4
+  style FB fill:#faf8f5,stroke:#8a8178,stroke-dasharray:5 4
