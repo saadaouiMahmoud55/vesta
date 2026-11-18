@@ -25,9 +25,9 @@ const make = (over: Partial<Listing>): Listing => ({
   bathrooms: null,
   areaSqm: null,
   maxGuests: null,
-  amenities: [],
   checkIn: null,
   checkOut: null,
+  amenities: [],
   houseRules: [],
   ...over,
 });
