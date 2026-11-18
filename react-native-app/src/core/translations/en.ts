@@ -10,8 +10,6 @@ export default {
   notificationsEmptyBody: 'New messages appear here until you read them.',
   chatTitle: 'Messages',
   loginTitle: 'Sign in',
-  loginWelcomeTitle: 'Welcome to Vesta',
-  loginWelcomeSubtitle: 'Sign in to contact owners, save favorites and publish your own place.',
   comingSoon: 'Coming soon',
   languageLabel: 'Language',
   authEmailLabel: 'Email',
@@ -311,4 +309,7 @@ export default {
   profileErrorEmailInUse: 'This email is already used by another account',
   profileErrorWrongPassword: 'Wrong password',
   profileErrorPasswordRequired: 'Enter your current password',
+  loginWelcomeTitle: 'Welcome to Vesta',
+  loginWelcomeSubtitle:
+    'Sign in to contact owners, save favorites and publish your own place.',
 };

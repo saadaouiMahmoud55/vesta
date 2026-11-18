@@ -345,5 +345,7 @@
   "profileErrorEmailInvalid": "Enter a valid email address",
   "profileErrorEmailInUse": "This email is already used by another account",
   "profileErrorWrongPassword": "Wrong password",
-  "profileErrorPasswordRequired": "Enter your current password"
+  "profileErrorPasswordRequired": "Enter your current password",
+  "loginWelcomeTitle": "Welcome to Vesta",
+  "loginWelcomeSubtitle": "Sign in to contact owners, save favorites and publish your own place."
 }

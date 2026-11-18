@@ -11,8 +11,6 @@ export default {
     'Les nouveaux messages apparaissent ici tant que vous ne les avez pas lus.',
   chatTitle: 'Messages',
   loginTitle: 'Connexion',
-  loginWelcomeTitle: 'Bienvenue sur Vesta',
-  loginWelcomeSubtitle: 'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.',
   comingSoon: 'Bientôt disponible',
   languageLabel: 'Langue',
   authEmailLabel: 'Email',
@@ -322,4 +320,7 @@ export default {
   profileErrorEmailInUse: 'Cet e-mail est déjà utilisé par un autre compte',
   profileErrorWrongPassword: 'Mot de passe incorrect',
   profileErrorPasswordRequired: 'Entrez votre mot de passe actuel',
+  loginWelcomeTitle: 'Bienvenue sur Vesta',
+  loginWelcomeSubtitle:
+    'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.',
 };

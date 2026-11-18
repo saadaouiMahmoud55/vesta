@@ -1881,6 +1881,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your current password'**
   String get profileErrorPasswordRequired;
+
+  /// No description provided for @loginWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Vesta'**
+  String get loginWelcomeTitle;
+
+  /// No description provided for @loginWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to contact owners, save favorites and publish your own place.'**
+  String get loginWelcomeSubtitle;
 }
 
 class _AppLocalizationsDelegate

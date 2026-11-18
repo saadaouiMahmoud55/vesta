@@ -953,4 +953,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileErrorPasswordRequired => 'Entrez votre mot de passe actuel';
+
+  @override
+  String get loginWelcomeTitle => 'Bienvenue sur Vesta';
+
+  @override
+  String get loginWelcomeSubtitle =>
+      'Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien.';
 }

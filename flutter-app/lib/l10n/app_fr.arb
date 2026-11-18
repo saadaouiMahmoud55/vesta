@@ -345,5 +345,7 @@
   "profileErrorEmailInvalid": "Entrez une adresse e-mail valide",
   "profileErrorEmailInUse": "Cet e-mail est déjà utilisé par un autre compte",
   "profileErrorWrongPassword": "Mot de passe incorrect",
-  "profileErrorPasswordRequired": "Entrez votre mot de passe actuel"
+  "profileErrorPasswordRequired": "Entrez votre mot de passe actuel",
+  "loginWelcomeTitle": "Bienvenue sur Vesta",
+  "loginWelcomeSubtitle": "Connectez-vous pour contacter les propriétaires, enregistrer vos favoris et publier votre bien."
 }
