@@ -282,7 +282,7 @@ common.retry,Try again,Réessayer,عاود جرّب,Common,
 common.offline,You are offline. Some content may not load.,Vous êtes hors ligne. Certains contenus peuvent ne pas s’afficher.,ما عندكش إنترنت. ممكن شوية محتوى ما يظهرش.,Common,
 contact.call,Call,Appeler,اتصل,Contact,
 contact.whatsapp,WhatsApp,WhatsApp,واتساب,Contact,same in en and fr
-contact.sign.in.to.see,Sign in to see the contact,Connectez-vous pour voir le contact,سجّل الدخول باش تشوف رقم التواصل,Contact,
+contact.sign.in.to.see,Sign in to see the contact,Connectez-vous pour voir le contact,سجّل الدخول لترى رقم التواصل,Contact,
 contact.no.whatsapp,WhatsApp is not installed on this phone,WhatsApp n’est pas installé sur ce téléphone,واتساب موش مثبّت على التليفون هذا,Contact,
 contact.call.error,Could not open the phone app,Impossible d’ouvrir l’application Téléphone,ما نجمناش نحلّو تطبيق الهاتف,Contact,
 contact.message.sale,"Hello, I am interested in buying {title} on Vesta","Bonjour, je suis intéressé par l’achat de {title} sur Vesta","عسلامة، مهتم بشراء {title} على Vesta",Contact,
