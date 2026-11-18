@@ -2,13 +2,13 @@
 
 Rapport final (VST-57), état de `develop` au 17 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
 
-Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (publiée en test fermé sur Google Play) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
+Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (publiée en test interne sur Google Play) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
 
 ## 1. Contexte, objectifs et équipe
 
 Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 17 novembre. L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
 
-- **Flutter** est l'application de référence, publiée en test fermé sur Google Play.
+- **Flutter** est l'application de référence, publiée en test interne sur Google Play.
 - **React Native** (Expo) est une version réduite, présentée en démonstration académique.
 - **Firebase** (Authentication et Firestore, offre gratuite) sert aux deux applications.
 
@@ -17,7 +17,7 @@ Vesta répond au sujet « Application mobile services immobilier » de M. Wahid 
 | Manar Degachi | Cheffe de groupe et relectrice. Projet Firebase et règles Firestore, modèle de données, squelette Flutter, thème et design system, chat, carte et géolocalisation (Flutter et React Native), onboarding, paramètres, sécurité des clés API, intégration des pull requests. |
 | Eya Ben Belgacem | Annonces Flutter : liste, détails, équipements, recherche et filtres, formulaire de publication, Mes annonces, suppression de compte. Recherche et alertes de messages React Native. Contenu de démonstration et revue des pull requests. |
 | Ahmed Bouguerra | Qualité et outils : plan de test, contrôle des couleurs, UI kit Flutter, pipeline de traductions, authentification, navigation et formulaire de publication React Native. |
-| Mahmoud Saadaoui | Favoris, profil, boutons Appeler et WhatsApp, tests des règles Firestore, build Android signé pour Google Play. Favoris React Native. Chat et contact React Native (pull requests encore ouvertes). |
+| Mahmoud Saadaoui | Favoris, profil, boutons Appeler et WhatsApp, tests des règles Firestore, build Android signé pour Google Play. Favoris React Native. Chat React Native (fusionné) et contact React Native (pull request encore ouverte). |
 
 ## 2. Architecture et choix techniques
 
@@ -52,7 +52,7 @@ L'application Flutter couvre l'ensemble du MVP. L'application React Native est v
 | Modifier et supprimer une annonce, Mes annonces | Fait | Non fait |
 | Statut d'une annonce (disponible, réservé, loué, vendu) | Fait (partie 1) | Non fait |
 | Carte et géolocalisation | Fait | Fait |
-| Chat entre acheteur et propriétaire | Fait | En revue (#102, non fusionnée) |
+| Chat entre acheteur et propriétaire | Fait | Fait (#102 fusionnée le 18 novembre ; accès par un bouton « Messages » de l'accueil) |
 | Alertes de messages et badge de messages non lus | Fait | Fait |
 | Contact : Appeler et WhatsApp | Fait | En revue (#103, non fusionnée) |
 | Favoris | Fait | Écran écrit, onglet encore vide |
@@ -70,14 +70,14 @@ Chaque changement passe par une pull request vers `develop`, relue avant d'être
 | Niveau de test | Résultat |
 | --- | --- |
 | Flutter, tests automatiques | 166 tests réussis le 16 novembre (widgets, contrôleurs, dépôts, localisation) |
-| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 84 tests réussis sur `develop` après les fusions du 17 novembre |
+| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 98 tests réussis sur `develop` après les fusions du 18 novembre (#102, #131) |
 | Règles Firestore | Tests avec l'émulateur Firebase dans `firebase/tests/` (authentification et règles des annonces, photos, contact, conversations) |
 | Plan de test manuel | 60 cas communs aux deux applications, joués sur téléphone réel (`docs/test-plan.md`) ; la partie B est fusionnée (#117) : seuls les cas réellement testés sont en « Pass », les autres restent « Not tested » ; les résultats React Native (#127) sont en relecture |
 | Téléphones réels | Samsung de Manar, Redmi d'Eya et téléphones des autres membres, en arabe, français et anglais |
 
 Les tests sur téléphone ont trouvé de vrais défauts, corrigés avant le gel : un prix absurde accepté par le formulaire et par les règles (VST-104), la réinitialisation des filtres de recherche (VST-124), l'icône « œil » du mot de passe (#118).
 
-**Google Play.** La version 1.0.0 (build 1) est publiée en test fermé par Mahmoud depuis un compte développeur. Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. L'application est un projet académique : elle n'est pas publiée en production.
+**Google Play.** La version 1.0.0 (build 1) est disponible en test interne depuis le 22 octobre (publiée par Mahmoud depuis un compte développeur). Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. L'application est un projet académique : elle n'est pas publiée en production.
 
 **Contenu.** Les 15 annonces visibles (5 séjours, 5 locations, 5 ventes) sont marquées « Démo » dans le titre et n'ont pas de badge « vérifié ». Elles utilisent des informations et des photos réelles, avec l'accord oral par téléphone des propriétaires, pour un usage académique seulement ; ils ont demandé à ne pas être nommés. Eya a recueilli ces accords le 17 novembre et ils sont notés dans `docs/content/sources.md`. Nous n'avons aucun accord écrit : un lancement réel demanderait l'accord écrit de chaque propriétaire.
 
@@ -93,7 +93,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 - **Contact :** le numéro du propriétaire est lisible par tout compte connecté, y compris un compte Firebase anonyme. La règle qui l'interdit n'est pas fusionnée.
 - **Comptes :** la suppression d'un compte garde les messages du chat pour l'autre personne ; le signalement et le blocage ne sont pas faits ; il n'y a pas de Cloud Functions pour nettoyer côté serveur.
 - **Langues :** une relecture native de l'arabe et du français, et une vérification de la mise en page de droite à gauche sur plus d'appareils, n'ont pas été terminées. Les noms saisis par les utilisateurs ne sont pas translittérés.
-- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) et le contact (#103) restent dans des pull requests ouvertes, non fusionnées avant le gel du code et non testées sur deux téléphones. Les onglets Favoris et Profil sont vides.
+- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) est fusionné et a été testé par Eya sur un téléphone Android avec Expo Go ; il n'a pas de bouton pour contacter le propriétaire depuis le détail d'une annonce. Le contact (#103) reste dans une pull request ouverte, non fusionnée et non testée sur téléphone réel. Les onglets Favoris et Profil sont vides.
 - **Contenu :** annonces réelles de démonstration, avec accord oral seulement (pas d'accord écrit).
 
 **Travaux futurs, par ordre de valeur**
