@@ -880,7 +880,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get contactWhatsapp => 'واتساب';
 
   @override
-  String get contactSignInToSee => 'سجّل الدخول باش تشوف رقم التواصل';
+  String get contactSignInToSee => 'سجّل الدخول لترى رقم التواصل';
 
   @override
   String get contactNoWhatsapp => 'واتساب موش مثبّت على التليفون هذا';
