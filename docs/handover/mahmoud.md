@@ -5,14 +5,15 @@
 - VST-79 : boutons Appeler / WhatsApp sur la fiche annonce, champ téléphone / WhatsApp dans le formulaire Publier (PR #66)
 - VST-46 : Favoris (ajout, retrait, liste, filtres Tous / Acheter / Louer / Séjourner), PR #40
 - VST-48 : Profil (modification du nom et de la photo, mes annonces), PR #46
+- VST-128 : modification du téléphone et de l'e-mail dans le profil (PR #126, fusionnée)
 - Tests des règles Firestore de l'application
-- Build Android signé pour Google Play (version 1.0.0+1 publiée en test fermé)
+- Build Android signé pour Google Play (1.0.0 en test interne, 1.0.0+2 en test fermé)
 
 ## Écrans
 
 - Fiche annonce : boutons Appeler et WhatsApp
 - Formulaire Publier : champ téléphone / WhatsApp avec validation
-- Profil : informations de l'utilisateur connecté, mes annonces
+- Profil : informations de l'utilisateur connecté, modification du nom, de la photo, du téléphone et de l'e-mail, mes annonces
 - Favoris : liste des annonces enregistrées, avec filtres
 
 ## Fichiers et dossiers principaux
@@ -32,11 +33,12 @@
 - Règles Firestore : testées avec des tests automatisés (accès autorisé / refusé selon l'utilisateur)
 - Release Google Play : build Android signé, puis publication via la Play Console. Aucune clé, mot de passe ni emplacement du keystore n'est écrit dans ce document ni dans le dépôt.
 
-## État de la release Google Play
+## État de la release Google Play (mis à jour le 18 nov. 2026)
 
-- L'application est en **test fermé** (canal Alpha), pas encore en production.
-- La version publiée en test fermé est la 1.0.0 (code de version 1). La version 1.0.0+2 n'est pas encore envoyée : elle attend la clé d'upload.
-- La demande d'accès à la production n'est pas encore faite.
+- **Test interne** : actif, version 1.0.0 (code de version 1), sortie le 22 oct.
+- **Test fermé** (canal Alpha) : actif, version 1.0.0+2 (code de version 2), déjà envoyée le 3 nov.
+- **Production** : inactive, aucune release, aucun pays ajouté. L'accès à la production est approuvé, mais rien n'est publié.
+- Pour la production, il faudra la version 1.0.0+3 (Manar prépare le changement du `pubspec.yaml`), signée avec la clé d'upload, puis l'examen de Google.
 
 ## Comment tester
 
@@ -51,6 +53,7 @@
 
 - **Règle `notAnonymous` pas encore déployée** : dans `firestore.rules` de `develop`, `contact/info` utilise `signedIn()`. Un visiteur non connecté est bloqué (test automatisé), mais un compte Firebase **anonyme** compte comme connecté et peut lire le numéro. La règle `notAnonymous()` a été écrite et testée sur une ancienne branche (PR #44), jamais mergée. Elle reste à reporter dans `develop` (les règles sont déployées par Manar).
 - **Preuve que le numéro est protégé** : la règle est `allow read: if signedIn();` sur `listings/{id}/contact/info` (`firestore.rules`, ligne 160). Le test `assertFails(getDoc(contactRef(anon())))` dans `rules.test.js` (ligne 568) prouve qu'un visiteur sans compte ne peut pas le lire. L'application ne connecte jamais personne en anonyme, donc le risque ne vient que d'un appel direct à Firebase par un compte anonyme créé hors de l'application.
+- **E-mail dans `private/contact`** : après un changement d'e-mail (VST-128), l'e-mail stocké dans `private/contact` garde l'ancienne valeur.
 - Pas de téléphone Android réel utilisé pour mes tests : validés sur Chrome, et sur la tablette de Manar.
 - Clé d'upload Google Play détenue par Manar : je ne peux pas signer un nouveau build seul.
 
