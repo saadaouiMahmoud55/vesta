@@ -141,7 +141,7 @@ Run the main flows in the three languages. Test data is Tunisian stays.
 
 | ID | Test | Steps | Expected result | Flutter | React Native | Tester | Date | Phone model |
 |---|---|---|---|---|---|---|---|---|
-| LNG-01 | Default language | 1. Set the phone language to English, then install or reopen the app on a fresh install.<br>2. Repeat with French, Arabic and German. | The app starts in the phone language when it is English, French or Arabic. With German (or any other language) the app starts in Arabic. | Not tested | Not tested | | | |
+| LNG-01 | Default language | 1. Set the phone language to English, then install or reopen the app on a fresh install.<br>2. Repeat with French, Arabic and German. | The app starts in the phone language when it is English, French or Arabic. With German (or any other language) the app starts in Arabic. | Not tested | Not tested | | | Unit test only: default is Arabic in code (VST-105). Phone test pending. |
 | LNG-02 | Main flows in English | 1. Set the app to English.<br>2. Sign up, publish a stay, search, open the details, send a chat message, add a favorite, edit the profile. | Every step works and every text is in English. | Not tested | Not tested | | | |
 | LNG-03 | Main flows in French | 1. Set the app to Français.<br>2. Repeat the flows of LNG-02. | Every step works and every text is in French. No text is left in English. | Not tested | Not tested | | | |
 | LNG-04 | Main flows in Arabic | 1. Set the app to العربية.<br>2. Repeat the flows of LNG-02 (type the texts with the Arabic keyboard). | Every step works and every text is in Arabic. No text is left in English. | Not tested | Not tested | | | |
@@ -181,7 +181,7 @@ Answers of Manar, applied in the tests above.
 
 ## Open questions
 
-1. **Language fallback in React Native.** The Flutter app starts in Arabic when the phone language is not English, French or Arabic (LNG-01). The React Native app falls back to English (`config.defaultLanguage = 'en'`). Should React Native be aligned with Flutter, or should the expected result of LNG-01 be per app? Until then RN fails LNG-01.
+1. **Language fallback in React Native.** The Flutter app starts in Arabic when the phone language is not English, French or Arabic (LNG-01). The React Native app now also starts in Arabic (`config.defaultLanguage = 'ar'`, VST-105, covered by a unit test). The phone test of LNG-01 on React Native is still pending.
 2. **NTF-01 (permission dialog).** With no real push in the MVP, is the notification permission dialog still shown? Keep, change or mark `Not in MVP`?
 
 ## Bugs found
