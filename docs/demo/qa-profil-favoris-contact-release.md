@@ -10,7 +10,7 @@ Présentation de 5 minutes sans notes, puis 2 questions de l'équipe. Chaque ré
 
 **3. Profil.** Le profil public est dans `users/{uid}` : nom et photo. Le nom est obligatoire. La photo est compressée (environ 200 px, moins de 100 Ko) et stockée en base64. Le profil montre aussi « Mes annonces » en direct, avec suppression et changement de statut.
 
-**4. Release.** L'application est en test interne (build 1) et en test fermé Alpha (build 2). L'accès à la production est approuvé, mais la production est « Inactif » tant que Google n'a pas approuvé le build 3 (1.0.0+3, signé avec la clé d'upload par Manar), envoyé pour examen le 19 novembre ; l'examen peut durer jusqu'à sept jours.
+**4. Release.** L'application a été en test interne (build 1) puis en test fermé Alpha (build 2). Le build 3 (1.0.0+3, signé avec la clé d'upload par Manar) a été envoyé en production par Mahmoud et publié le 19 novembre 2026 (déploiement à 100 %, fiche Google Play disponible avec le bouton Installer).
 
 ## Questions probables
 
@@ -36,7 +36,7 @@ Le contrôleur ignore une nouvelle sauvegarde tant que la précédente est en co
 Oui. En modification, il reste obligatoire si l'annonce avait déjà un numéro. Il peut rester vide seulement si l'annonce n'en avait pas (correctif de la PR #97).
 
 **Où en est la publication sur Google Play ?**
-Test fermé Alpha, accès à la production approuvé, production « Inactif ». Google annonce de quelques heures à sept jours d'examen, parfois plus ; il ne donne pas de date. Manar décide de publier et fait la release avec la clé d'upload.
+Le build 3 (1.0.0+3) est publié en production depuis le 19 novembre 2026, après le test interne et le test fermé Alpha. Manar fait la release avec la clé d'upload ; Mahmoud l'envoie depuis le compte développeur.
 
 **Pourquoi publier du contenu de démonstration est un sujet ?**
 Nos 15 annonces utilisent des informations et des photos réelles, avec l'accord oral des propriétaires (voir docs/content/sources.md), mais nous n'avons aucun accord écrit.
@@ -47,5 +47,5 @@ VST-128 est fusionnée (#126). Limite restante : l'e-mail stocké dans private/c
 
 ## À confirmer avec Manar avant la démo
 
-- Versions Google Play : build 1 (1.0.0) en test interne, build 2 (1.0.0+2) en test fermé, build 3 (1.0.0+3) signé et envoyé pour examen en production le 19 novembre.
+- Versions Google Play : build 1 (1.0.0) en test interne, build 2 (1.0.0+2) en test fermé, build 3 (1.0.0+3) signé, envoyé en production et publié le 19 novembre 2026.
 - Le texte du store (#107) et la décision de publier.
