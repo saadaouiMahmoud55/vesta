@@ -74,7 +74,7 @@ L'application Flutter couvre l'ensemble du MVP. L'application React Native est v
 | Carte et géolocalisation | Fait | Fait |
 | Chat entre acheteur et propriétaire | Fait | Fait (#102 fusionnée le 18 novembre ; accès par un bouton « Messages » de l'accueil) |
 | Alertes de messages et badge de messages non lus | Fait | Fait |
-| Contact : Appeler et WhatsApp | Fait | En revue (#103, non fusionnée) |
+| Contact : Appeler et WhatsApp | Fait | Fait (#103 fusionnée, testé sur un Redmi) |
 | Favoris | Fait | Écran écrit, onglet encore vide |
 | Profil : nom, photo, téléphone, e-mail | Fait | Non fait (onglet vide) |
 | Paramètres, choix de la langue, onboarding, centre de notifications | Fait | Langue par défaut seulement |

@@ -2,7 +2,7 @@
 
 Mobile app to search, view and publish real-estate listings (sale and rent), built **twice**: with **Flutter** and with **React Native**, on one shared **Firebase** backend.
 
-Mini-project: *Application Mobile Services Immobilier* — Wahid Hamdi — due **24 Nov 2026, 08:30**. Code freeze: **17 Nov 2026**.
+Mini-project: *Application Mobile Services Immobilier* — Wahid Hamdi — due **24 Nov 2026, 08:30**. Code freeze: **18 Nov 2026, 22:00**.
 
 ## Team
 Manar · Eya · Ahmed · Mahmoud

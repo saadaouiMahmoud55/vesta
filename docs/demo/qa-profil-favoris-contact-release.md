@@ -43,9 +43,9 @@ Nos 15 annonces utilisent des informations et des photos réelles, avec l'accord
 
 ## Limites à dire nous-mêmes
 
-VST-128 est fusionnée (#126). Limite restante : l'e-mail stocké dans private/contact garde l'ancienne valeur après un changement d'e-mail.
+VST-128 est fusionnée (#126). Limite restante : l'e-mail stocké dans private/contact garde l'ancienne valeur après un changement d'e-mail, jusqu'à la prochaine sauvegarde du profil avec le téléphone.
 
 ## À confirmer avec Manar avant la démo
 
-- La version actuellement publiée en test fermé (1.0.0 ou 1.0.0+2) : mon doc de passation dit que 1.0.0+2 attend la clé d'upload.
+- Versions Google Play : build 1 (1.0.0) en test interne, build 2 (1.0.0+2) en test fermé, build 3 (1.0.0+3) signé et préparé pour la production.
 - Le texte du store (#107) et la décision de publier.
