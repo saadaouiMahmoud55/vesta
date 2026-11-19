@@ -1,9 +1,205 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Placeholder: deny everything until real rules are written (Sprint 1).
-    match /{document=**} {
-      allow read, write: if false;
+
+    function signedIn() { return request.auth != null; }
+    function isUser(uid) { return signedIn() && request.auth.uid == uid; }
+    function listingPath(id) {
+      return /databases/$(database)/documents/listings/$(id);
+    }
+    function convPath(id) {
+      return /databases/$(database)/documents/conversations/$(id);
+    }
+    function optNum(d, f) { return !(f in d) || d[f] is number; }
+
+    // VST-71 : createdAt ne doit pas changer lors d'une modification
+    function createdAtUnchanged() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(['createdAt']);
+    }
+
+    // VST-74 : champs optionnels typés (un champ absent est toujours valide)
+    function optBool(d, f) { return !(f in d) || d[f] is bool; }
+    function optNumMin(d, f, min) { return !(f in d) || (d[f] is number && d[f] >= min); }
+    function optStr(d, f, max) { return !(f in d) || (d[f] is string && d[f].size() <= max); }
+    function optTime(d, f) {
+      return !(f in d) || (d[f] is string && d[f].matches('^([01][0-9]|2[0-3]):[0-5][0-9]$'));
+    }
+    function optList(d, f, allowed, max) {
+      return !(f in d) || (d[f] is list && d[f].size() <= max && d[f].hasOnly(allowed));
+    }
+
+    // Les 3 types d'offre (docs/offer-types.md) sont une vue sur listingType + rentPeriod :
+    // sale = vente, rent = location mois/an, stay = location a la nuit.
+    function offerType(d) {
+      return d.listingType == 'sale' ? 'sale'
+        : (d.get('rentPeriod', '') == 'night' ? 'stay' : 'rent');
+    }
+
+    // VST-74 : statuts autorises selon le type d'offre. Statut absent = available.
+    function validStatus(d) {
+      return !('status' in d)
+        || (offerType(d) == 'sale' && d.status in ['available', 'reserved', 'sold', 'hidden'])
+        || (offerType(d) == 'rent' && d.status in ['available', 'reserved', 'rented', 'hidden'])
+        || (offerType(d) == 'stay' && d.status in ['available', 'unavailable', 'hidden']);
+    }
+
+    // VST-74 : land et commercial ne se louent pas a la nuit
+    function validPropertyForOffer(d) {
+      return !(d.propertyType in ['land', 'commercial']) || offerType(d) != 'stay';
+    }
+
+    function validListing(d) {
+      return d.ownerId is string
+        && d.title is string
+        && d.description is string
+        && d.price is number && d.price > 0 && d.price <= 50000000
+        && d.currency is string && d.currency.size() == 3
+        && d.listingType in ['sale', 'rent']
+        && (d.listingType != 'rent' || d.rentPeriod in ['night', 'month', 'year'])
+        && d.propertyType in ['apartment', 'house', 'villa', 'studio', 'riad', 'guest_house',
+                              'land', 'commercial']
+        && validPropertyForOffer(d)
+        && d.city is string
+        && d.photoCount is int && d.photoCount >= 0 && d.photoCount <= 10
+        && optNum(d, 'latitude') && optNum(d, 'longitude')
+        && optNum(d, 'bedrooms') && optNum(d, 'bathrooms')
+        && optNum(d, 'areaSqm')
+        // VST-74 : nouveaux champs, tous optionnels pour ne pas casser les annonces existantes
+        && validStatus(d)
+        && optBool(d, 'negotiable') && optBool(d, 'furnished')
+        && optNumMin(d, 'yearBuilt', 1800) && optNumMin(d, 'depositMonths', 0)
+        && optNumMin(d, 'minMonths', 1) && optNumMin(d, 'maxGuests', 1)
+        && optNumMin(d, 'beds', 0) && optNumMin(d, 'minNights', 1)
+        && optNumMin(d, 'viewCount', 0)
+        && optStr(d, 'documentsNote', 200)
+        && optTime(d, 'checkIn') && optTime(d, 'checkOut')
+        && (!('availableFrom' in d) || d.availableFrom is timestamp)
+        && optList(d, 'amenities',
+             ['wifi', 'ac', 'heating', 'kitchen', 'parking', 'pool', 'breakfast',
+              'washing_machine', 'tv', 'garden'], 10)
+        && optList(d, 'houseRules', ['no_smoking', 'no_pets', 'no_parties', 'quiet_hours'], 4);
+    }
+
+    // VST-74 : le badge verified n'est posé que depuis la console Firebase (jamais par l'app)
+    function verifiedNotSetByClient(d) {
+      return !('verified' in d) || d.verified == false;
+    }
+    function verifiedUnchanged() {
+      return request.resource.data.get('verified', false) == resource.data.get('verified', false);
+    }
+
+    // VST-74 : numero de telephone tunisien, +216 puis 8 chiffres (premier chiffre 2,3,4,5,7 ou 9)
+    function validListingContact(d) {
+      return d.keys().hasOnly(['contactPhone', 'whatsappEnabled', 'updatedAt'])
+        && d.contactPhone is string
+        && d.contactPhone.matches('^\\+216[234579][0-9]{7}$')
+        && optBool(d, 'whatsappEnabled');
+    }
+
+    function validProfile(d) {
+      return d.displayName is string
+        && (!('photoBase64' in d)
+            || (d.photoBase64 is string
+                && d.photoBase64.size() < 280000));
+    }
+
+    // VST-71 : email obligatoire en texte, phone en texte s'il est present
+    function validContact(d) {
+      return d.email is string
+        && (!('phone' in d) || d.phone is string);
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create: if isUser(uid)
+        && validProfile(request.resource.data);
+      allow update: if isUser(uid)
+        && validProfile(request.resource.data)
+        && createdAtUnchanged();
+      allow delete: if isUser(uid);
+
+      match /private/contact {
+        allow read, delete: if isUser(uid);
+        allow create, update: if isUser(uid)
+          && validContact(request.resource.data);
+      }
+    }
+
+    match /listings/{listingId} {
+      // VST-72/VST-74 : lecture publique pour la navigation en invite (sans compte).
+      // Le telephone n'est PAS ici : il est dans listings/{id}/contact/info (connecte seulement).
+      allow read: if true;
+      allow create: if isUser(request.resource.data.ownerId)
+        && validListing(request.resource.data)
+        && verifiedNotSetByClient(request.resource.data);
+      allow update: if isUser(resource.data.ownerId)
+        && request.resource.data.ownerId == resource.data.ownerId
+        && validListing(request.resource.data)
+        && createdAtUnchanged()
+        && verifiedUnchanged();
+      allow delete: if isUser(resource.data.ownerId);
+
+      match /photos/{photoId} {
+        function validPhoto(d) {
+          return d.keys().hasOnly(['base64', 'createdAt'])
+            && d.base64 is string
+            && d.base64.size() > 0
+            && d.base64.size() <= 280000;
+        }
+
+        allow read: if true;
+        allow create, update: if photoId.matches('p[0-9]')
+          && isUser(getAfter(listingPath(listingId)).data.ownerId)
+          && validPhoto(request.resource.data);
+        allow delete: if photoId.matches('p[0-9]')
+          && isUser(get(listingPath(listingId)).data.ownerId);
+      }
+
+      // VST-74 : contact de l'annonce, lisible seulement par un utilisateur connecte
+      match /contact/info {
+        allow read: if signedIn();
+        allow create, update: if isUser(getAfter(listingPath(listingId)).data.ownerId)
+          && validListingContact(request.resource.data);
+        allow delete: if isUser(get(listingPath(listingId)).data.ownerId);
+      }
+    }
+
+    match /favorites/{favId} {
+      allow read: if signedIn()
+        && (resource == null || resource.data.userId == request.auth.uid);
+      allow delete: if isUser(resource.data.userId);
+      allow create: if request.resource.data.listingId is string
+        && isUser(request.resource.data.userId)
+        && favId == request.auth.uid + '_' + request.resource.data.listingId;
+    }
+
+    match /conversations/{convId} {
+      allow read: if signedIn()
+        && (resource == null || request.auth.uid in resource.data.participantIds);
+
+      allow create: if signedIn()
+        && request.resource.data.listingId is string
+        && convId == request.resource.data.listingId + '_' + request.auth.uid
+        && request.resource.data.participantIds.size() == 2
+        && get(listingPath(request.resource.data.listingId)).data.ownerId != request.auth.uid
+        && request.resource.data.participantIds.hasAll(
+             [request.auth.uid, get(listingPath(request.resource.data.listingId)).data.ownerId]);
+
+      allow update: if signedIn()
+        && request.auth.uid in resource.data.participantIds
+        && request.resource.data.participantIds == resource.data.participantIds
+        && request.resource.data.listingId == resource.data.listingId;
+
+      match /messages/{msgId} {
+        allow read: if signedIn()
+          && request.auth.uid in get(convPath(convId)).data.participantIds;
+        allow create: if signedIn()
+          && request.auth.uid in getAfter(convPath(convId)).data.participantIds
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() <= 2000;
+        allow update, delete: if false;
+      }
     }
   }
 }

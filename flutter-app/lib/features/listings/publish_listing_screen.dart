@@ -1,0 +1,865 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
+
+import '../../core/theme/app_colors.dart';
+import '../../core/utils/phone_utils.dart';
+import '../../core/widgets/app_button.dart';
+import '../../core/widgets/app_top_bar.dart';
+import '../../core/widgets/filter_tag.dart';
+import '../../l10n/generated/app_localizations.dart';
+import 'listing_card.dart';
+import 'listing_controller.dart';
+import '../map/location_picker_screen.dart';
+import '../map/tunisia_places.dart';
+import 'listing_labels.dart';
+import 'listing_repository.dart';
+import 'photo_service.dart';
+
+class PublishListingScreen extends ConsumerStatefulWidget {
+  const PublishListingScreen({super.key, this.listingId});
+
+  final String? listingId;
+
+  @override
+  ConsumerState<PublishListingScreen> createState() =>
+      _PublishListingScreenState();
+}
+
+class _PublishListingScreenState extends ConsumerState<PublishListingScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _title = TextEditingController();
+  final _description = TextEditingController();
+  final _price = TextEditingController();
+  final _city = TextEditingController();
+  final _cityFocus = FocusNode();
+  // Exact position chosen on the map (optional, VST-42).
+  LatLng? _location;
+  final _bedrooms = TextEditingController();
+  final _bathrooms = TextEditingController();
+  final _area = TextEditingController();
+  final _phone = TextEditingController();
+  final _guests = TextEditingController();
+  final _photoService = PhotoService();
+
+  String _listingType = 'sale';
+  String? _rentPeriod;
+  String _propertyType = 'apartment';
+  bool _whatsapp = false;
+  final List<String> _photos = []; // base64 strings, index 0 = cover
+  final Set<String> _amenities = {};
+  final Set<String> _houseRules = {};
+  TimeOfDay? _checkIn;
+  TimeOfDay? _checkOut;
+  String? _photoMessage;
+  bool _rentPeriodMissing = false;
+  bool _loadingEdit = false;
+  bool _editNotFound = false;
+  bool _editLoadFailed = false;
+  bool _hadContact = false;
+
+  bool get _isEditing => widget.listingId != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_isEditing) {
+      _loadingEdit = true;
+      unawaited(_loadListingForEdit());
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final c in [
+      _title,
+      _description,
+      _price,
+      _city,
+      _bedrooms,
+      _bathrooms,
+      _area,
+      _phone,
+      _guests,
+    ]) {
+      c.dispose();
+    }
+    _cityFocus.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadListingForEdit() async {
+    final id = widget.listingId!;
+    final repository = ref.read(listingRepositoryProvider);
+    try {
+      final listing = await repository.getListing(id);
+      if (listing == null) {
+        if (mounted) {
+          setState(() {
+            _loadingEdit = false;
+            _editNotFound = true;
+          });
+        }
+        return;
+      }
+
+      final photos = await repository.getPhotos(id);
+      final contact = await repository.getContact(id);
+      if (!mounted) return;
+
+      _title.text = listing.title;
+      _description.text = listing.description;
+      _price.text = _numText(listing.price);
+      _city.text = listing.city;
+      _bedrooms.text = _numText(listing.bedrooms);
+      _bathrooms.text = _numText(listing.bathrooms);
+      _area.text = _numText(listing.areaSqm);
+      _guests.text = _numText(listing.maxGuests);
+      _phone.text = contact?.phone.replaceFirst('+216', '') ?? '';
+      _whatsapp = contact?.whatsapp ?? false;
+      _hadContact = contact != null;
+      _listingType = listing.listingType;
+      _rentPeriod = listing.rentPeriod;
+      if (propertyTypes.contains(listing.propertyType)) {
+        _propertyType = listing.propertyType;
+      }
+      _location = listing.hasLocation
+          ? LatLng(listing.latitude!, listing.longitude!)
+          : null;
+      _amenities.addAll(listing.amenities);
+      _houseRules.addAll(listing.houseRules);
+      _checkIn = _parseTime(listing.checkIn);
+      _checkOut = _parseTime(listing.checkOut);
+      _photos.addAll(photos);
+      setState(() => _loadingEdit = false);
+    } on ListingFailure {
+      if (!mounted) return;
+      setState(() {
+        _loadingEdit = false;
+        _editLoadFailed = true;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _loadingEdit = false;
+        _editLoadFailed = true;
+      });
+    }
+  }
+
+  String _numText(num? value) {
+    if (value == null) return '';
+    return value == value.roundToDouble()
+        ? value.toInt().toString()
+        : value.toString();
+  }
+
+  TimeOfDay? _parseTime(String? value) {
+    if (value == null) return null;
+    final parts = value.split(':');
+    if (parts.length != 2) return null;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null ||
+        minute == null ||
+        hour < 0 ||
+        hour > 23 ||
+        minute < 0 ||
+        minute > 59) {
+      return null;
+    }
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  // ---- translation of error enums (no text in the logic files) ----
+  String _fieldError(AppLocalizations l, ListingFieldError e) {
+    switch (e) {
+      case ListingFieldError.titleRequired:
+        return l.listingErrorTitleRequired;
+      case ListingFieldError.descriptionRequired:
+        return l.listingErrorDescriptionRequired;
+      case ListingFieldError.priceInvalid:
+        return l.listingErrorPriceInvalid;
+      case ListingFieldError.cityRequired:
+        return l.listingErrorCityRequired;
+      case ListingFieldError.rentPeriodRequired:
+        return l.listingErrorRentPeriodRequired;
+      case ListingFieldError.numberInvalid:
+        return l.listingErrorNumberInvalid;
+      case ListingFieldError.guestsInvalid:
+        return l.listingErrorGuestsInvalid;
+      case ListingFieldError.roomsInvalid:
+        return l.listingErrorRoomsInvalid;
+    }
+  }
+
+  String _listingError(AppLocalizations l, ListingError e) {
+    switch (e) {
+      case ListingError.notSignedIn:
+        return l.listingErrorNotSignedIn;
+      case ListingError.noPhotos:
+        return l.listingErrorNoPhotos;
+      case ListingError.tooManyPhotos:
+        return l.listingErrorTooManyPhotos;
+      case ListingError.noNetwork:
+        return l.listingErrorNoNetwork;
+      case ListingError.permissionDenied:
+        return l.listingErrorPermissionDenied;
+      case ListingError.unknown:
+        return l.listingErrorUnknown;
+    }
+  }
+
+  String _photoError(AppLocalizations l, PhotoError e) {
+    switch (e) {
+      case PhotoError.tooManyPhotos:
+        return l.listingErrorTooManyPhotos;
+      case PhotoError.tooLarge:
+        return l.photoErrorTooLarge;
+      case PhotoError.readFailed:
+        return l.photoErrorReadFailed;
+    }
+  }
+
+  String _propertyLabel(AppLocalizations l, String type) {
+    switch (type) {
+      case 'apartment':
+        return l.propertyApartment;
+      case 'house':
+        return l.propertyHouse;
+      case 'villa':
+        return l.propertyVilla;
+      case 'studio':
+        return l.propertyStudio;
+      case 'riad':
+        return l.propertyRiad;
+      default:
+        return l.propertyGuestHouse;
+    }
+  }
+
+  String _periodLabel(AppLocalizations l, String period) {
+    switch (period) {
+      case 'night':
+        return l.publishPeriodNight;
+      case 'month':
+        return l.publishPeriodMonth;
+      default:
+        return l.publishPeriodYear;
+    }
+  }
+
+  // ---- time: shown with the device format, stored as HH:mm ----
+  String _hhmm(TimeOfDay t) =>
+      '${t.hour.toString().padLeft(2, '0')}:'
+      '${t.minute.toString().padLeft(2, '0')}';
+
+  Future<void> _pickTime({required bool checkIn}) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime:
+          (checkIn ? _checkIn : _checkOut) ??
+          TimeOfDay(hour: checkIn ? 14 : 11, minute: 0),
+    );
+    if (picked == null || !mounted) return;
+    setState(() {
+      if (checkIn) {
+        _checkIn = picked;
+      } else {
+        _checkOut = picked;
+      }
+    });
+  }
+
+  // ---- photos ----
+  /// Gallery: several photos at once. Camera: one photo.
+  /// A photo already in the list is not added twice.
+  Future<void> _addPhoto(ImageSource source) async {
+    final l = AppLocalizations.of(context);
+    try {
+      final remaining = maxListingPhotos - _photos.length;
+      final List<String> picked;
+      if (source == ImageSource.gallery) {
+        picked = await _photoService.pickPhotos(remaining: remaining);
+      } else {
+        final one = await _photoService.pickPhoto(
+          source: source,
+          currentCount: _photos.length,
+          maxPhotos: maxListingPhotos,
+        );
+        picked = [?one];
+      }
+      if (picked.isEmpty || !mounted) return;
+      final added = addUniquePhotos(_photos, picked, max: maxListingPhotos);
+      setState(() {
+        _photos
+          ..clear()
+          ..addAll(added.photos);
+        _photoMessage = added.duplicates
+            ? l.publishPhotosDuplicates
+            : added.overLimit
+            ? l.listingErrorTooManyPhotos
+            : null;
+      });
+    } on PhotoFailure catch (e) {
+      if (!mounted) return;
+      setState(() => _photoMessage = _photoError(l, e.error));
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _photoMessage = l.photoErrorReadFailed);
+    }
+  }
+
+  // ---- submit ----
+  num? _optional(TextEditingController c) {
+    final text = c.text.trim();
+    return text.isEmpty ? null : num.tryParse(text);
+  }
+
+  Future<void> _submit() async {
+    final l = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+
+    final formOk = _formKey.currentState!.validate();
+    final periodMissing = validateRentPeriod(_listingType, _rentPeriod) != null;
+    setState(() {
+      _rentPeriodMissing = periodMissing;
+      if (_photos.isEmpty) _photoMessage = l.listingErrorNoPhotos;
+    });
+    if (!formOk || periodMissing || _photos.isEmpty) return;
+
+    final listing = NewListing(
+      title: _title.text.trim(),
+      description: _description.text.trim(),
+      price: num.parse(_price.text.trim()),
+      listingType: _listingType,
+      rentPeriod: _listingType == 'rent' ? _rentPeriod : null,
+      propertyType: _propertyType,
+      city: _city.text.trim(),
+      bedrooms: _optional(_bedrooms),
+      bathrooms: _optional(_bathrooms),
+      areaSqm: _optional(_area),
+      contactPhone: normalizeTunisianPhone(_phone.text),
+      whatsappEnabled: _whatsapp,
+      maxGuests: _optional(_guests),
+      // Keep the order of amenityKeys / houseRuleKeys, whatever the taps.
+      amenities: [
+        for (final k in amenityKeys)
+          if (_amenities.contains(k)) k,
+      ],
+      checkIn: _checkIn == null ? null : _hhmm(_checkIn!),
+      checkOut: _checkOut == null ? null : _hhmm(_checkOut!),
+      houseRules: [
+        for (final k in houseRuleKeys)
+          if (_houseRules.contains(k)) k,
+      ],
+      latitude: _location == null ? null : _round6(_location!.latitude),
+      longitude: _location == null ? null : _round6(_location!.longitude),
+    );
+
+    final controller = ref.read(listingControllerProvider.notifier);
+    final ok = _isEditing
+        ? await controller.update(
+            listingId: widget.listingId!,
+            listing: listing,
+            photosBase64: List.of(_photos),
+            // Rewrite all photos so gaps in legacy photo ids cannot lose one.
+            originalPhotos: const [],
+          )
+        : await controller.publish(
+            listing: listing,
+            photosBase64: List.of(_photos),
+          );
+    if (!mounted) return;
+
+    if (ok) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(_isEditing ? l.publishEditSuccess : l.publishSuccess),
+        ),
+      );
+      if (_isEditing) {
+        ref.invalidate(listingDetailProvider(widget.listingId!));
+        ref.invalidate(listingCoverPhotoProvider(widget.listingId!));
+      }
+      controller.reset();
+      context.pop();
+    }
+  }
+
+  /// Rounds to 6 decimals (about 10 cm): enough, and a clean number.
+  double _round6(double v) => (v * 1e6).roundToDouble() / 1e6;
+
+  /// City with suggestions: the owner types and picks a Tunisian city or town
+  /// (Latin or Arabic spelling). Typing something else is still allowed.
+  Widget _cityField(AppLocalizations l) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    return RawAutocomplete<TunisiaPlace>(
+      textEditingController: _city,
+      focusNode: _cityFocus,
+      displayStringForOption: (place) => place.name,
+      optionsBuilder: (value) => searchPlaces(value.text),
+      onSelected: (_) => setState(() {}),
+      fieldViewBuilder: (context, controller, focusNode, onSubmitted) {
+        return TextFormField(
+          controller: controller,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: l.publishFieldCity,
+            helperText: l.publishCityHelper,
+            suffixIcon: const Icon(Icons.search),
+          ),
+          onChanged: (_) => setState(() {}),
+          validator: (v) {
+            final e = validateCity(v);
+            return e == null ? null : _fieldError(l, e);
+          },
+        );
+      },
+      optionsViewBuilder: (context, onSelected, options) {
+        return Align(
+          alignment: AlignmentDirectional.topStart,
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(8),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 240,
+                maxWidth: MediaQuery.sizeOf(context).width - 32,
+              ),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  for (final place in options)
+                    ListTile(
+                      dense: true,
+                      leading: const Icon(Icons.place_outlined),
+                      title: Text(isArabic ? place.nameAr : place.name),
+                      subtitle: Text(isArabic ? place.name : place.nameAr),
+                      onTap: () => onSelected(place),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickLocation() async {
+    final picked = await Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        builder: (_) => LocationPickerScreen(
+          initialPoint: _location,
+          cityCenter: placeByName(_city.text)?.point,
+        ),
+      ),
+    );
+    if (picked != null && mounted) setState(() => _location = picked);
+  }
+
+  /// Button to place the exact position on the map, and its state.
+  Widget _locationTile(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final location = _location;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        OutlinedButton.icon(
+          onPressed: _pickLocation,
+          icon: const Icon(Icons.pin_drop_outlined),
+          label: Text(
+            location == null ? l.publishLocationSet : l.publishLocationChange,
+          ),
+        ),
+        const SizedBox(height: 4),
+        if (location == null)
+          Text(l.publishLocationHint, style: theme.textTheme.bodySmall)
+        else
+          Row(
+            children: [
+              const Icon(
+                Icons.check_circle,
+                size: 18,
+                color: AppColors.primary,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  l.publishLocationSaved,
+                  style: theme.textTheme.bodySmall,
+                ),
+              ),
+              TextButton(
+                onPressed: () => setState(() => _location = null),
+                child: Text(l.publishLocationRemove),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _timeTile({
+    required String label,
+    required TimeOfDay? value,
+    required String emptyLabel,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: OutlinedButton.icon(
+        onPressed: onTap,
+        icon: const Icon(Icons.schedule),
+        label: Text(
+          '$label: ${value == null ? emptyLabel : value.format(context)}',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final state = ref.watch(listingControllerProvider);
+    final loading = state.isLoading;
+    final title = _isEditing ? l.publishEditTitle : l.publishTitle;
+
+    String? fieldValidator(
+      String? v,
+      ListingFieldError? Function(String?) check,
+    ) {
+      final e = check(v);
+      return e == null ? null : _fieldError(l, e);
+    }
+
+    if (_loadingEdit) {
+      return Scaffold(
+        appBar: AppTopBar(title: title),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (_editNotFound) {
+      return Scaffold(
+        appBar: AppTopBar(title: title),
+        body: Center(child: Text(l.listingDetailNotFound)),
+      );
+    }
+    if (_editLoadFailed) {
+      return Scaffold(
+        appBar: AppTopBar(title: title),
+        body: Center(child: Text(l.publishEditLoadFailed)),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppTopBar(title: title),
+      body: AbsorbPointer(
+        absorbing: loading,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              TextFormField(
+                controller: _title,
+                decoration: InputDecoration(labelText: l.publishFieldTitle),
+                validator: (v) => fieldValidator(v, validateTitle),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _description,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  labelText: l.publishFieldDescription,
+                ),
+                validator: (v) => fieldValidator(v, validateDescription),
+              ),
+              const SizedBox(height: 12),
+              SegmentedButton<String>(
+                segments: [
+                  ButtonSegment(value: 'sale', label: Text(l.publishTypeSale)),
+                  ButtonSegment(value: 'rent', label: Text(l.publishTypeRent)),
+                ],
+                selected: {_listingType},
+                onSelectionChanged: _isEditing
+                    ? null
+                    : (s) => setState(() {
+                        _listingType = s.first;
+                        if (_listingType == 'sale') _rentPeriod = null;
+                        _rentPeriodMissing = false;
+                      }),
+              ),
+              if (_isEditing)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    l.publishEditOfferLocked,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              if (_listingType == 'rent') ...[
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  initialValue: _rentPeriod,
+                  decoration: InputDecoration(
+                    labelText: l.publishRentPeriod,
+                    errorText: _rentPeriodMissing
+                        ? l.listingErrorRentPeriodRequired
+                        : null,
+                  ),
+                  items: [
+                    for (final p in rentPeriods)
+                      DropdownMenuItem(
+                        value: p,
+                        child: Text(_periodLabel(l, p)),
+                      ),
+                  ],
+                  onChanged: _isEditing
+                      ? null
+                      : (v) => setState(() {
+                          _rentPeriod = v;
+                          _rentPeriodMissing = false;
+                        }),
+                ),
+              ],
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _price,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: InputDecoration(labelText: l.publishFieldPrice),
+                validator: (v) => fieldValidator(v, validatePrice),
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                initialValue: _propertyType,
+                decoration: InputDecoration(labelText: l.publishPropertyType),
+                items: [
+                  for (final t in propertyTypes)
+                    DropdownMenuItem(
+                      value: t,
+                      child: Text(_propertyLabel(l, t)),
+                    ),
+                ],
+                onChanged: (v) =>
+                    setState(() => _propertyType = v ?? _propertyType),
+              ),
+              const SizedBox(height: 12),
+              _cityField(l),
+              const SizedBox(height: 12),
+              _locationTile(l),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _phone,
+                keyboardType: TextInputType.phone,
+                textDirection: TextDirection.ltr,
+                decoration: InputDecoration(
+                  labelText: l.publishFieldPhone,
+                  prefixText: '+216 ',
+                ),
+                validator: (v) =>
+                    (_isEditing && !_hadContact && (v ?? '').trim().isEmpty) ||
+                        isValidTunisianPhone(v ?? '')
+                    ? null
+                    : l.listingErrorPhoneInvalid,
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(l.publishWhatsapp),
+                value: _whatsapp,
+                onChanged: (v) => setState(() => _whatsapp = v),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _guests,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l.publishFieldGuests),
+                validator: (v) => fieldValidator(v, validateGuests),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _bedrooms,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l.publishFieldBedrooms),
+                validator: (v) => fieldValidator(v, validateRooms),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _bathrooms,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l.publishFieldBathrooms),
+                validator: (v) => fieldValidator(v, validateRooms),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _area,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: InputDecoration(labelText: l.publishFieldArea),
+                validator: (v) => fieldValidator(v, validateOptionalNumber),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l.publishAmenitiesTitle,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  Text(l.publishAmenitiesCounter(_amenities.length)),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final key in amenityKeys)
+                    FilterTag(
+                      label: amenityLabel(l, key),
+                      selected: _amenities.contains(key),
+                      onTap: () => setState(() {
+                        if (!_amenities.remove(key)) _amenities.add(key);
+                      }),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  _timeTile(
+                    label: l.publishCheckIn,
+                    value: _checkIn,
+                    emptyLabel: l.publishTimeNotSet,
+                    onTap: () => _pickTime(checkIn: true),
+                  ),
+                  const SizedBox(width: 12),
+                  _timeTile(
+                    label: l.publishCheckOut,
+                    value: _checkOut,
+                    emptyLabel: l.publishTimeNotSet,
+                    onTap: () => _pickTime(checkIn: false),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(l.publishRulesTitle, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final key in houseRuleKeys)
+                    FilterTag(
+                      label: houseRuleLabel(l, key),
+                      selected: _houseRules.contains(key),
+                      onTap: () => setState(() {
+                        if (!_houseRules.remove(key)) _houseRules.add(key);
+                      }),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                '${l.publishPhotosTitle}  ${_photos.length}/$maxListingPhotos',
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () => _addPhoto(ImageSource.gallery),
+                    icon: const Icon(Icons.photo_library_outlined),
+                    label: Text(l.publishAddFromGallery),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: () => _addPhoto(ImageSource.camera),
+                    icon: const Icon(Icons.photo_camera_outlined),
+                    label: Text(l.publishAddFromCamera),
+                  ),
+                ],
+              ),
+              if (_photoMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    _photoMessage!,
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+                ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 96,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _photos.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 8),
+                  itemBuilder: (context, i) => Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.memory(
+                          base64Decode(_photos[i]),
+                          width: 96,
+                          height: 96,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      PositionedDirectional(
+                        top: 0,
+                        end: 0,
+                        child: IconButton(
+                          tooltip: l.publishRemovePhoto,
+                          iconSize: 18,
+                          color: AppColors.white,
+                          style: IconButton.styleFrom(
+                            backgroundColor: AppColors.navy.withValues(
+                              alpha: 0.6,
+                            ),
+                          ),
+                          icon: const Icon(Icons.close),
+                          onPressed: () => setState(() {
+                            _photos.removeAt(i);
+                            _photoMessage = null;
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (state.error != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    _listingError(l, state.error!),
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+                ),
+              const SizedBox(height: 24),
+              PrimaryButton(
+                label: _isEditing ? l.publishEditSubmit : l.publishSubmit,
+                loading: loading,
+                onPressed: _submit,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,46 @@
+%% C4 niveau 3 : composants Annonces et Favoris de l'application Flutter (VST-28)
+%% Règle : Écran -> Contrôleur -> Dépôt -> Firebase. Un écran ne parle jamais à Firebase directement.
+flowchart TB
+  subgraph APP["Application Flutter Vesta : modules Annonces et Favoris"]
+    direction TB
+    PublishScreen["<b>PublishListingScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire de création d'une annonce avec photos"]
+    ListScreen["<b>ListingsScreen</b><br/>[Composant : écran Flutter]<br/>Liste les annonces avec photo et prix"]
+    DetailScreen["<b>ListingDetailScreen</b><br/>[Composant : écran Flutter]<br/>Affiche une annonce, ses photos et un bouton favori"]
+    FavScreen["<b>FavoritesScreen</b><br/>[Composant : écran Flutter]<br/>Liste les annonces favorites"]
+    Shared["<b>Outils partagés</b><br/>[Composant : outil partagé]<br/>formatPrice (TND) et la couche de traduction (en, fr, ar), utilisés par chaque écran"]
+
+    Photo["<b>PhotoService</b><br/>[Composant : outil côté téléphone]<br/>Choisit une photo, la réduit à environ 800 px de large, JPEG de moins de 200 Ko, 10 photos au maximum"]
+    ListC["<b>ListingController</b><br/>[Composant : contrôleur Riverpod]<br/>Gère la publication, charge les annonces, états de chargement et d'erreur"]
+    FavC["<b>FavoritesController</b><br/>[Composant : contrôleur Riverpod]<br/>Ajoute, retire et charge les favoris"]
+
+    ListR["<b>ListingRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit et écrit les annonces et leurs photos (une seule écriture groupée)"]
+    FavR["<b>FavoritesRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit et écrit la collection favorites"]
+  end
+
+  FStore["<b>Firestore</b><br/>[Système externe, offre gratuite Firebase]<br/>listings<br/>listings/{id}/photos (base64, pas Firebase Storage)<br/>favorites"]
+
+  Legend["<b>Légende</b><br/>Boîte bleue : [Composant : ...] partie de l'application Flutter<br/>Boîte beige : [Système externe] que nous ne construisons pas<br/>Flèche : qui appelle qui"]
+
+  PublishScreen -->|"choisir et compresser les photos"| Photo
+  PublishScreen -->|"publier l'annonce"| ListC
+  ListScreen -->|"charger les annonces"| ListC
+  DetailScreen -->|"charger une annonce"| ListC
+  DetailScreen -->|"ajouter ou retirer un favori"| FavC
+  FavScreen -->|"charger et retirer les favoris"| FavC
+
+  ListC -->|"lire et écrire annonces et photos"| ListR
+  FavC -->|"charger les annonces favorites"| ListR
+  FavC -->|"lire et écrire les favoris"| FavR
+
+  ListR -->|"Firestore SDK"| FStore
+  FavR -->|"Firestore SDK"| FStore
+
+  FStore ~~~ Legend
+
+  classDef component fill:#e8e8fb,stroke:#5b5bd6,stroke-width:1.5px,color:#1c1c4a;
+  classDef external fill:#f1eee8,stroke:#8a8578,stroke-width:1.5px,color:#2a2a2a;
+  classDef legend fill:#ffffff,stroke:#999999,stroke-width:1px,color:#333333;
+  class ListScreen,DetailScreen,PublishScreen,FavScreen,Photo,ListC,FavC,ListR,FavR,Shared component;
+  class FStore external;
+  class Legend legend;
+  style APP fill:#ffffff,stroke:#5b5bd6,stroke-width:1.5px,stroke-dasharray:6 4;

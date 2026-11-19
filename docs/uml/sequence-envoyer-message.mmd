@@ -1,0 +1,20 @@
+%% Diagramme de séquence : envoi d'un message dans le chat
+sequenceDiagram
+  autonumber
+  actor A as Acheteur
+  participant S as ChatScreen
+  participant C as ChatController
+  participant R as ChatRepository
+  participant F as Firestore
+  actor O as Propriétaire
+  A->>S: Écrit un message (2000 caractères au maximum) et appuie sur Envoyer
+  S->>C: send(texte)
+  C->>R: sendMessage(conversationId, texte)
+  R->>F: Écriture groupée (batch)
+  Note over R,F: 1. Crée le message<br/>2. Met à jour lastMessage et lastMessageAt<br/>3. Ajoute +1 à unread du propriétaire<br/>Le premier message crée aussi la conversation {listingId}_{buyerId}.
+  F-->>R: Succès
+  F-->>R: Écoute en temps réel (listener Firestore), côté propriétaire
+  R-->>O: Badge de messages non lus et centre de notifications (VST-99)
+  O->>R: Ouvre la conversation (ChatRepository)
+  R->>F: unread remis à 0
+  Note over A,O: Sans réseau, Firestore garde l'écriture en file et l'envoie au retour du réseau (message « pas de réseau » après 8 secondes).

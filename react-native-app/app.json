@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Vesta",
+    "slug": "vesta",
+    "version": "0.0.1",
+    "plugins": [
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Vesta uses your location to center the map on you."
+        }
+      ]
+    ]
+  }
+}

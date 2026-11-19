@@ -1,0 +1,25 @@
+%% C4 niveau 2 : conteneurs (VST-69). Pas de Firebase Storage (photos en base64 dans Firestore), pas de FCM dans le MVP, OpenStreetMap au lieu de Google Maps.
+flowchart TB
+  Buyer["<b>Acheteur / locataire / voyageur</b><br/>Peut naviguer en invité"]:::person
+  Owner["<b>Propriétaire / agent</b>"]:::person
+  subgraph APPS["Application mobile Vesta (deux versions)"]
+    direction LR
+    Flutter["<b>Application Flutter</b><br/>[Dart, Android, test interne sur Google Play]"]:::ours
+    RN["<b>Application React Native</b><br/>[TypeScript, démonstration académique]"]:::ours
+  end
+  subgraph FB["Firebase (back-end partagé)"]
+    direction LR
+    Auth["<b>Firebase Auth</b><br/>[Comptes et sessions]"]:::ext
+    Store["<b>Firestore</b><br/>[Annonces, photos en base64, favoris, messages]"]:::ext
+  end
+  OSM["<b>OpenStreetMap</b><br/>[Tuiles de la carte]"]:::ext
+  Buyer -->|"Cherche, enregistre, contacte"| APPS
+  Owner -->|"Publie des annonces"| APPS
+  APPS -->|"Authentifie les utilisateurs"| Auth
+  APPS -->|"Lit et écrit les données"| Store
+  APPS -->|"Charge les tuiles de la carte"| OSM
+  style APPS fill:#f7f7ff,stroke:#6a64d8,stroke-dasharray:5 4
+  style FB fill:#faf8f5,stroke:#8a8178,stroke-dasharray:5 4
+  classDef person fill:#e3f4ec,stroke:#2a9d6f,color:#14543b
+  classDef ours fill:#e8e8ff,stroke:#6a64d8,color:#2b2780
+  classDef ext fill:#f1ede8,stroke:#8a8178,color:#3b3630

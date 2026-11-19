@@ -1,0 +1,98 @@
+classDiagram
+  class AppUser {
+    +String uid
+    +String displayName
+    +String? photoBase64
+    +DateTime createdAt
+    +fromMap(Map map) AppUser
+    +toMap() Map
+  }
+  class UserContact {
+    +String email
+    +String? phone
+  }
+  class Listing {
+    +String id
+    +String ownerId
+    +String title
+    +String description
+    +num price
+    +String currency
+    +String? rentPeriod
+    +String listingType
+    +String propertyType
+    +String city
+    +double? latitude
+    +double? longitude
+    +int? bedrooms
+    +int? bathrooms
+    +num? areaSqm
+    +int photoCount
+    +DateTime createdAt
+    +DateTime updatedAt
+    +fromMap(Map map) Listing
+    +toMap() Map
+  }
+  class Photo {
+    +String id
+    +String base64
+    +DateTime createdAt
+  }
+  class Favorite {
+    +String userId
+    +String listingId
+    +DateTime createdAt
+  }
+  class Conversation {
+    +String id
+    +List~String~ participantIds
+    +String listingId
+    +String lastMessage
+    +DateTime lastMessageAt
+  }
+  class Message {
+    +String id
+    +String senderId
+    +String text
+    +DateTime createdAt
+  }
+  class UserRepository {
+    +getUser(String uid) AppUser
+    +saveUser(AppUser user)
+    +getContact(String uid) UserContact
+    +saveContact(String uid, UserContact contact)
+  }
+  class ListingRepository {
+    +createListing(Listing listing)
+    +getListings(filters) List~Listing~
+  }
+  class PhotoRepository {
+    +addPhoto(String listingId, Photo photo)
+    +deletePhoto(String listingId, String photoId)
+    +getPhotos(String listingId) List~Photo~
+  }
+  class FavoritesRepository {
+    +addFavorite(Favorite favorite)
+    +removeFavorite(String userId, String listingId)
+  }
+  class ConversationRepository {
+    +createConversation(Conversation conversation)
+    +watchConversations(String uid)
+  }
+  class MessageRepository {
+    +sendMessage(String conversationId, Message message)
+    +watchMessages(String conversationId)
+  }
+  UserRepository ..> AppUser
+  UserRepository ..> UserContact
+  ListingRepository ..> Listing
+  PhotoRepository ..> Photo
+  FavoritesRepository ..> Favorite
+  ConversationRepository ..> Conversation
+  MessageRepository ..> Message
+  AppUser "1" --> "1" UserContact : privé
+  AppUser "1" --> "*" Listing : possède
+  Listing "1" --> "0..10" Photo : a
+  AppUser "1" --> "*" Favorite : enregistre
+  Conversation "1" --> "*" Message : contient
+  note for PhotoRepository "Chaque ajout ou suppression est une écriture groupée avec la mise à jour de photoCount sur l'annonce"

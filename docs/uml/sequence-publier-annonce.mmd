@@ -1,0 +1,34 @@
+%% Diagramme de séquence : publication d'une annonce avec photos et contact
+sequenceDiagram
+  autonumber
+  actor P as Propriétaire
+  participant S as PublishListingScreen
+  participant PH as PhotoService
+  participant C as ListingController
+  participant R as ListingRepository
+  participant F as Firestore
+  P->>S: Remplit le formulaire (titre, prix, ville, téléphone)
+  P->>S: Ajoute des photos (10 au maximum)
+  S->>PH: Choisir et compresser (environ 800 px, JPEG moins de 200 Ko)
+  PH-->>S: Photos en base64
+  P->>S: Appuie sur Publier
+  S->>C: publish(annonce, photos)
+  C->>C: Valide les champs (prix supérieur à 0, 1 photo au moins, téléphone +216)
+  alt Champ invalide
+    C-->>S: Erreur de champ
+    S-->>P: Message à côté du champ, rien n'est enregistré
+  else Annonce valide
+    C->>R: createListing(annonce, photos)
+    R->>F: Écriture groupée (batch) : annonce, photos p0 à p9, contact/info
+    Note over R,F: Une seule écriture atomique. Les règles vérifient ownerId, le prix, les types et le téléphone.
+    alt Règles acceptées
+      F-->>R: Succès
+      R-->>C: Identifiant de l'annonce
+      C-->>S: Publié
+      S-->>P: L'annonce apparaît dans la liste et dans Mes annonces
+    else Refusé (règles ou réseau)
+      F-->>R: Erreur
+      R-->>C: Échec
+      S-->>P: Message d'erreur, rien n'est enregistré
+    end
+  end

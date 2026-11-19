@@ -1,0 +1,20 @@
+%% Flux de travail Git et contrôles automatiques
+flowchart LR
+  T["Ticket Jira<br/>VST-NN"] --> B["Branche<br/>feature/VST-NN-nom"]
+  B --> PR["Pull request<br/>vers develop"]
+  PR --> CI{"GitHub Actions<br/>4 contrôles"}
+  CI --> C1["flutter analyze"]
+  CI --> C2["flutter test"]
+  CI --> C3["check-colors"]
+  CI --> C4["vérification des traductions"]
+  C1 --> OK{"Tout est vert ?"}
+  C2 --> OK
+  C3 --> OK
+  C4 --> OK
+  OK -- "non" --> B
+  OK -- "oui" --> R["Relecture par une autre personne<br/>(approbation)"]
+  R --> M["Fusion dans develop<br/>par la cheffe de groupe"]
+  M --> MAIN["Fusion develop → main<br/>en fin de sprint"]
+  MAIN --> PLAY["Build signé (AAB)<br/>Google Play"]
+  classDef ok fill:#e3f4ec,stroke:#2a9d6f,color:#14543b
+  class M,MAIN,PLAY ok

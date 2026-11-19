@@ -1,0 +1,66 @@
+%% C4 niveau 3 : composants Recherche, Carte et Chat de l'application Flutter (VST-29)
+%% Règle : Écran -> Contrôleur -> Dépôt -> Firebase. Un écran ne parle jamais à Firebase directement.
+flowchart TB
+  OSM["<b>OpenStreetMap</b><br/>[Système externe]<br/>Tuiles de la carte"]
+
+  subgraph APP["Application Flutter Vesta : modules Recherche, Carte et Chat"]
+    direction TB
+    subgraph MAPM["Carte"]
+      direction TB
+      MapScreen["<b>MapScreen</b><br/>[Composant : écran Flutter]<br/>Carte avec les annonces, affiche © contributeurs OpenStreetMap"]
+      MapC["<b>MapController</b><br/>[Composant : contrôleur Riverpod]<br/>Charge les annonces avec coordonnées et la position de l'utilisateur"]
+      Location["<b>LocationService</b><br/>[Composant : service côté téléphone]<br/>Demande la permission GPS et obtient la position"]
+    end
+    subgraph SEARCHM["Recherche"]
+      direction TB
+      SearchScreen["<b>SearchScreen</b><br/>[Composant : écran Flutter]<br/>Champ de recherche et liste des résultats"]
+      Filters["<b>SearchFilters</b><br/>[Composant : widget Flutter]<br/>Fourchette de prix, lieu, type de bien, vente ou location"]
+      SearchC["<b>SearchFiltersController</b><br/>[Composant : contrôleur Riverpod]<br/>Garde les filtres et charge les résultats"]
+    end
+    subgraph CHATM["Chat"]
+      direction TB
+      ChatListScreen["<b>ChatListScreen</b><br/>[Composant : écran Flutter]<br/>Liste mes conversations"]
+      ChatScreen["<b>ChatScreen</b><br/>[Composant : écran Flutter]<br/>Messages d'une conversation"]
+      ChatC["<b>ChatController</b><br/>[Composant : contrôleur Riverpod]<br/>Charge les conversations et les messages, envoie un message"]
+      ChatR["<b>ChatRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit et écrit conversations et messages, écoute Firestore en temps réel"]
+      Notif["<b>NotificationsScreen</b><br/>[Composant : écran Flutter]<br/>Centre de notifications (VST-99) : les conversations avec des messages non lus, et le badge de la barre du haut"]
+    end
+    ListR["<b>ListingRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit la collection listings (recherche et carte)"]
+    Shared["<b>Outils partagés</b><br/>[Composant : outil partagé]<br/>formatPrice (TND), configuration (centre de la carte : Tunis) et couche de traduction (en, fr, ar)"]
+  end
+
+  GPS["<b>GPS du téléphone</b><br/>[Système externe]<br/>Position et permission"]
+  FStore["<b>Firestore</b><br/>[Système externe, offre gratuite Firebase]<br/>listings<br/>conversations<br/>conversations/{id}/messages"]
+
+  Legend["<b>Légende</b><br/>Boîte bleue : [Composant : ...] partie de l'application Flutter<br/>Boîte beige : [Système externe] que nous ne construisons pas<br/>Flèche : qui appelle qui"]
+
+  MapScreen -->|"charger les tuiles"| OSM
+  MapScreen -->|"charger annonces et position"| MapC
+  MapC -->|"obtenir la position"| Location
+  SearchScreen -->|"afficher les filtres"| Filters
+  Filters -->|"définir les filtres"| SearchC
+  SearchScreen -->|"charger les résultats"| SearchC
+  ChatListScreen -->|"charger les conversations"| ChatC
+  ChatScreen -->|"charger et envoyer les messages"| ChatC
+
+  MapC -->|"lire les annonces avec coordonnées"| ListR
+  SearchC -->|"chercher des annonces"| ListR
+  ChatC -->|"lire et écrire le chat, écoute en temps réel"| ChatR
+  Notif -->|"charger les messages non lus"| ChatC
+
+  Location -->|"permission GPS et position"| GPS
+  ListR -->|"Firestore SDK"| FStore
+  ChatR -->|"Firestore SDK"| FStore
+
+  FStore ~~~ Legend
+
+  classDef component fill:#e8e8fb,stroke:#5b5bd6,stroke-width:1.5px,color:#1c1c4a;
+  classDef external fill:#f1eee8,stroke:#8a8578,stroke-width:1.5px,color:#2a2a2a;
+  classDef legend fill:#ffffff,stroke:#999999,stroke-width:1px,color:#333333;
+  class SearchScreen,MapScreen,ChatListScreen,ChatScreen,Shared,Filters,SearchC,MapC,ChatC,Location,ListR,ChatR,Notif component;
+  class OSM,GPS,FStore external;
+  class Legend legend;
+  style APP fill:#ffffff,stroke:#5b5bd6,stroke-width:1.5px,stroke-dasharray:6 4;
+  style MAPM fill:#fbfbff,stroke:#b9b9ea,stroke-dasharray:3 3;
+  style SEARCHM fill:#fbfbff,stroke:#b9b9ea,stroke-dasharray:3 3;
+  style CHATM fill:#fbfbff,stroke:#b9b9ea,stroke-dasharray:3 3;

@@ -1,0 +1,53 @@
+%% C4 niveau 3 : composants Auth et Profil de l'application Flutter (VST-27)
+%% Règle : Écran -> Contrôleur -> Dépôt -> Firebase. Un écran ne parle jamais à Firebase directement.
+flowchart TB
+  subgraph APP["Application Flutter Vesta : modules Auth et Profil"]
+    direction TB
+    Login["<b>LoginScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire e-mail et mot de passe"]
+    SignUp["<b>SignUpScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire nom, e-mail et mot de passe"]
+    Profile["<b>ProfileScreen</b><br/>[Composant : écran Flutter]<br/>Affiche le profil, le choix de la langue, la déconnexion"]
+    EditProfile["<b>EditProfileScreen</b><br/>[Composant : écran Flutter]<br/>Formulaire pour changer le nom, la photo et le téléphone"]
+
+    AuthC["<b>AuthController</b><br/>[Composant : contrôleur Riverpod]<br/>État de connexion, contrôle des champs, inscription, connexion, déconnexion"]
+    ProfileC["<b>ProfileController</b><br/>[Composant : contrôleur Riverpod]<br/>Charge et enregistre le profil, états de chargement et d'erreur"]
+
+    Photo["<b>PhotoService</b><br/>[Composant : outil côté téléphone]<br/>Choisit une photo, la réduit, JPEG de moins de 200 Ko (photoBase64)"]
+
+    AuthR["<b>AuthRepository</b><br/>[Composant : dépôt (repository)]<br/>Enveloppe Firebase Auth : inscription, connexion, déconnexion, session"]
+    UserR["<b>UserRepository</b><br/>[Composant : dépôt (repository)]<br/>Lit et écrit la collection users"]
+  end
+
+  subgraph FIREBASE["Firebase (back-end partagé)"]
+    direction LR
+    FAuth["<b>Firebase Auth</b><br/>[Système externe]<br/>Comptes et sessions"]
+    FStore["<b>Firestore</b><br/>[Système externe]<br/>users/{uid}<br/>users/{uid}/private/contact"]
+  end
+
+  Legend["<b>Légende</b><br/>Boîte bleue : [Composant : ...] partie de l'application Flutter<br/>Boîte beige : [Système externe] que nous ne construisons pas<br/>Flèche : qui appelle qui"]
+
+  Login -->|"connexion"| AuthC
+  SignUp -->|"inscription"| AuthC
+  Profile -->|"déconnexion"| AuthC
+  Profile -->|"charger le profil"| ProfileC
+  EditProfile -->|"enregistrer le profil"| ProfileC
+  EditProfile -->|"choisir et compresser la photo"| Photo
+
+  AuthC -->|"créer le profil après l'inscription"| UserR
+  AuthC -->|"inscription, connexion, déconnexion"| AuthR
+  ProfileC -->|"identifiant de l'utilisateur"| AuthR
+  ProfileC -->|"lire et modifier le profil"| UserR
+
+  AuthR -->|"Firebase Auth SDK"| FAuth
+  UserR -->|"Firestore SDK"| FStore
+
+  AuthR ~~~ UserR
+  FStore ~~~ Legend
+
+  classDef component fill:#e8e8fb,stroke:#5b5bd6,stroke-width:1.5px,color:#1c1c4a;
+  classDef external fill:#f1eee8,stroke:#8a8578,stroke-width:1.5px,color:#2a2a2a;
+  classDef legend fill:#ffffff,stroke:#999999,stroke-width:1px,color:#333333;
+  class Login,SignUp,Profile,EditProfile,Photo,AuthC,ProfileC,AuthR,UserR component;
+  class FAuth,FStore external;
+  class Legend legend;
+  style APP fill:#ffffff,stroke:#5b5bd6,stroke-width:1.5px,stroke-dasharray:6 4;
+  style FIREBASE fill:#ffffff,stroke:#8a8578,stroke-width:1.5px,stroke-dasharray:6 4;
