@@ -10,7 +10,7 @@ Présentation de 5 minutes sans notes, puis 2 questions de l'équipe. Chaque ré
 
 **3. Profil.** Le profil public est dans `users/{uid}` : nom et photo. Le nom est obligatoire. La photo est compressée (environ 200 px, moins de 100 Ko) et stockée en base64. Le profil montre aussi « Mes annonces » en direct, avec suppression et changement de statut.
 
-**4. Release.** L'application est en test fermé (Alpha), version 1.0.0. L'accès à la production est approuvé, mais la production est « Inactif » : rien n'est publié. La publication demande une release signée avec la clé d'upload, que Manar détient, puis l'examen de Google.
+**4. Release.** L'application est en test interne (build 1) et en test fermé Alpha (build 2). L'accès à la production est approuvé, mais la production est « Inactif » tant que le build 3 (1.0.0+3, signé avec la clé d'upload par Manar) n'est pas envoyé, ce qui est prévu le 19 novembre ; ensuite vient l'examen de Google, qui peut durer jusqu'à sept jours.
 
 ## Questions probables
 
@@ -43,9 +43,9 @@ Nos 15 annonces utilisent des informations et des photos réelles, avec l'accord
 
 ## Limites à dire nous-mêmes
 
-VST-128 est fusionnée (#126). Limite restante : l'e-mail stocké dans private/contact garde l'ancienne valeur après un changement d'e-mail.
+VST-128 est fusionnée (#126). Limite restante : l'e-mail stocké dans private/contact garde l'ancienne valeur après un changement d'e-mail, jusqu'à la prochaine sauvegarde du profil avec le téléphone.
 
 ## À confirmer avec Manar avant la démo
 
-- La version actuellement publiée en test fermé (1.0.0 ou 1.0.0+2) : mon doc de passation dit que 1.0.0+2 attend la clé d'upload.
+- Versions Google Play : build 1 (1.0.0) en test interne, build 2 (1.0.0+2) en test fermé, build 3 (1.0.0+3) signé et préparé pour la production.
 - Le texte du store (#107) et la décision de publier.

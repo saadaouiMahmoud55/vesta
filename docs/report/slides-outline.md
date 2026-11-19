@@ -21,7 +21,7 @@ Les trois offres viennent de deux champs existants, `listingType` et `rentPeriod
 
 ## 3. Deux applications, un seul back-end
 
-- **Flutter** : l'application complète, en test interne sur Google Play.
+- **Flutter** : l'application complète, sur Google Play (test interne et fermé ; envoi en production prévu le 19 novembre).
 - **React Native** : la version réduite, en démonstration académique.
 - **Firebase** : Authentication et Firestore (offre gratuite), plus OpenStreetMap pour la carte.
 
@@ -63,15 +63,15 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 ## 8. React Native : une version réduite, dont l'état est clair
 
 - **Fait :** inscription et connexion, recherche et filtres, liste et détails avec galerie de photos, formulaire de publication avec équipements, carte et géolocalisation, alertes et messages non lus.
-- **Fait aussi :** chat (#102 fusionné, testé par Eya sur un téléphone). **En revue :** Appeler / WhatsApp (#103), non fusionné.
+- **Fait aussi :** chat (#102) et boutons Appeler / WhatsApp dans le détail (#103), fusionnés et testés par Eya sur un Redmi.
 - **Pas fait :** favoris et profil (onglets vides), navigation en invité, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
 
-*Notes :* état de `develop` au 18 novembre. Le chat s'ouvre par le bouton « Messages » de l'accueil.
+*Notes :* état de `develop` au 19 novembre. Le chat s'ouvre par le bouton « Messages » de l'accueil.
 
 ## 9. Chaque changement est contrôlé avant de rejoindre develop
 
-- 166 tests Flutter réussis, analyse sans alerte.
-- 98 tests React Native réussis sur develop.
+- 174 tests Flutter réussis, analyse sans alerte.
+- 116 tests React Native réussis sur develop.
 - 60 cas de test manuels sur téléphone réel.
 - Règles Firestore testées avec l'émulateur ; contrôle des couleurs et des traductions à chaque pull request ; relecture avant la fusion.
 
@@ -79,14 +79,14 @@ Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, 
 
 ## 10. Sur Google Play, avec du contenu de démonstration
 
-- **Test interne :** version 1.0.0 disponible depuis le 22 octobre. Projet académique, pas de production. Fiche en trois langues.
+- **Test interne et test fermé :** version 1.0.0 disponible depuis le 22 octobre (build 1), build 2 en test fermé. **Production :** build 3 préparé, envoi pour examen le 19 novembre (jusqu'à sept jours de revue). Plan B pour la démo : lien du test fermé et application sur deux téléphones. Fiche en trois langues.
 - **15 annonces « Démo » réelles :** informations et photos réelles, avec l'accord oral des propriétaires (usage académique, notés dans `docs/content/sources.md`). Aucun accord écrit, pas de badge vérifié.
 
 *Notes :* dire clairement que l'accord est oral et que les propriétaires ont demandé à ne pas être nommés. Un lancement réel demanderait un accord écrit.
 
 ## 11. Ce qui manque, et ce que nous ferions ensuite
 
-- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes, numéro de contact lisible par un compte anonyme, contact React Native non fusionné, pas de bouton « contacter le propriétaire » dans le détail React Native, relecture native de l'arabe à finir.
+- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes, numéro de contact lisible par un compte anonyme, description sans minimum de 40 caractères (VST-137), relecture native de l'arabe à finir.
 - **Travaux futurs :** notifications push et Storage, règle de sécurité pour le contact, recherche côté serveur, réservations, avis, assistant IA, mode sombre.
 
 *Notes :* la plupart des limites viennent d'un seul choix, rester sur l'offre gratuite de Firebase. Détail dans `docs/report/limits-and-future-work.md`.
