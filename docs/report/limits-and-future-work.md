@@ -17,6 +17,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 - La recherche lit les 100 annonces les plus récentes et les filtre dans l'application (pas de filtres côté serveur, pas de pagination).
 - Une annonce masquée peut toujours être ouverte par son lien direct.
+- **Description (VST-137) :** les deux applications vérifient seulement que la description n'est pas vide ; le minimum de 40 caractères du plan de test (cas LST-05) n'est pas appliqué, et le cas reste en échec côté React Native. Travail futur.
 - En mode modification, le propriétaire ne peut pas changer le type d'offre (vente ou location) ni la période de location, car les statuts autorisés en dépendent.
 
 **Langue**
@@ -28,13 +29,13 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 - La suppression d'un compte conserve les messages du chat pour l'autre personne.
 - Le numéro de téléphone du propriétaire (`listings/{id}/contact/info`) est lisible avec la règle `signedIn()` : un compte Firebase anonyme compte comme connecté et peut donc le lire. La règle `notAnonymous()` (PR #44, fermée, jamais fusionnée) n'est pas dans `develop`.
-- Le signalement et le blocage d'utilisateurs, ainsi que la page de confidentialité, n'ont pas été terminés (voir le handover d'Eya).
+- Le signalement et le blocage d'utilisateurs ne sont pas faits. La politique de confidentialité et la page de suppression de compte existent (`docs/privacy-policy.html`, `docs/delete-account.html`) ; le bouton de suppression dans l'application n'est pas encore là, la suppression se demande par e-mail.
 - La clé API Android n'a actuellement aucune restriction d'application (« Aucune »), pour que la démo et les tests sur téléphone ne soient pas bloqués. La restriction par nom de package et SHA-1 est décrite dans `firebase/README.md` et sera remise après les tests : chaque clé de signature (debug, upload, Google Play) aura alors sa propre ligne, et un changement prend environ 5 minutes.
 - L'application n'a pas de Cloud Functions (offre gratuite) : la suppression de compte et le nettoyage s'exécutent depuis l'application.
 
 **Application React Native**
 
-- C'est un MVP réduit de l'application Flutter : connexion, recherche et filtres, liste et détails des annonces avec galerie de photos, formulaire de publication (équipements, règles, horaires), carte, alertes de messages et badge de messages non lus. Le chat React Native (VST-45, PR #102) est fusionné mais n'a pas été testé sur deux téléphones (avec l'application Flutter). Les boutons de contact (VST-80, PR #103) sont dans une PR ouverte, non fusionnée. Les onglets Favoris et Profil sont encore des écrans vides, et la navigation en invité, Mes annonces, la suppression du compte, l'onboarding et les paramètres ne sont pas faits. Pas d'assistant IA, de réservations ni d'avis.
+- C'est un MVP réduit de l'application Flutter : connexion, recherche et filtres, liste et détails des annonces avec galerie de photos, formulaire de publication (équipements, règles, horaires), carte, alertes de messages et badge de messages non lus. Le chat React Native (VST-45, PR #102) est fusionné mais n'a pas été testé sur deux téléphones (avec l'application Flutter). Les boutons de contact Appeler et WhatsApp (VST-80, PR #103) sont fusionnés et testés par Eya sur un Redmi (Expo Go) ; leur bouton « Se connecter » ne fait rien, car l'écran de détails n'est accessible que connecté. Les onglets Favoris et Profil sont encore des écrans vides, et la navigation en invité, Mes annonces, la suppression du compte, l'onboarding et les paramètres ne sont pas faits. Pas d'assistant IA, de réservations ni d'avis.
 
 **Contenu**
 
@@ -57,5 +58,5 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - **Changer le type d'offre d'une annonce existante** (vente, location ou séjour). Les statuts autorisés dépendent du type d'offre : un changement demande aussi une réinitialisation du statut et une modification des règles.
 - **Statut des annonces, partie 2** (VST-136) : rubans de couleur pour réservé, loué et vendu sur la page de détails, statut « masqué » visible seulement par le propriétaire (règle Firestore et tests de l'émulateur), et nombre de favoris sur chaque carte de « Mes annonces ». La partie 1 est fusionnée et testée sur téléphone.
 - **Protéger le numéro de contact des comptes anonymes** : règle `notAnonymous()` dans une PR séparée, avec tests des règles ; les règles sont déployées par Manar.
-- **E-mail du profil** (VST-128) : le nom, la photo, le téléphone et l'e-mail sont modifiables. Mais l'e-mail dans `users/{uid}/private/contact` garde l'ancienne valeur après la confirmation du changement ; il faut le synchroniser.
+- **E-mail du profil** (VST-128) : le nom, la photo, le téléphone et l'e-mail sont modifiables. Mais l'e-mail dans `users/{uid}/private/contact` garde l'ancienne valeur après la confirmation du changement, jusqu'à la prochaine sauvegarde du profil avec le téléphone ; il faut le synchroniser dès le changement.
 - **Plus de tests sur téléphones réels**, avec différents appareils et versions d'Android.
