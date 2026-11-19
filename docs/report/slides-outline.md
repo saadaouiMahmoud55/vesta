@@ -21,7 +21,7 @@ Les trois offres viennent de deux champs existants, `listingType` et `rentPeriod
 
 ## 3. Deux applications, un seul back-end
 
-- **Flutter** : l'application complète, sur Google Play (test interne et fermé ; envoi en production prévu le 19 novembre).
+- **Flutter** : l'application complète, sur Google Play (test interne et fermé ; production envoyée pour examen le 19 novembre).
 - **React Native** : la version réduite, en démonstration académique.
 - **Firebase** : Authentication et Firestore (offre gratuite), plus OpenStreetMap pour la carte.
 
@@ -79,7 +79,7 @@ Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, 
 
 ## 10. Sur Google Play, avec du contenu de démonstration
 
-- **Test interne et test fermé :** version 1.0.0 disponible depuis le 22 octobre (build 1), build 2 en test fermé. **Production :** build 3 préparé, envoi pour examen le 19 novembre (jusqu'à sept jours de revue). Plan B pour la démo : lien du test fermé et application sur deux téléphones. Fiche en trois langues.
+- **Test interne et test fermé :** version 1.0.0 disponible depuis le 22 octobre (build 1), build 2 en test fermé. **Production :** build 3 (1.0.0+3) envoyé pour examen le 19 novembre, statut « en cours d'examen » (jusqu'à sept jours de revue). Plan B pour la démo : lien du test fermé et application sur deux téléphones. Fiche en trois langues.
 - **15 annonces « Démo » réelles :** informations et photos réelles, avec l'accord oral des propriétaires (usage académique, notés dans `docs/content/sources.md`). Aucun accord écrit, pas de badge vérifié.
 
 *Notes :* dire clairement que l'accord est oral et que les propriétaires ont demandé à ne pas être nommés. Un lancement réel demanderait un accord écrit.

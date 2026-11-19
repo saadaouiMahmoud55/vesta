@@ -37,8 +37,8 @@
 
 - **Test interne** : actif, version 1.0.0 (code de version 1), sortie le 22 oct.
 - **Test fermé** (canal Alpha) : actif, version 1.0.0+2 (code de version 2), déjà envoyée le 3 nov.
-- **Production** : inactive à ce jour, aucune release publiée. L'accès à la production est approuvé ; l'envoi du build 3 pour examen est prévu le 19 nov. 2026.
-- Pour la production, la version 1.0.0+3 est définie dans pubspec.yaml sur develop (commit a17b46e). Le bundle (.aab) a été construit et signé avec la clé d’upload par Manar le 19 nov. et envoyé à Mahmoud ; il reste l’envoi dans la Play Console, puis l’examen de Google.
+- **Production** : le build 3 (1.0.0+3) a été envoyé pour examen le 19 nov. 2026 (Tunisie, Publication gérée désactivée). Statut : « Modifications en cours d'examen ». Rien n'est publié tant que Google n'a pas approuvé.
+- Pour la production, la version 1.0.0+3 est définie dans pubspec.yaml sur develop (commit a17b46e). Le bundle (.aab) a été construit et signé avec la clé d’upload par Manar le 19 nov., puis envoyé en production par Mahmoud ; il reste l’examen de Google.
 
 ## Comment tester
 
