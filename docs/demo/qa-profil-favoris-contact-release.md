@@ -10,7 +10,7 @@ Présentation de 5 minutes sans notes, puis 2 questions de l'équipe. Chaque ré
 
 **3. Profil.** Le profil public est dans `users/{uid}` : nom et photo. Le nom est obligatoire. La photo est compressée (environ 200 px, moins de 100 Ko) et stockée en base64. Le profil montre aussi « Mes annonces » en direct, avec suppression et changement de statut.
 
-**4. Release.** L'application est en test fermé (Alpha), version 1.0.0. L'accès à la production est approuvé, mais la production est « Inactif » : rien n'est publié. La publication demande une release signée avec la clé d'upload, que Manar détient, puis l'examen de Google.
+**4. Release.** L'application est en test interne (build 1) et en test fermé Alpha (build 2). L'accès à la production est approuvé, mais la production est « Inactif » tant que le build 3 (1.0.0+3, signé avec la clé d'upload par Manar) n'est pas envoyé, ce qui est prévu le 19 novembre ; ensuite vient l'examen de Google, qui peut durer jusqu'à sept jours.
 
 ## Questions probables
 

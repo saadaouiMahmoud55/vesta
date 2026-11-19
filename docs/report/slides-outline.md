@@ -21,7 +21,7 @@ Les trois offres viennent de deux champs existants, `listingType` et `rentPeriod
 
 ## 3. Deux applications, un seul back-end
 
-- **Flutter** : l'application complète, sur Google Play (test interne et fermé, production en cours).
+- **Flutter** : l'application complète, sur Google Play (test interne et fermé ; envoi en production prévu le 19 novembre).
 - **React Native** : la version réduite, en démonstration académique.
 - **Firebase** : Authentication et Firestore (offre gratuite), plus OpenStreetMap pour la carte.
 
