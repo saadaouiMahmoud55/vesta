@@ -38,7 +38,7 @@
 - **Test interne** : actif, version 1.0.0 (code de version 1), sortie le 22 oct.
 - **Test fermé** (canal Alpha) : actif, version 1.0.0+2 (code de version 2), déjà envoyée le 3 nov.
 - **Production** : inactive, aucune release, aucun pays ajouté. L'accès à la production est approuvé, mais rien n'est publié.
-- Pour la production, il faudra la version 1.0.0+3 (Manar prépare le changement du `pubspec.yaml`), signée avec la clé d'upload, puis l'examen de Google.
+- Pour la production, la version 1.0.0+3 est déjà définie dans pubspec.yaml sur develop (commit a17b46e). Il reste à la signer avec la clé d’upload (détenue par Manar), puis l’examen de Google.
 
 ## Comment tester
 
@@ -53,7 +53,7 @@
 
 - **Règle `notAnonymous` pas encore déployée** : dans `firestore.rules` de `develop`, `contact/info` utilise `signedIn()`. Un visiteur non connecté est bloqué (test automatisé), mais un compte Firebase **anonyme** compte comme connecté et peut lire le numéro. La règle `notAnonymous()` a été écrite et testée sur une ancienne branche (PR #44), jamais mergée. Elle reste à reporter dans `develop` (les règles sont déployées par Manar).
 - **Preuve que le numéro est protégé** : la règle est `allow read: if signedIn();` sur `listings/{id}/contact/info` (`firestore.rules`, ligne 160). Le test `assertFails(getDoc(contactRef(anon())))` dans `rules.test.js` (ligne 568) prouve qu'un visiteur sans compte ne peut pas le lire. L'application ne connecte jamais personne en anonyme, donc le risque ne vient que d'un appel direct à Firebase par un compte anonyme créé hors de l'application.
-- **E-mail dans `private/contact`** : après un changement d'e-mail (VST-128), l'e-mail stocké dans `private/contact` garde l'ancienne valeur.
+- **E-mail dans `private/contact`** : après un changement d’e-mail (VST-128), l’e-mail stocké dans private/contact garde l’ancienne valeur, jusqu’à la prochaine sauvegarde du profil (qui le réécrit avec l’e-mail actuel de Firebase Auth).
 - Pas de téléphone Android réel utilisé pour mes tests : validés sur Chrome, et sur la tablette de Manar.
 - Clé d'upload Google Play détenue par Manar : je ne peux pas signer un nouveau build seul.
 
