@@ -1,6 +1,6 @@
 # Vesta : plan des diapositives de la soutenance (VST-68)
 
-Plan texte des 13 diapositives, avec les notes de l'orateur. Les diapositives elles-mêmes sont dans l'artefact « Vesta : soutenance finale » ; ce fichier garde le contenu dans le dépôt, pour le modifier ou l'exporter. Durée visée : 10 minutes. État de `develop` au 17 novembre ; avant la soutenance, mettre à jour la diapositive 8 si une pull request React Native est fusionnée.
+Plan texte des 13 diapositives, avec les notes de l'orateur. Les diapositives elles-mêmes sont dans l'artefact « Vesta : soutenance finale » ; ce fichier garde le contenu dans le dépôt, pour le modifier ou l'exporter. Durée visée : 10 minutes. État de `develop` au 19 novembre (#103 fusionnée, production Google Play publiée).
 
 ## 1. Couverture
 
@@ -21,7 +21,7 @@ Les trois offres viennent de deux champs existants, `listingType` et `rentPeriod
 
 ## 3. Deux applications, un seul back-end
 
-- **Flutter** : l'application complète, sur Google Play (test interne et fermé ; production envoyée pour examen le 19 novembre).
+- **Flutter** : l'application complète, sur Google Play (test interne et fermé, puis production publiée le 19 novembre).
 - **React Native** : la version réduite, en démonstration académique.
 - **Firebase** : Authentication et Firestore (offre gratuite), plus OpenStreetMap pour la carte.
 
@@ -79,7 +79,7 @@ Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, 
 
 ## 10. Sur Google Play, avec du contenu de démonstration
 
-- **Test interne et test fermé :** version 1.0.0 disponible depuis le 22 octobre (build 1), build 2 en test fermé. **Production :** build 3 (1.0.0+3) envoyé pour examen le 19 novembre, statut « en cours d'examen » (jusqu'à sept jours de revue). Plan B pour la démo : lien du test fermé et application sur deux téléphones. Fiche en trois langues.
+- **Test interne et test fermé :** version 1.0.0 disponible depuis le 22 octobre (build 1), build 2 en test fermé. **Production :** build 3 (1.0.0+3) publié le 19 novembre 2026, disponible sur Google Play. Plan B pour la démo : lien du test fermé et application sur deux téléphones. Fiche en trois langues.
 - **15 annonces « Démo » réelles :** informations et photos réelles, avec l'accord oral des propriétaires (usage académique, notés dans `docs/content/sources.md`). Aucun accord écrit, pas de badge vérifié.
 
 *Notes :* dire clairement que l'accord est oral et que les propriétaires ont demandé à ne pas être nommés. Un lancement réel demanderait un accord écrit.
