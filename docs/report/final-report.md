@@ -20,7 +20,7 @@ Remise : 24 novembre 2026
 10. Annexe D : glossaire
 11. Annexe E : webographie
 
-Rapport final (VST-57), état de `develop` au 18 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
+Rapport final (VST-57), état de `develop` au 19 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
 
 Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (sur Google Play : test interne, test fermé, puis production publiée le 19 novembre) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
 
@@ -28,7 +28,7 @@ Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tu
 
 Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h (envoi de la version finale à 23 h). L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
 
-- **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est préparée pour la production).
+- **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est publiée le 19 novembre).
 - **React Native** (Expo) est une version réduite, présentée en démonstration académique.
 - **Firebase** (Authentication et Firestore, offre gratuite) sert aux deux applications.
 
