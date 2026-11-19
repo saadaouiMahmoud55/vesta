@@ -20,15 +20,15 @@ Remise : 24 novembre 2026
 10. Annexe D : glossaire
 11. Annexe E : webographie
 
-Rapport final (VST-57), état de `develop` au 18 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
+Rapport final (VST-57), état de `develop` au 19 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
 
-Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (sur Google Play : test interne et test fermé ; production envoyée pour examen le 19 novembre) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
+Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (sur Google Play : test interne, test fermé, puis production publiée le 19 novembre) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
 
 ## 1. Contexte, objectifs et équipe
 
 Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h (envoi de la version finale à 23 h). L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
 
-- **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est préparée pour la production).
+- **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est publiée le 19 novembre).
 - **React Native** (Expo) est une version réduite, présentée en démonstration académique.
 - **Firebase** (Authentication et Firestore, offre gratuite) sert aux deux applications.
 
@@ -97,7 +97,7 @@ Chaque changement passe par une pull request vers `develop`, relue avant d'être
 
 Les tests sur téléphone ont trouvé de vrais défauts, corrigés avant le gel : un prix absurde accepté par le formulaire et par les règles (VST-104), la réinitialisation des filtres de recherche (VST-124), l'icône « œil » du mot de passe (#118).
 
-**Google Play.** La version 1.0.0 (build 1) est disponible en test interne depuis le 22 octobre, et le build 2 en test fermé (Alpha) depuis le 3 novembre (publiés par Mahmoud depuis un compte développeur). Le build 3 (1.0.0+3, signé avec la clé d'envoi) a été envoyé pour examen en production le 19 novembre (Tunisie, politique de confidentialité, page de suppression de compte, section « Sécurité des données » alignée sur le code, compte relecteur). Son statut est « Modifications en cours d'examen » ; l'examen de Google peut durer jusqu'à sept jours. Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. Tant que Google n'a pas approuvé la production, la démonstration s'appuie sur le lien du test fermé et sur l'application installée sur deux téléphones.
+**Google Play.** La version 1.0.0 (build 1) est disponible en test interne depuis le 22 octobre, et le build 2 en test fermé (Alpha) depuis le 3 novembre (publiés par Mahmoud depuis un compte développeur). Le build 3 (1.0.0+3, signé avec la clé d'envoi) a été envoyé en production et publié le 19 novembre 2026 (Tunisie, politique de confidentialité, page de suppression de compte, section « Sécurité des données » alignée sur le code, compte relecteur). La fiche Google Play est disponible avec le bouton Installer. Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. La démonstration s'appuie sur l'application installée sur deux téléphones ; le lien du test fermé reste le plan B.
 
 **Contenu.** Les 15 annonces visibles (5 séjours, 7 locations, 3 ventes) sont marquées « Démo » dans le titre et n'ont pas de badge « vérifié ». Elles utilisent des informations et des photos réelles, avec l'accord oral par téléphone des propriétaires, pour un usage académique seulement ; ils ont demandé à ne pas être nommés. Eya a recueilli ces accords par téléphone et ils sont notés dans `docs/content/sources.md`. Nous n'avons aucun accord écrit : un lancement réel demanderait l'accord écrit de chaque propriétaire.
 
