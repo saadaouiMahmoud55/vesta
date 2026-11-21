@@ -74,7 +74,7 @@ L'application Flutter couvre l'ensemble du MVP. L'application React Native est v
 | Carte et géolocalisation | Fait | Fait |
 | Chat entre acheteur et propriétaire | Fait | Fait (#102 fusionnée le 18 novembre ; accès par un bouton « Messages » de l'accueil) |
 | Alertes de messages et badge de messages non lus | Fait | Fait |
-| Contact : Appeler et WhatsApp | Fait | Fait (#103 fusionnée, testé sur un Redmi) |
+| Contact : Appeler et WhatsApp | Fait | Fait (#103 fusionnée ; tests sur téléphone dans VST-59) |
 | Favoris | Fait | Écran écrit, onglet encore vide |
 | Profil : nom, photo, téléphone, e-mail | Fait | Non fait (onglet vide) |
 | Paramètres, choix de la langue, onboarding, centre de notifications | Fait | Langue par défaut seulement |
@@ -113,7 +113,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 - **Contact :** le numéro du propriétaire est lisible par tout compte connecté, y compris un compte Firebase anonyme. La règle qui l'interdit n'est pas fusionnée.
 - **Comptes :** la suppression d'un compte garde les messages du chat pour l'autre personne ; le signalement et le blocage ne sont pas faits ; il n'y a pas de Cloud Functions pour nettoyer côté serveur.
 - **Langues :** une relecture native de l'arabe et du français, et une vérification de la mise en page de droite à gauche sur plus d'appareils, n'ont pas été terminées. Les noms saisis par les utilisateurs ne sont pas translittérés.
-- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) et le contact (#103, boutons Appeler et WhatsApp dans le détail d'une annonce) sont fusionnés et ont été testés par Eya sur un téléphone Android Redmi avec Expo Go. Le bouton « Se connecter » du composant de contact ne fait rien, car l'écran de détails React Native n'est accessible que connecté. Les onglets Favoris et Profil sont vides.
+- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) et le contact (#103, boutons Appeler et WhatsApp dans le détail d'une annonce) sont fusionnés ; les résultats des tests sur téléphone sont dans le ticket VST-59 (tests finaux). Le bouton « Se connecter » du composant de contact ne fait rien, car l'écran de détails React Native n'est accessible que connecté. Les onglets Favoris et Profil sont vides.
 - **Contenu :** annonces réelles de démonstration, avec accord oral seulement (pas d'accord écrit).
 - **Validation de la description (VST-137) :** les deux applications vérifient seulement que la description n'est pas vide ; le minimum de 40 caractères écrit dans le plan de test (cas LST-05) n'est pas appliqué. Le cas reste en échec côté React Native. Travail futur.
 

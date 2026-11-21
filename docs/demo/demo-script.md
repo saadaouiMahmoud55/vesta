@@ -2,9 +2,11 @@
 
 Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonce, suppression et agrandissement de la photo de profil, chat et boutons de contact React Native), mis à jour le 21 nov. : la version 1.0.0 (3) est publiée sur Google Play. Toutes les pull requests de fonctionnalités sont fusionnées ; si on change quelque chose, vérifier l'étape correspondante avant la démo. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
 
-## Avant la démo (dimanche soir)
+## Avant la démo (lundi soir ; l'installation et la vérification des téléphones peuvent se faire dès dimanche)
 
 - Installer l'application **depuis Google Play** (version 1.0.0 (3)) sur le téléphone principal, avec un compte Google qui n'est pas celui du développeur, et vérifier que la connexion fonctionne. Sur le second téléphone, installer le même build depuis Google Play, ou l'APK debug construit depuis `develop` en secours. La clé API Android n'a volontairement aucune restriction d'application (décision du 21 nov.), donc tous les builds peuvent se connecter ; ne pas la restreindre avant la démo.
+- **Application React Native (Expo Go) :** elle n'est pas sur Google Play ; elle tourne depuis l'ordinateur. Récupérer le tag `v1.0.0-rc1` (`git checkout v1.0.0-rc1`), vérifier que la configuration Firebase locale est en place, lancer `npm install` puis `npx expo start` (avec `--tunnel` si le réseau est instable), et ouvrir le projet dans Expo Go sur le téléphone de démonstration. Faire une fois le parcours complet (connexion, recherche, détails, carte, chat, boutons Appeler et WhatsApp). L'application n'a pas de numéro de version propre (`0.0.1` dans `app.json`) : la citer comme « React Native, tag v1.0.0-rc1 ».
+- Plan B React Native : un enregistrement d'écran de 30 secondes du parcours, gardé sur le téléphone, si l'ordinateur ou le réseau ne marche pas le jour de la démo.
 - Plan B si la fiche Google Play ne s'ouvre pas : le lien du test fermé, l'APK sur deux téléphones et une capture de la Console (Production, 100 %).
 - Créer deux comptes de test : **Propriétaire** et **Client**. Le Propriétaire a 2 ou 3 annonces (une vente, une location, un séjour) avec de vraies photos et une position exacte.
 - Mettre un téléphone en arabe et l'autre en français, pour que le passage de droite à gauche soit visible.
