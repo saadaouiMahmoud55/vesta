@@ -26,7 +26,7 @@ Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tu
 
 ## 1. Contexte, objectifs et équipe
 
-Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h. Après le gel, seuls le numéro de version (#139) et des correctifs de traduction (#140) ont été fusionnés, jusqu'à minuit. L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
+Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h. Après le gel, seuls le numéro de version (#139), des traductions (#140 et deux commits de traduction) et de la documentation (#127, #133) ont été fusionnés, jusqu'à minuit. L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
 
 - **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est publiée le 19 novembre).
 - **React Native** (Expo) est une version réduite, présentée en démonstration académique.

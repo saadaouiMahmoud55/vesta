@@ -1,6 +1,6 @@
-# Script de démonstration Vesta (version finale, lun. 24 nov.)
+# Script de démonstration Vesta (version finale, mar. 24 nov. à 08:30)
 
-Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonce, suppression et agrandissement de la photo de profil, chat et boutons de contact React Native), mis à jour le 21 nov. : la version 1.0.0 (3) est publiée sur Google Play. Plus aucune pull request n'est ouverte ; si on change quelque chose, vérifier l'étape correspondante avant la démo. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
+Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonce, suppression et agrandissement de la photo de profil, chat et boutons de contact React Native), mis à jour le 21 nov. : la version 1.0.0 (3) est publiée sur Google Play. Toutes les pull requests de fonctionnalités sont fusionnées ; si on change quelque chose, vérifier l'étape correspondante avant la démo. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
 
 ## Avant la démo (dimanche soir)
 
