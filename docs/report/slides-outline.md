@@ -63,7 +63,7 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 ## 8. React Native : une version réduite, dont l'état est clair
 
 - **Fait :** inscription et connexion, recherche et filtres, liste et détails avec galerie de photos, formulaire de publication avec équipements, carte et géolocalisation, alertes et messages non lus.
-- **Fait aussi :** chat (#102) et boutons Appeler / WhatsApp dans le détail (#103), fusionnés et testés par Eya sur un Redmi.
+- **Fait aussi :** chat (#102) et boutons Appeler / WhatsApp dans le détail (#103), fusionnés ; résultats des tests sur téléphone dans VST-59.
 - **Pas fait :** favoris et profil (onglets vides), navigation en invité, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
 
 *Notes :* état de `develop` au 19 novembre. Le chat s'ouvre par le bouton « Messages » de l'accueil.

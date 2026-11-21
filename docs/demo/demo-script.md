@@ -2,7 +2,7 @@
 
 Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonce, suppression et agrandissement de la photo de profil, chat et boutons de contact React Native), mis à jour le 21 nov. : la version 1.0.0 (3) est publiée sur Google Play. Toutes les pull requests de fonctionnalités sont fusionnées ; si on change quelque chose, vérifier l'étape correspondante avant la démo. Les comptes de test et les personnes qui parlent sont des valeurs à compléter.
 
-## Avant la démo (dimanche soir)
+## Avant la démo (lundi soir ; l'installation et la vérification des téléphones peuvent se faire dès dimanche)
 
 - Installer l'application **depuis Google Play** (version 1.0.0 (3)) sur le téléphone principal, avec un compte Google qui n'est pas celui du développeur, et vérifier que la connexion fonctionne. Sur le second téléphone, installer le même build depuis Google Play, ou l'APK debug construit depuis `develop` en secours. La clé API Android n'a volontairement aucune restriction d'application (décision du 21 nov.), donc tous les builds peuvent se connecter ; ne pas la restreindre avant la démo.
 - Plan B si la fiche Google Play ne s'ouvre pas : le lien du test fermé, l'APK sur deux téléphones et une capture de la Console (Production, 100 %).
