@@ -57,3 +57,5 @@ The SHA-1 values are public fingerprints, not secrets, and are kept in the Cloud
 - A change takes about 5 minutes to apply.
 - Test after any change: sign in on the debug build and on the Play install.
 - If sign-in fails and the demo is close: set Application restrictions to None (instant), then fix the rows.
+
+**Decision (21 Nov 2026, VST-138):** the key stays on Application restrictions = None for the delivery. A missing SHA-1 row blocks sign-in for every user of that build, and a Firebase API key is not a secret: data is protected by Auth and the Firestore rules. Known risk: another app can use the key and consume the free quota. The 4-row restriction above is the future-work option.

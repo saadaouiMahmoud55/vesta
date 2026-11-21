@@ -26,7 +26,7 @@ Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tu
 
 ## 1. Contexte, objectifs et équipe
 
-Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h (envoi de la version finale à 23 h). L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
+Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h. Après le gel, seuls le numéro de version (#139) et des correctifs de traduction (#140) ont été fusionnés, jusqu'à minuit. L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
 
 - **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est publiée le 19 novembre).
 - **React Native** (Expo) est une version réduite, présentée en démonstration académique.
@@ -55,7 +55,7 @@ Les deux applications ont la même structure de modules (Auth, Recherche, Détai
 | Langues | Un fichier maître `docs/translations.csv` et un script qui génère les fichiers Flutter (.arb) et React Native (.ts) | Une seule source pour l'arabe tunisien (droite à gauche), le français et l'anglais, vérifiée par la CI. |
 | Design | Seules les couleurs du thème Figma (`AppColors`, `theme.ts`), contrôle automatique `check-colors` | Le même rendu dans les deux applications. |
 
-**Sécurité.** Les règles Firestore sont testées avec l'émulateur (`firebase/tests/`). Les annonces sont lisibles par tous, écrites seulement par leur propriétaire ; le badge « vérifié » ne peut pas être mis par un client ; les conversations ne sont lisibles que par leurs deux participants. Les clés API Firebase sont restreintes aux API nécessaires ; la restriction d'application de la clé Android est temporairement désactivée pour la démo et les tests (voir les limites) et sera remise après les tests. Les fichiers de configuration privés ne sont jamais dans Git.
+**Sécurité.** Les règles Firestore sont testées avec l'émulateur (`firebase/tests/`). Les annonces sont lisibles par tous, écrites seulement par leur propriétaire ; le badge « vérifié » ne peut pas être mis par un client ; les conversations ne sont lisibles que par leurs deux participants. Les clés API Firebase sont restreintes aux API nécessaires ; la restriction d'application de la clé Android est volontairement désactivée (voir les limites). Les fichiers de configuration privés ne sont jamais dans Git.
 
 ## 3. État des fonctionnalités au 18 novembre
 
@@ -142,7 +142,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 **Difficultés rencontrées et ce que nous en avons retenu**
 
 - **L'offre gratuite de Firebase** nous a obligés à inventer des contournements (photos en base64, alertes locales). Nous avons noté chaque contournement comme une limite, pas comme une réussite.
-- **La clé API Android restreinte** (sécurité) a bloqué la connexion sur une version signée avec une clé non listée : l'application affichait une erreur générique. Chaque clé de signature, y compris celle de Google Play, a besoin de sa ligne dans la restriction. Pour la démo et les tests, la restriction d'application est actuellement sur « Aucune » ; elle sera remise après les tests.
+- **La clé API Android restreinte** (sécurité) a bloqué la connexion sur une version signée avec une clé non listée : l'application affichait une erreur générique. Chaque clé de signature, y compris celle de Google Play, a besoin de sa ligne dans la restriction. Nous avons donc laissé la restriction d'application sur « Aucune » (décision du 21 novembre) : une clé Firebase n'est pas un secret et la protection des données repose sur l'authentification et les règles Firestore ; le risque restant est l'usage du quota par une autre application. La restriction reste un travail futur.
 - **Les traductions générées** créaient des conflits à chaque fusion. Le fichier maître et le script, avec une vérification en CI, ont réglé le problème.
 - **Expo Go** impose la version exacte du SDK : l'application React Native ne se lance que sur un téléphone avec la bonne version d'Expo Go.
 - **Le contenu réel** : sans accord écrit des propriétaires, nous avons choisi des annonces de démonstration plutôt que de publier de vraies annonces sans autorisation.
