@@ -44,7 +44,7 @@ What I built in Vesta, how to find it, how to test it, and what is still open. O
 - No server push: no Cloud Functions on the free plan. Alerts are in-app and local only.
 - The map and the search read only the 100 newest listings.
 - The map shows no price pins until a listing has `latitude` and `longitude`: the publish form has no location picker yet (VST-39, Ahmed).
-- The Android API key has no application restriction yet (it needs the Play App Signing SHA-1 from Mahmoud, see `firebase/README.md`). Apple and Google sign-in are not done (Apple needs a paid developer account).
+- The Android API key has no application restriction on purpose (decision of 21 Nov, VST-138: a missing SHA-1 row would block sign-in; see `firebase/README.md`). Apple and Google sign-in are not done (Apple needs a paid developer account).
 - Listings are in one `listings` collection with `listingType` (sale, rent) and `rentPeriod`. Splitting them into separate collections (sales, rentals) was suggested; it would change the rules, both apps and the data, so it is future work.
 - The Arabic text of the onboarding needs a native read.
 - React Native map (VST-43) not started: `react-native-maps` does not display in Expo Go on Android.

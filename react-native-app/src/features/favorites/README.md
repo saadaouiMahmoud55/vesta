@@ -4,4 +4,4 @@
 
 `FavoritesScreen` combines that listener with `useFavoriteListings()` to load the associated listing documents through `listingsRepository`. The repository reads each id separately so one hidden/deleted listing does not fail the whole list. Successful listing reads are cached for the lifetime of the screen; the selected category uses `categoryOf()` from `src/data/models/listingCategory.ts`.
 
-The authenticated main stack exposes Favorites from Home. Guest browsing is not yet available in the app root, so the signed-out state in `FavoritesScreen` is ready for when it is.
+`FavoritesScreen` is not mounted in the navigation yet: the Favorites tab in `MainTabs.tsx` is a placeholder screen (known limit, see the final report). The screen and its logic exist and are tested, ready to be mounted. Guest browsing is not yet available in the app root, so the signed-out state in `FavoritesScreen` is ready for when it is.
