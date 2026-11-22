@@ -86,7 +86,7 @@ Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, 
 
 ## 11. Ce qui manque, et ce que nous ferions ensuite
 
-- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes, numéro de contact lisible par un compte anonyme, description sans minimum de 40 caractères (VST-137), relecture native de l'arabe à finir.
+- **Limites :** photos en base64, recherche sur les 100 annonces les plus récentes (la recherche par ville ne relie pas l'arabe et le latin), numéro de contact lisible par un compte anonyme, description sans minimum de 40 caractères (VST-137), relecture native de l'arabe à finir.
 - **Travaux futurs :** notifications push et Storage, règle de sécurité pour le contact, recherche côté serveur, réservations, avis, assistant IA, mode sombre.
 
 *Notes :* la plupart des limites viennent d'un seul choix, rester sur l'offre gratuite de Firebase. Détail dans `docs/report/limits-and-future-work.md`.
