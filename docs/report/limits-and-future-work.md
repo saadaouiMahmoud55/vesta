@@ -15,7 +15,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 **Recherche et annonces**
 
-- La recherche lit les 100 annonces les plus récentes et les filtre dans l'application (pas de filtres côté serveur, pas de pagination).
+- La recherche lit les 100 annonces les plus récentes et les filtre dans l'application (pas de filtres côté serveur, pas de pagination). La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté le 22 novembre, non corrigé après le gel du code).
 - Une annonce masquée peut toujours être ouverte par son lien direct.
 - **Description (VST-137) :** les deux applications vérifient seulement que la description n'est pas vide ; le minimum de 40 caractères du plan de test (cas LST-05) n'est pas appliqué, et le cas reste en échec côté React Native. Travail futur.
 - En mode modification, le propriétaire ne peut pas changer le type d'offre (vente ou location) ni la période de location, car les statuts autorisés en dépendent.

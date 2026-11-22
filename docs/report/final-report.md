@@ -110,7 +110,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 **Limites connues**
 
 - **Photos :** stockées en base64 dans Firestore (10 par annonce, environ 800 px). Le choix de photos fonctionne sur téléphone, pas dans Chrome : Vesta cible Android.
-- **Recherche :** elle lit les 100 annonces les plus récentes et filtre dans l'application, sans pagination.
+- **Recherche :** elle lit les 100 annonces les plus récentes et filtre dans l'application, sans pagination. La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté le 22 novembre ; limite connue, non corrigée après le gel).
 - **Hors ligne :** une annonce publiée sans internet reste en attente et part plus tard ; la bannière hors ligne ne détecte pas la connexion.
 - **Contact :** le numéro du propriétaire est lisible par tout compte connecté, y compris un compte Firebase anonyme. La règle qui l'interdit n'est pas fusionnée.
 - **Comptes :** la suppression d'un compte garde les messages du chat pour l'autre personne ; le signalement et le blocage ne sont pas faits ; il n'y a pas de Cloud Functions pour nettoyer côté serveur.
