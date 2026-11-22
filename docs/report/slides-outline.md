@@ -63,7 +63,7 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 ## 8. React Native : une version réduite, dont l'état est clair
 
 - **Fait :** inscription et connexion, recherche et filtres, liste et détails avec galerie de photos, formulaire de publication avec équipements, carte et géolocalisation, alertes et messages non lus.
-- **Fait aussi :** chat (#102) et boutons Appeler / WhatsApp dans le détail (#103), fusionnés ; résultats des tests sur téléphone dans VST-59.
+- **Fait aussi :** chat (#102) et boutons Appeler / WhatsApp dans le détail (#103), fusionnés. Test du 22 novembre : le chat affiche les messages, mais la zone de saisie est masquée par la barre de navigation Android sur le Redmi testé (on ne peut pas répondre) ; Appeler et WhatsApp sans résultat sur téléphone réel pour l'instant (VST-59).
 - **Pas fait :** favoris et profil (onglets vides), navigation en invité, modifier et supprimer une annonce, suppression du compte, onboarding et paramètres.
 
 *Notes :* état de `develop` au 19 novembre. Le chat s'ouvre par le bouton « Messages » de l'accueil.
@@ -72,7 +72,7 @@ Coupé avant le gel du code : réservations, avis, assistant IA, tableau de bord
 
 - 174 tests Flutter réussis, analyse sans alerte.
 - 116 tests React Native réussis sur develop.
-- 60 cas de test manuels sur téléphone réel.
+- 60 cas de test manuels ; dernier passage le 22 novembre sur le build gelé (Redmi Note 12 Pro et tablette Galaxy Tab A11, Flutter 1.0.0+3 du Play Store) : cas de la démo réussis, sauf recherche par ville en arabe (VST-139) et réponse du chat React Native (X-04), mineurs.
 - Règles Firestore testées avec l'émulateur ; contrôle des couleurs et des traductions à chaque pull request ; relecture avant la fusion.
 
 Les tests sur téléphone ont trouvé un prix absurde accepté par les règles, des filtres qui se réinitialisaient et un œil de mot de passe faux.
