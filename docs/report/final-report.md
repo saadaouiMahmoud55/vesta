@@ -43,6 +43,16 @@ Vesta répond au sujet « Application mobile services immobilier » de M. Wahid 
 
 Les deux applications ont la même structure de modules (Auth, Recherche, Détails, Publier, Carte, Chat, Favoris, Profil, Notifications) et une seule couche de données devant Firebase. Aucun écran n'appelle Firebase directement : un écran appelle un contrôleur, le contrôleur appelle un dépôt (repository), le dépôt accède à Firestore. Le modèle C4 (niveaux 1 à 4) est dans `docs/c4/`.
 
+![Figure 1 : C4 niveau 1, contexte](../c4/level1-context.png)
+
+![Figure 2 : C4 niveau 2, conteneurs](../c4/level2-containers.png)
+
+![Figure 3 : architecture en couches](../uml/architecture-en-couches.png)
+
+![Figure 4 : modèle de données Firestore](../uml/modele-de-donnees.png)
+
+![Figure 5 : cas d'utilisation](../uml/cas-utilisation.png)
+
 | Choix | Décision | Raison |
 | --- | --- | --- |
 | Back-end | Firebase Authentication et Firestore, offre gratuite (Spark) | Un seul back-end pour les deux applications, sans carte bancaire. |
