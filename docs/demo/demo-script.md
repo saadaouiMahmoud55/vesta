@@ -9,7 +9,7 @@ Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonc
 - Plan B React Native : un enregistrement d'écran de 30 secondes du parcours, gardé sur le téléphone, si l'ordinateur ou le réseau ne marche pas le jour de la démo.
 - Plan B si la fiche Google Play ne s'ouvre pas : le lien du test fermé, l'APK sur deux téléphones et une capture de la Console (Production, 100 %).
 - Créer deux comptes de test : **Propriétaire** et **Client**. Le Propriétaire a 2 ou 3 annonces (une vente, une location, un séjour) avec de vraies photos et une position exacte.
-- Mettre un téléphone en arabe et l'autre en français, pour que le passage de droite à gauche soit visible.
+- Mettre un téléphone en arabe et l'autre en français, pour que le passage de droite à gauche soit visible. **Le téléphone Client, celui qui fait les recherches des étapes 1 et 3, reste en français** : la recherche par ville ne marche qu'en lettres latines (limite connue). Il ne passe en arabe qu'à l'étape 7.
 - Charger les téléphones, couper les notifications des autres applications, se connecter à un réseau stable. Garder un second réseau (partage de connexion) prêt.
 - Avoir l'application déjà déconnectée sur le téléphone Client, pour montrer d'abord la navigation en invité.
 - Fermer toutes les autres applications. Garder un enregistrement d'écran du parcours complet en secours.
@@ -17,11 +17,11 @@ Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonc
 
 ## Déroulé (environ 8 minutes)
 
-**1. Ouvrir et parcourir en invité (1 min).** Ouvrir l'application sans compte. L'écran Explorer affiche les annonces. Dire : *« On peut parcourir sans s'inscrire ; un compte n'est nécessaire que pour contacter, mettre en favori ou publier. »* Chercher une ville (essayer une orthographe arabe) et filtrer par type d'offre.
+**1. Ouvrir et parcourir en invité (1 min).** Ouvrir l'application sans compte. L'écran Explorer affiche les annonces. Dire : *« On peut parcourir sans s'inscrire ; un compte n'est nécessaire que pour contacter, mettre en favori ou publier. »* Chercher une ville **en lettres latines** (par exemple « Tozeur », application en français) et filtrer par type d'offre. Ne pas chercher en lettres arabes : la recherche ne fait pas le lien entre l'écriture arabe et latine (limite connue).
 
 **2. Détails d'une annonce (1 min).** Ouvrir une annonce. Montrer le prix et le badge d'offre (vente, location, séjour), les photos, les équipements, et la petite carte avec la position exacte et le bouton **Ouvrir dans Maps**. Appuyer sur **Contacter le propriétaire** : l'application demande à l'invité de se connecter. Se connecter avec le compte Client. Montrer ensuite les boutons **Appeler** et **WhatsApp** (WhatsApp seulement si le propriétaire l'a activé).
 
-**3. Carte (1 min).** Ouvrir l'onglet Carte. Toutes les annonces apparaissent en repères avec le prix ; appuyer sur un repère pour voir l'aperçu, appuyer sur l'aperçu pour ouvrir les détails. Chercher une ville tunisienne.
+**3. Carte (1 min).** Ouvrir l'onglet Carte. Toutes les annonces apparaissent en repères avec le prix ; appuyer sur un repère pour voir l'aperçu, appuyer sur l'aperçu pour ouvrir les détails. Chercher une ville tunisienne, en lettres latines, application en français.
 
 **4. Favoris et chat (1,5 min).** Mettre une annonce en favori, ouvrir Favoris, appuyer dessus : les détails s'ouvrent. Envoyer le premier message au propriétaire. Montrer le bandeau de l'annonce en haut du chat et le séparateur de date.
 
@@ -40,6 +40,7 @@ Les dire nous-mêmes avant que le jury ne les demande. La liste complète est da
 - Les photos sont stockées en texte compressé dans Firestore (pas de Storage payant) ; maximum 10 par annonce.
 - Pas d'alerte quand l'application est fermée (pas de push serveur, pas d'offre payante).
 - La recherche lit les 100 annonces les plus récentes et filtre dans l'application.
+- La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté pendant la répétition du 22 novembre).
 - Les noms saisis par les utilisateurs ne sont ni traduits ni translittérés.
 - La connexion Google et Apple est un travail futur ; les annonces ne sont pas encore séparées en collections par type.
 - Les annonces réelles ne sont publiées qu'avec l'accord écrit du propriétaire ; les autres sont indiquées comme contenu de démonstration.
@@ -61,3 +62,4 @@ Les dire nous-mêmes avant que le jury ne les demande. La liste complète est da
 6. **Comment avez-vous travaillé en équipe ?** Des sprints dans Jira, une branche et une pull request par ticket, une revue obligatoire, et une vérification verte (traductions, couleurs, analyse, tests) avant chaque fusion.
 7. **Pourquoi la clé API Android n'est-elle pas restreinte ?** Une restriction par package et SHA-1 bloque la connexion dès qu'une clé de signature manque (debug, upload, Google Play) ; nous l'avons vécu. Une clé Firebase n'est pas un secret : les données sont protégées par l'authentification et les règles Firestore, que nous testons avec l'émulateur. Risque connu : une autre application peut consommer le quota gratuit. La restriction est décrite dans `firebase/README.md` et reste un travail futur.
 8. **L'application est-elle publiée ?** Oui, la version 1.0.0 (3) est en production sur Google Play (Tunisie) depuis le 19 novembre ; les annonces visibles sont des annonces de démonstration.
+9. **La recherche marche-t-elle en arabe ?** Pas pour une ville écrite en lettres arabes : elle compare le texte tel qu'il est stocké dans l'annonce (ici en lettres latines, par exemple « Tozeur ») et ne fait pas le lien entre les deux écritures. C'est une limite connue, écrite dans le rapport, et un travail futur (recherche côté serveur et noms de villes dans les deux écritures). Ne pas la montrer sur scène.
