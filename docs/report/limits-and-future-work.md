@@ -15,7 +15,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 **Recherche et annonces**
 
-- La recherche lit les 100 annonces les plus récentes et les filtre dans l'application (pas de filtres côté serveur, pas de pagination). La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté le 22 novembre, non corrigé après le gel du code).
+- La recherche lit les 100 annonces les plus récentes et les filtre dans l'application (pas de filtres côté serveur, pas de pagination). La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté le 22 novembre, non corrigé après le gel du code ; ticket VST-139).
 - Une annonce masquée peut toujours être ouverte par son lien direct.
 - **Description (VST-137) :** les deux applications vérifient seulement que la description n'est pas vide ; le minimum de 40 caractères du plan de test (cas LST-05) n'est pas appliqué, et le cas reste en échec côté React Native. Travail futur.
 - En mode modification, le propriétaire ne peut pas changer le type d'offre (vente ou location) ni la période de location, car les statuts autorisés en dépendent.
@@ -35,7 +35,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 
 **Application React Native**
 
-- C'est un MVP réduit de l'application Flutter : connexion, recherche et filtres, liste et détails des annonces avec galerie de photos, formulaire de publication (équipements, règles, horaires), carte, alertes de messages et badge de messages non lus. Le chat React Native (VST-45, PR #102) est fusionné mais n'a pas été testé sur deux téléphones (avec l'application Flutter). Les boutons de contact Appeler et WhatsApp (VST-80, PR #103) sont fusionnés (les résultats des tests sur téléphone sont dans le ticket VST-59) ; leur bouton « Se connecter » ne fait rien, car l'écran de détails n'est accessible que connecté. Les onglets Favoris et Profil sont encore des écrans vides, et la navigation en invité, Mes annonces, la suppression du compte, l'onboarding et les paramètres ne sont pas faits. Pas d'assistant IA, de réservations ni d'avis.
+- C'est un MVP réduit de l'application Flutter : connexion, recherche et filtres, liste et détails des annonces avec galerie de photos, formulaire de publication (équipements, règles, horaires), carte, alertes de messages et badge de messages non lus. Le chat React Native (VST-45, PR #102) est fusionné. Test du 22 novembre (cas X-04, Redmi Note 12 Pro, Expo Go 57.0.9, tag `v1.0.0-rc1`) : il affiche les messages envoyés depuis Flutter, mais la zone de saisie et le bouton « Envoyer » sont masqués par la barre de navigation Android, donc on ne peut pas répondre depuis React Native (cas X-04, échec mineur, non corrigé après le gel ; en démonstration, seule la lecture des messages est montrée) ; l'onglet Favoris n'affiche que son titre, donc la partie favori du cas ne se vérifie pas. Les boutons de contact Appeler et WhatsApp (VST-80, PR #103) sont fusionnés et réussis dans Flutter ; dans React Native ils n'ont pas encore de résultat sur téléphone réel (résultat dans le ticket VST-59) ; leur bouton « Se connecter » ne fait rien, car l'écran de détails n'est accessible que connecté. Les onglets Favoris et Profil sont encore des écrans vides, et la navigation en invité, Mes annonces, la suppression du compte, l'onboarding et les paramètres ne sont pas faits. Pas d'assistant IA, de réservations ni d'avis.
 
 **Contenu**
 
@@ -51,6 +51,7 @@ Brouillon pour le rapport final (VST-57). Rédigé le 14 nov. 2026 à partir de 
 - **Détection hors ligne** avant la publication, avec un message clair.
 - **Demandes de réservation, avis et assistant IA**, dans les deux applications.
 - **Réservation Flutter** (VST-92) : une branche `feature/VST-92-flutter-booking`, non fusionnée, contient le calcul des nuits et du prix (avec tests), 17 textes en arabe, français et anglais, et l'écran de demande (sans Firestore). Il manque la structure de données (`bookings`, `blockedNights`), les règles Firestore avec leurs tests et leur déploiement.
+- **Réservation React Native** (VST-85) : prête sur la branche `feature/VST-85-rn-booking`, testée par Ahmed sur un Redmi Note 13 (demande, acceptation, refus, annulation, nuits bloquées, message automatique), non fusionnée. Elle demande d'abord le déploiement des règles `bookings` et `blockedNights`, prévu après la soutenance ; le croisement avec Flutter n'est pas testé, car Flutter n'a pas d'acceptation ni de refus.
 - **Signaler et bloquer des utilisateurs**, page de confidentialité et case des conditions à l'inscription.
 - **Prise en charge du web pour les photos** (ajouter le script `pica` et lire des octets au lieu d'un chemin de fichier).
 - **Relecture native de l'arabe** de tous les textes, alignée sur le glossaire tunisien.

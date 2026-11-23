@@ -31,7 +31,7 @@ Rédigé à partir de ce qui est fusionné dans `develop` (modification d'annonc
 
 **7. Profil, langue et sécurité (1 min).** Profil : modifier le nom et la photo, supprimer la photo, appuyer sur la photo pour la voir en grand. Paramètres : changer la langue entre arabe, français et anglais, et montrer que la mise en page passe de droite à gauche. Mentionner que le compte peut être supprimé depuis les Paramètres.
 
-**8. Application React Native (30 s).** Dire franchement que l'application React Native est une version réduite (connexion, recherche et filtres, détails et publication, carte, chat, boutons Appeler et WhatsApp ; favoris et profil encore vides), et que Flutter est l'application complète.
+**8. Application React Native (30 s).** Dire franchement que l'application React Native est une version réduite (connexion, recherche et filtres, détails et publication, carte, chat, boutons Appeler et WhatsApp ; favoris et profil encore vides), et que Flutter est l'application complète. **Ne pas répondre à un message depuis le chat React Native** : sur le Redmi testé le 22 novembre, la zone de saisie est masquée par la barre de navigation Android (cas X-04). Montrer seulement la liste des messages et la lecture d'un message reçu, et dire que c'est une limite connue.
 
 ## Ce que nous disons sur les limites
 
@@ -40,6 +40,7 @@ Les dire nous-mêmes avant que le jury ne les demande. La liste complète est da
 - Les photos sont stockées en texte compressé dans Firestore (pas de Storage payant) ; maximum 10 par annonce.
 - Pas d'alerte quand l'application est fermée (pas de push serveur, pas d'offre payante).
 - La recherche lit les 100 annonces les plus récentes et filtre dans l'application.
+- Chat React Native : la lecture marche, mais on ne peut pas répondre depuis le Redmi testé (zone de saisie masquée par la barre de navigation Android, cas X-04) ; limite connue, non corrigée après le gel.
 - La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté pendant la répétition du 22 novembre).
 - Les noms saisis par les utilisateurs ne sont ni traduits ni translittérés.
 - La connexion Google et Apple est un travail futur ; les annonces ne sont pas encore séparées en collections par type.
