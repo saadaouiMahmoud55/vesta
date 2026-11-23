@@ -16,7 +16,7 @@ Example: `feat(auth): add email login screen [VST-21]`
 1. Branch from `develop`, push, open a PR into `develop`.
 2. Fill in the PR template. Assign the **reviewer** named in the Jira ticket.
 3. No merge without 1 approval. No direct pushes to `main` or `develop`.
-4. Keep PRs small (one ticket). Squash-merge.
+4. Keep PRs small (one ticket). Merge on GitHub once approved.
 
 ## Definition of Done
 - PR reviewed and merged
@@ -24,7 +24,7 @@ Example: `feat(auth): add email login screen [VST-21]`
 - Jira ticket updated and moved to Done
 
 ## Running the app on a phone that has the Play Store version
-Debug builds use the app id `com.vesta.flutterapp.debug`, so `flutter run` installs next to the Play Store version (`com.vesta.flutterapp`) and does not remove it. Testers in the Google Play closed test must keep the Play version installed and never uninstall it before 11 Nov.
+Debug builds use the app id `com.vesta.flutterapp.debug`, so `flutter run` installs next to the Play Store version (`com.vesta.flutterapp`) and does not remove it. Do not uninstall the Play version on a tester's phone, and never install a locally signed release build over it (the signatures differ).
 
 ## Secrets
 Never commit `google-services.json`, `GoogleService-Info.plist`, `.env`, keystores or API keys. If one leaks, tell Manar immediately so the key can be rotated.

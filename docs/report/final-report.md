@@ -20,15 +20,15 @@ Remise : 24 novembre 2026
 10. Annexe D : glossaire
 11. Annexe E : webographie
 
-Rapport final (VST-57), état de `develop` au 18 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
+Rapport final (VST-57), état de `develop` au 19 novembre 2026. Équipe : Manar Degachi (cheffe de groupe), Eya Ben Belgacem, Ahmed Bouguerra, Mahmoud Saadaoui.
 
-Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (publiée en test interne sur Google Play) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
+Vesta est une application mobile pour acheter, louer, vendre et séjourner en Tunisie. Elle est construite deux fois, avec Flutter (sur Google Play : test interne, test fermé, puis production publiée le 19 novembre) et avec React Native (version réduite pour la démonstration), sur un seul back-end Firebase, en arabe tunisien, français et anglais.
 
 ## 1. Contexte, objectifs et équipe
 
-Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 18 h. L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
+Vesta répond au sujet « Application mobile services immobilier » de M. Wahid Hamdi (ISET Tozeur). Le rendu est fixé au 24 novembre 2026 à 08:30, avec un gel du code le 18 novembre à 22 h. Après le gel, seuls le numéro de version (#139), des traductions (#140 et deux commits de traduction) et de la documentation (#127, #133) ont été fusionnés, jusqu'à minuit. L'objectif : une application complète qui couvre trois offres (vente, location, séjour), construite avec deux technologies mobiles pour les comparer, sur un back-end commun.
 
-- **Flutter** est l'application de référence, publiée en test interne sur Google Play.
+- **Flutter** est l'application de référence, sur Google Play (test interne et test fermé ; la version 1.0.0 build 3 est publiée le 19 novembre).
 - **React Native** (Expo) est une version réduite, présentée en démonstration académique.
 - **Firebase** (Authentication et Firestore, offre gratuite) sert aux deux applications.
 
@@ -37,11 +37,21 @@ Vesta répond au sujet « Application mobile services immobilier » de M. Wahid 
 | Manar Degachi | Cheffe de groupe et relectrice. Projet Firebase et règles Firestore, modèle de données, squelette Flutter, thème et design system, chat, carte et géolocalisation (Flutter et React Native), onboarding, paramètres, sécurité des clés API, intégration des pull requests. |
 | Eya Ben Belgacem | Annonces Flutter : liste, détails, équipements, recherche et filtres, formulaire de publication, Mes annonces, suppression de compte. Recherche et alertes de messages React Native. Contenu de démonstration et revue des pull requests. |
 | Ahmed Bouguerra | Qualité et outils : plan de test, contrôle des couleurs, UI kit Flutter, pipeline de traductions, authentification, navigation et formulaire de publication React Native. |
-| Mahmoud Saadaoui | Favoris, profil, boutons Appeler et WhatsApp, tests des règles Firestore, build Android signé pour Google Play. Favoris React Native. Chat React Native (fusionné) et contact React Native (pull request encore ouverte). |
+| Mahmoud Saadaoui | Favoris, profil, boutons Appeler et WhatsApp, tests des règles Firestore, build Android signé pour Google Play. Favoris React Native. Chat React Native et contact React Native (Appeler et WhatsApp), tous deux fusionnés. |
 
 ## 2. Architecture et choix techniques
 
 Les deux applications ont la même structure de modules (Auth, Recherche, Détails, Publier, Carte, Chat, Favoris, Profil, Notifications) et une seule couche de données devant Firebase. Aucun écran n'appelle Firebase directement : un écran appelle un contrôleur, le contrôleur appelle un dépôt (repository), le dépôt accède à Firestore. Le modèle C4 (niveaux 1 à 4) est dans `docs/c4/`.
+
+![Figure 1 : C4 niveau 1, contexte](../c4/level1-context.png)
+
+![Figure 2 : C4 niveau 2, conteneurs](../c4/level2-containers.png)
+
+![Figure 3 : architecture en couches](../uml/architecture-en-couches.png)
+
+![Figure 4 : modèle de données Firestore](../uml/modele-de-donnees.png)
+
+![Figure 5 : cas d'utilisation](../uml/cas-utilisation.png)
 
 | Choix | Décision | Raison |
 | --- | --- | --- |
@@ -55,7 +65,7 @@ Les deux applications ont la même structure de modules (Auth, Recherche, Détai
 | Langues | Un fichier maître `docs/translations.csv` et un script qui génère les fichiers Flutter (.arb) et React Native (.ts) | Une seule source pour l'arabe tunisien (droite à gauche), le français et l'anglais, vérifiée par la CI. |
 | Design | Seules les couleurs du thème Figma (`AppColors`, `theme.ts`), contrôle automatique `check-colors` | Le même rendu dans les deux applications. |
 
-**Sécurité.** Les règles Firestore sont testées avec l'émulateur (`firebase/tests/`). Les annonces sont lisibles par tous, écrites seulement par leur propriétaire ; le badge « vérifié » ne peut pas être mis par un client ; les conversations ne sont lisibles que par leurs deux participants. Les clés API Firebase sont restreintes aux API nécessaires ; la restriction d'application de la clé Android est temporairement désactivée pour la démo et les tests (voir les limites) et sera remise après les tests. Les fichiers de configuration privés ne sont jamais dans Git.
+**Sécurité.** Les règles Firestore sont testées avec l'émulateur (`firebase/tests/`). Les annonces sont lisibles par tous, écrites seulement par leur propriétaire ; le badge « vérifié » ne peut pas être mis par un client ; les conversations ne sont lisibles que par leurs deux participants. Les clés API Firebase sont restreintes aux API nécessaires ; la restriction d'application de la clé Android est volontairement désactivée (voir les limites). Les fichiers de configuration privés ne sont jamais dans Git.
 
 ## 3. État des fonctionnalités au 18 novembre
 
@@ -72,9 +82,9 @@ L'application Flutter couvre l'ensemble du MVP. L'application React Native est v
 | Modifier et supprimer une annonce, Mes annonces | Fait | Non fait |
 | Statut d'une annonce (disponible, réservé, loué, vendu) | Fait (partie 1) | Non fait |
 | Carte et géolocalisation | Fait | Fait |
-| Chat entre acheteur et propriétaire | Fait | Fait (#102 fusionnée le 18 novembre ; accès par un bouton « Messages » de l'accueil) |
+| Chat entre acheteur et propriétaire | Fait (testé le 22 novembre sur deux appareils) | Lecture des messages fonctionne (#102 fusionnée ; bouton « Messages » de l'accueil) ; réponse impossible sur le Redmi testé : la zone de saisie est masquée par la barre de navigation Android (voir les limites) |
 | Alertes de messages et badge de messages non lus | Fait | Fait |
-| Contact : Appeler et WhatsApp | Fait | En revue (#103, non fusionnée) |
+| Contact : Appeler et WhatsApp | Fait (testé le 22 novembre) | Fait (#103 fusionnée) ; vérifié le 23 novembre sur le téléphone de Manar (Expo Go, projet mis à niveau en local vers le SDK 58, non commité) : Appeler et WhatsApp fonctionnent ; non rejoué sur le tag gelé en SDK 57 |
 | Favoris | Fait | Écran écrit, onglet encore vide |
 | Profil : nom, photo, téléphone, e-mail | Fait | Non fait (onglet vide) |
 | Paramètres, choix de la langue, onboarding, centre de notifications | Fait | Langue par défaut seulement |
@@ -89,17 +99,19 @@ Chaque changement passe par une pull request vers `develop`, relue avant d'être
 
 | Niveau de test | Résultat |
 | --- | --- |
-| Flutter, tests automatiques | 166 tests réussis le 16 novembre (widgets, contrôleurs, dépôts, localisation) |
-| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 98 tests réussis sur `develop` après les fusions du 18 novembre (#102, #131) |
+| Flutter, tests automatiques | 174 tests réussis sur `develop` le 18 novembre, `flutter analyze` sans alerte (widgets, contrôleurs, dépôts, localisation) |
+| React Native, tests automatiques | `tsc` et `eslint` sans erreur ; 116 tests réussis sur `develop` après les fusions du 18 et du 19 novembre (#102, #103, #131) |
 | Règles Firestore | Tests avec l'émulateur Firebase dans `firebase/tests/` (authentification et règles des annonces, photos, contact, conversations) |
-| Plan de test manuel | 60 cas communs aux deux applications, joués sur téléphone réel (`docs/test-plan.md`) ; la partie B est fusionnée (#117) : seuls les cas réellement testés sont en « Pass », les autres restent « Not tested » ; les résultats React Native (#127) sont en relecture |
-| Téléphones réels | Samsung de Manar, Redmi d'Eya et téléphones des autres membres, en arabe, français et anglais |
+| Plan de test manuel | 60 cas communs aux deux applications (`docs/test-plan.md`) ; seuls les cas réellement testés sont en « Pass », les autres restent « Not tested ». Dernier passage sur le build gelé `v1.0.0-rc1` (VST-59, 22 novembre) : voir le paragraphe ci-dessous |
+| Appareils du dernier passage | Xiaomi Redmi Note 12 Pro (Android 13) et tablette Samsung Galaxy Tab A11 (Android 16, une tablette et non un téléphone), avec Vesta Flutter 1.0.0+3 installée depuis Google Play ; Expo Go 57.0.9 pour React Native. Les résultats des autres membres (Redmi Note 13 d'Ahmed : langues, favoris, React Native) sont dans VST-59 |
 
 Les tests sur téléphone ont trouvé de vrais défauts, corrigés avant le gel : un prix absurde accepté par le formulaire et par les règles (VST-104), la réinitialisation des filtres de recherche (VST-124), l'icône « œil » du mot de passe (#118).
 
-**Google Play.** La version 1.0.0 (build 1) est disponible en test interne depuis le 22 octobre (publiée par Mahmoud depuis un compte développeur). Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. L'application est un projet académique : elle n'est pas publiée en production.
+**Dernier passage sur le build gelé (VST-59, 22 novembre).** Flutter 1.0.0+3, installée depuis Google Play sur le Redmi Note 12 Pro et la tablette Galaxy Tab A11, comptes A et B ouverts en même temps : les cas de la démonstration sont réussis (invité, connexion et session, recherche par offre, détails, contact Appeler et WhatsApp, mini-carte, carte, chat en direct entre deux appareils, notifications, statut des annonces, publication, modification, suppression, profil, langue). Deux échecs, tous deux mineurs, non corrigés après le gel : la recherche par ville en lettres arabes ne trouve rien, car les villes sont stockées en lettres latines (DEM-02, ticket VST-139) ; et le cas X-04 entre Flutter et React Native (voir les limites). Les cas non rejoués sur le build gelé sont marqués « non rejoué sur le build gelé » dans VST-59.
 
-**Contenu.** Les 15 annonces visibles (5 séjours, 7 locations, 3 ventes) sont marquées « Démo » dans le titre et n'ont pas de badge « vérifié ». Elles utilisent des informations et des photos réelles, avec l'accord oral par téléphone des propriétaires, pour un usage académique seulement ; ils ont demandé à ne pas être nommés. Eya a recueilli ces accords le 17 novembre et ils sont notés dans `docs/content/sources.md`. Nous n'avons aucun accord écrit : un lancement réel demanderait l'accord écrit de chaque propriétaire.
+**Google Play.** La version 1.0.0 (build 1) est disponible en test interne depuis le 22 octobre, et le build 2 en test fermé (Alpha) depuis le 3 novembre (publiés par Mahmoud depuis un compte développeur). Le build 3 (1.0.0+3, signé avec la clé d'envoi) a été envoyé en production et publié le 19 novembre 2026 (Tunisie, politique de confidentialité, page de suppression de compte, section « Sécurité des données » alignée sur le code, compte relecteur). La fiche Google Play est disponible avec le bouton Installer. Un identifiant d'application distinct pour le mode debug (`com.vesta.flutterapp.debug`) permet de lancer l'application depuis l'ordinateur sans supprimer la version du Play Store. Les textes de la fiche (courts et longs, en trois langues) et les visuels sont dans `docs/store/` (pull request #107) et `docs/brand/`. La démonstration s'appuie sur l'application installée sur deux téléphones ; le lien du test fermé reste le plan B.
+
+**Contenu.** Les 15 annonces visibles (5 séjours, 7 locations, 3 ventes) sont marquées « Démo » dans le titre et n'ont pas de badge « vérifié ». Elles utilisent des informations et des photos réelles, avec l'accord oral par téléphone des propriétaires, pour un usage académique seulement ; ils ont demandé à ne pas être nommés. Eya a recueilli ces accords par téléphone et ils sont notés dans `docs/content/sources.md`. Nous n'avons aucun accord écrit : un lancement réel demanderait l'accord écrit de chaque propriétaire.
 
 ## 5. Limites connues et travaux futurs
 
@@ -108,22 +120,23 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 **Limites connues**
 
 - **Photos :** stockées en base64 dans Firestore (10 par annonce, environ 800 px). Le choix de photos fonctionne sur téléphone, pas dans Chrome : Vesta cible Android.
-- **Recherche :** elle lit les 100 annonces les plus récentes et filtre dans l'application, sans pagination.
+- **Recherche :** elle lit les 100 annonces les plus récentes et filtre dans l'application, sans pagination. La recherche par ville compare le texte tel qu'il est stocké dans l'annonce : elle ne fait pas le lien entre les lettres arabes et latines (constaté le 22 novembre ; limite connue, non corrigée après le gel ; ticket VST-139).
 - **Hors ligne :** une annonce publiée sans internet reste en attente et part plus tard ; la bannière hors ligne ne détecte pas la connexion.
 - **Contact :** le numéro du propriétaire est lisible par tout compte connecté, y compris un compte Firebase anonyme. La règle qui l'interdit n'est pas fusionnée.
 - **Comptes :** la suppression d'un compte garde les messages du chat pour l'autre personne ; le signalement et le blocage ne sont pas faits ; il n'y a pas de Cloud Functions pour nettoyer côté serveur.
 - **Langues :** une relecture native de l'arabe et du français, et une vérification de la mise en page de droite à gauche sur plus d'appareils, n'ont pas été terminées. Les noms saisis par les utilisateurs ne sont pas translittérés.
-- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) est fusionné et a été testé par Eya sur un téléphone Android avec Expo Go ; il n'a pas de bouton pour contacter le propriétaire depuis le détail d'une annonce. Le contact (#103) reste dans une pull request ouverte, non fusionnée et non testée sur téléphone réel. Les onglets Favoris et Profil sont vides.
+- **React Native :** version réduite (voir le tableau de la section 3). Le chat (#102) et le contact (#103, boutons Appeler et WhatsApp dans le détail d'une annonce) sont fusionnés. Test du 22 novembre sur un Redmi Note 12 Pro (Expo Go 57.0.9, tag `v1.0.0-rc1`, cas X-04) : le chat affiche les messages envoyés depuis Flutter, mais la zone de saisie et le bouton « Envoyer » sont masqués par la barre de navigation Android, donc on ne peut pas répondre depuis React Native sur cet appareil ; sur le Samsung de Manar, le message et la réponse ont fonctionné le 23 novembre (cas X-04, défaut mineur, limite connue non corrigée après le gel ; en démonstration, nous montrons seulement la lecture des messages) ; le favori ne se vérifie pas, car l'onglet Favoris n'affiche que son titre. Les boutons Appeler et WhatsApp de React Native ont été vérifiés le 23 novembre sur le téléphone de Manar, avec le projet mis à niveau en local vers le SDK 58 pour tourner dans Expo Go (changement non commité, le tag gelé reste en SDK 57) ; ceux de Flutter sont réussis. Dans Expo Go, les icônes de la barre d'onglets apparaissaient comme des carrés vides sur ce téléphone. Le bouton « Se connecter » du composant de contact ne fait rien, car l'écran de détails React Native n'est accessible que connecté. Les onglets Favoris et Profil sont vides.
 - **Contenu :** annonces réelles de démonstration, avec accord oral seulement (pas d'accord écrit).
+- **Validation de la description (VST-137) :** les deux applications vérifient seulement que la description n'est pas vide ; le minimum de 40 caractères écrit dans le plan de test (cas LST-05) n'est pas appliqué. Le cas reste en échec côté React Native. Travail futur.
 
 **Travaux futurs, par ordre de valeur**
 
 1. Notifications push réelles (FCM) et Firebase Storage pour les photos, avec l'offre payante.
 2. Règle `notAnonymous()` pour protéger le numéro de contact, avec ses tests d'émulateur.
 3. Recherche côté serveur avec filtres et pagination, et annonces séparées par type (ventes, locations, séjours) comme l'a suggéré notre professeur.
-4. Réservations, avis, assistant IA et tableau de bord du propriétaire, dans les deux applications. La réservation Flutter est en partie faite sur une branche non fusionnée (VST-92) : calcul des nuits et du prix avec tests, textes en trois langues et écran de demande ; il manque la structure `bookings` et `blockedNights` et les règles Firestore.
+4. Réservations, avis, assistant IA et tableau de bord du propriétaire, dans les deux applications. La réservation Flutter est en partie faite sur une branche non fusionnée (VST-92) : calcul des nuits et du prix avec tests, textes en trois langues et écran de demande ; il manque la structure `bookings` et `blockedNights` et les règles Firestore. La réservation React Native (VST-85) est prête sur une branche, testée par Ahmed sur un Redmi Note 13, mais non fusionnée : elle demande d'abord le déploiement des règles `bookings` et `blockedNights`, prévu après la soutenance.
 5. Statut des annonces, partie 2 (VST-136) : rubans de couleur, statut « masqué » visible seulement par le propriétaire, nombre de favoris sur les cartes.
-6. Synchroniser l'e-mail du profil dans `private/contact` après un changement, connexion avec Google et Apple, signalement et blocage.
+6. Synchroniser l'e-mail du profil dans `private/contact` dès le changement (aujourd'hui, il est mis à jour à la prochaine sauvegarde du profil avec le téléphone), connexion avec Google et Apple, signalement et blocage.
 7. Mode sombre, détection hors ligne avant la publication, relecture native de l'arabe, plus de tests sur téléphones réels.
 
 ## 6. Organisation, difficultés et conclusion
@@ -141,7 +154,7 @@ La plupart des limites viennent d'un choix : rester sur l'offre gratuite de Fire
 **Difficultés rencontrées et ce que nous en avons retenu**
 
 - **L'offre gratuite de Firebase** nous a obligés à inventer des contournements (photos en base64, alertes locales). Nous avons noté chaque contournement comme une limite, pas comme une réussite.
-- **La clé API Android restreinte** (sécurité) a bloqué la connexion sur une version signée avec une clé non listée : l'application affichait une erreur générique. Chaque clé de signature, y compris celle de Google Play, a besoin de sa ligne dans la restriction. Pour la démo et les tests, la restriction d'application est actuellement sur « Aucune » ; elle sera remise après les tests.
+- **La clé API Android restreinte** (sécurité) a bloqué la connexion sur une version signée avec une clé non listée : l'application affichait une erreur générique. Chaque clé de signature, y compris celle de Google Play, a besoin de sa ligne dans la restriction. Nous avons donc laissé la restriction d'application sur « Aucune » (décision du 21 novembre) : une clé Firebase n'est pas un secret et la protection des données repose sur l'authentification et les règles Firestore ; le risque restant est l'usage du quota par une autre application. La restriction reste un travail futur.
 - **Les traductions générées** créaient des conflits à chaque fusion. Le fichier maître et le script, avec une vérification en CI, ont réglé le problème.
 - **Expo Go** impose la version exacte du SDK : l'application React Native ne se lance que sur un téléphone avec la bonne version d'Expo Go.
 - **Le contenu réel** : sans accord écrit des propriétaires, nous avons choisi des annonces de démonstration plutôt que de publier de vraies annonces sans autorisation.
@@ -198,7 +211,7 @@ Les diagrammes sont dans le dépôt, en français, avec leurs sources Mermaid :
 - **Modèle C4** (niveaux 1 à 4 : contexte, conteneurs, composants, classes) : `docs/c4/`.
 - **UML et schémas** : `docs/uml/` (cas d'utilisation, séquences de connexion, de publication et d'envoi de message, modèle de données Firestore, architecture en couches, flux Git et CI, planning).
 
-Ces diagrammes viennent de la pull request #135 ; tant qu'elle n'est pas fusionnée, ils ne sont pas dans `develop`.
+Ces diagrammes viennent de la pull request #135, fusionnée dans `develop`.
 
 ## Annexe D : glossaire
 
