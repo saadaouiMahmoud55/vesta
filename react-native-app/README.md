@@ -17,7 +17,7 @@ Open the QR code with Expo Go on the same network as the development computer. F
 
 Login and sign-up, listings (Explore tab, details with photo gallery, contact buttons for call and WhatsApp), publish form with photos, search with filters, map (OpenStreetMap), chat, message alerts with an unread badge, and English, French and Arabic.
 
-Not done in this version: the Favorites and Profile tabs (placeholder screens), guest browsing, My listings, account deletion, onboarding and settings. Booking requests are on the unmerged branch `feature/VST-85-rn-booking`. Details and test results: `docs/report/limits-and-future-work.md`.
+Not done in this version: the Favorites and Profile tabs (placeholder screens), guest browsing, My listings, account deletion, onboarding and settings. Booking requests are not merged (PR #151 was closed; the work is kept on the branch `feature/VST-85-rn-booking`). Details and test results: `docs/report/limits-and-future-work.md`.
 
 ## Project structure and screen rules
 

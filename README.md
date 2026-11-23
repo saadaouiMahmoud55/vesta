@@ -54,7 +54,7 @@ Both apps share the same module structure: Auth, Search, Listing details, Publis
 Read [CONTRIBUTING.md](CONTRIBUTING.md). Tasks live in Jira (project key **VST**). Two GitHub Actions run on every PR into `develop`: the color check (`tools/check-colors.js`) and the translations check (`scripts/translations.js check`).
 
 ## Future work (out of the MVP)
-- **Booking requests** (VST-85 React Native, VST-92 Flutter). Both exist on unmerged branches. They need the `bookings` and `blockedNights` data structure, Firestore rules with tests and a rules deployment first. Firestore rules cannot check that two accepted bookings do not overlap, so the app checks before a request is sent and the owner accepts manually.
+- **Booking requests** (VST-85 React Native, VST-92 Flutter). Both were left unmerged after the code freeze (PR #151 for React Native was closed): the work is kept on the branches `feature/VST-85-rn-booking` and `feature/VST-92-flutter-booking`. They need the `bookings` and `blockedNights` data structure, Firestore rules with tests and a rules deployment first. Firestore rules cannot check that two accepted bookings do not overlap, so the app checks before a request is sent and the owner accepts manually.
 - **Real server push notifications (FCM).** They need Cloud Functions (Blaze plan) or a small external server. The app uses an in-app notification center instead (VST-99).
 - **Firebase Storage for photos.** Storage also needs the Blaze plan. Photos are stored as compressed base64 in `listings/{id}/photos` (max 10).
 - **Reviews, AI assistant, server-side search and pagination**: see the limits document.
